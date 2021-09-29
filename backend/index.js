@@ -1,4 +1,4 @@
-import app from './server.js';
+import app from './api/server.js';
 import db from './api/models/index.js';
 
 (async () => {

@@ -1,7 +1,7 @@
 import express from 'express';
 // import cors from 'cors';
 // import tutorialRoute from './api/routes/tutorial.route.js';
-import userRoute from './api/routes/user.js';
+import userRoute from './routes/user.js';
 
 const app = express();
 app.use(express.json());

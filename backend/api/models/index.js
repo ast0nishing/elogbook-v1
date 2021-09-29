@@ -1,4 +1,4 @@
-import { default as dbConfig } from '../../db.config.js';
+import { default as dbConfig } from '../db.config.js';
 import { default as users } from './resources/user.js';
 
 import { Sequelize } from 'sequelize';
