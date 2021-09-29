@@ -3,11 +3,10 @@ import express from 'express';
 
 const router = express.Router();
 
-router.route('/').post((req, res) => {
-    User.create(req, res);
-});
-router.route('/').get((req, res) => {
-    res.send('user');
-});
+router.post('/', User.create);
+router.get('/', User.findAll);
+router.get('/:username/', User.findOne);
+router.put('/:username/', User.update);
+router.delete('/:username/', User.delete);
 
 export default router;
