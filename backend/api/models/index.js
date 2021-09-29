@@ -1,5 +1,4 @@
-import { default as dbConfig } from '../db.config.js';
-import { default as tutorials } from './resources/tutorial.model.js';
+import { default as dbConfig } from '../../db.config.js';
 import { default as users } from './resources/user.js';
 
 import { Sequelize } from 'sequelize';
@@ -17,7 +16,6 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.tutorials = tutorials(sequelize, Sequelize);
 db.users = users(sequelize, Sequelize);
 
 export default db;
