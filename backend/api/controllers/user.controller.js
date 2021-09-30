@@ -1,7 +1,4 @@
 import db from '../models/index.js';
-// import pkg from 'sequelize';
-// const { Op } = pkg;
-import bcrypt from 'bcrypt';
 
 export default {
     async create(req, res) {
@@ -28,7 +25,6 @@ export default {
             .findAll()
             .then((data) => {
                 res.send(data);
-                console.log(data);
             })
             .catch((err) => {
                 res.status(500);

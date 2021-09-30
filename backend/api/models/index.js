@@ -1,12 +1,13 @@
 import { default as dbConfig } from '../db.config.js';
-import { default as User } from './User.js';
-import { default as School } from './School.js';
-import { default as Timetable } from './Timetable.js';
-import { default as Teacher } from './Teacher.js';
-import { default as Student } from './Student.js';
-import { default as Class } from './Class.js';
-import { default as AcademicYear } from './AcademicYear.js';
-import { default as Logbook } from './Logbook.js';
+import { default as User } from './User.model.js';
+import { default as School } from './School.model.js';
+import { default as Timetable } from './Timetable.model.js';
+import { default as Teacher } from './Teacher.model.js';
+import { default as Student } from './Student.model.js';
+import { default as Class } from './Class.model.js';
+import { default as AcademicYear } from './AcademicYear.model.js';
+import { default as Logbook } from './Logbook.model.js';
+import { default as Lesson } from './Lesson.model.js';
 
 import { Sequelize } from 'sequelize';
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -32,6 +33,14 @@ sequelize
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+db.academicYears = AcademicYear(sequelize, Sequelize);
+db.class = Class(sequelize, Sequelize);
+db.lessons = Lesson(sequelize, Sequelize);
+db.logbooks = Logbook(sequelize, Sequelize);
+db.schools = School(sequelize, Sequelize);
+db.students = Student(sequelize, Sequelize);
+db.teachers = Teacher(sequelize, Sequelize);
+db.timetables = Timetable(sequelize, Sequelize);
 db.users = User(sequelize, Sequelize);
 
 export default db;
