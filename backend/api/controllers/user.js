@@ -1,6 +1,7 @@
 import db from '../models/index.js';
 // import pkg from 'sequelize';
 // const { Op } = pkg;
+import bcrypt from 'bcrypt';
 
 export default {
     async create(req, res) {
