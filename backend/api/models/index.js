@@ -1,5 +1,12 @@
 import { default as dbConfig } from '../db.config.js';
 import { default as User } from './resources/User.js';
+import { default as School } from './resources/School.js';
+import { default as Timetable } from './resources/Timetable.js';
+import { default as Teacher } from './resources/Teacher.js';
+import { default as Student } from './resources/Student.js';
+import { default as Class } from './resources/Class.js';
+import { default as AcademicYear } from './resources/AcademicYear.js';
+import { default as Logbook } from './resources/Logbook.js';
 
 import { Sequelize } from 'sequelize';
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
