@@ -1,5 +1,5 @@
 export default function (sequelize, Sequelize) {
-    const Lesson = sequelize.define('lessons', {
+    const Course = sequelize.define('courses', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
@@ -9,10 +9,6 @@ export default function (sequelize, Sequelize) {
             type: Sequelize.STRING,
             allowNull: false,
         },
-        course_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
     });
-    return Lesson;
+    return Course;
 }
