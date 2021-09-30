@@ -24,6 +24,15 @@ export default {
         await db.users
             .findAll()
             .then((data) => {
+                // const newdata = data.map((data) => {
+                //     data.id = undefined;
+                // });
+                // console.log(typeof newdata);
+                // res.send(
+                //     data.map((data) => {
+                //         data.username;
+                //     })
+                // );
                 res.send(data);
             })
             .catch((err) => {

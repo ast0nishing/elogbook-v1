@@ -1,5 +1,5 @@
 export default function (sequelize, Sequelize) {
-    const Student = sequelize.define('students', {
+    const Admin = sequelize.define('admins', {
         name: { type: Sequelize.STRING, allowNull: false, primaryKey: true },
         address: { type: Sequelize.STRING, allowNull: true },
         phoneNumber: { type: Sequelize.INTEGER },
@@ -23,5 +23,5 @@ export default function (sequelize, Sequelize) {
 
         class_id: { type: Sequelize.INTEGER },
     });
-    return Student;
+    return Admin;
 }

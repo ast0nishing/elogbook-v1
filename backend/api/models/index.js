@@ -13,13 +13,14 @@ import { default as Grade } from './Grade.model.js';
 import { default as HeadTeacher } from './HeadTeacher.model.js';
 import { default as Period } from './Period.model.js';
 import { default as Course } from './Course.model.js';
+import { default as Admin } from './Admin.model.js';
 
 import { Sequelize } from 'sequelize';
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
     operatorAliases: false,
-    logging: false,
+    // logging: false,
     pool: {
         max: dbConfig.pool.max,
         min: dbConfig.pool.min,
@@ -38,19 +39,26 @@ sequelize
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.absents = Absent(sequelize, Sequelize);
-db.academicYears = AcademicYear(sequelize, Sequelize);
-db.classes = Class(sequelize, Sequelize);
-db.courses = Course(sequelize, Sequelize);
-db.grades = Grade(sequelize, Sequelize);
-db.headTeachers = HeadTeacher(sequelize, Sequelize);
-db.lessons = Lesson(sequelize, Sequelize);
-db.logbooks = Logbook(sequelize, Sequelize);
-db.periods = Period(sequelize, Sequelize);
-db.schools = School(sequelize, Sequelize);
+db.admins = Admin(sequelize, Sequelize);
+// db.absents = Absent(sequelize, Sequelize);
+// db.academicYears = AcademicYear(sequelize, Sequelize);
+// db.classes = Class(sequelize, Sequelize);
+// db.courses = Course(sequelize, Sequelize);
+// db.grades = Grade(sequelize, Sequelize);
+// db.headTeachers = HeadTeacher(sequelize, Sequelize);
+// db.lessons = Lesson(sequelize, Sequelize);
+// db.logbooks = Logbook(sequelize, Sequelize);
+// db.periods = Period(sequelize, Sequelize);
+// db.schools = School(sequelize, Sequelize);
 db.students = Student(sequelize, Sequelize);
 db.teachers = Teacher(sequelize, Sequelize);
 db.timetables = Timetable(sequelize, Sequelize);
 db.users = User(sequelize, Sequelize);
 
+db.students.belongsTo(db.users);
+db.teachers.belongsTo(db.users);
+db.admins.belongsTo(db.users);
+db.users.hasOne(db.students);
+db.users.hasOne(db.teachers);
+db.users.hasOne(db.admins);
 export default db;
