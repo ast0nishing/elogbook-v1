@@ -1,4 +1,4 @@
-import MainNavigation from './components/MainNavigation';
+import MainNavigation from './components/MainNavigation.js';
 
 function App() {
     return (
