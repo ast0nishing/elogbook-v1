@@ -3,3 +3,4 @@ node_modules
 migrations
 seeders
 README.md
+db.config.js
