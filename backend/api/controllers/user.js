@@ -37,7 +37,7 @@ export default {
     async findOne(req, res) {
         await db.users
             .findOne({
-                where: { username: req.params.username },
+                where: { id: req.params.id },
             })
             .then((data) => {
                 if (data) res.send(data);
