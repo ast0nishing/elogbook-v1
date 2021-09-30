@@ -1,27 +1,26 @@
 // import bcrypt from 'bcrypt';
 
-export default function (sequelize, Sequelize) {
+import { DataTypes } from "sequelize/types";
+
+export default function (sequelize) {
   const User = sequelize.define("user", {
     id: {
-      type: Sequelize.INTEGER(8).ZEROFILL,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     username: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: { isEmail: true },
     },
     password: {
-      type: Sequelize.STRING(64),
+      type: DataTypes.STRING,
       allowNull: false,
-      // set(value) {
-      //     const hash = bcrypt.hashSync(value, 10);
-      //     this.setDataValue('password', hash);
-      // },
     },
     role: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER(1),
       allowNull: false,
       validate: {
         isIn: [["0", "1", "2"]], // 0: Admin -- 1: Teacher -- 2: Student

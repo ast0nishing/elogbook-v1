@@ -1,5 +1,9 @@
-import { default as user } from './user.js';
+import { default as user } from "./user.controller.js";
+import { default as logbook } from "./logbook.controller.js";
+import { default as school } from "./school.controller.js";
 
 export default {
-    User: user,
+  User: user,
+  Logbook: logbook,
+  School: school,
 };

@@ -39,6 +39,7 @@ await sequelize
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+<<<<<<< HEAD
 
 User(sequelize, Sequelize);
 Student(sequelize, Sequelize);
@@ -49,5 +50,16 @@ const { user, student } = sequelize.models;
 
 student.hasOne(user);
 user.belongsTo(student);
+=======
+db.academicYears = AcademicYear(sequelize, Sequelize);
+db.class = Class(sequelize, Sequelize);
+db.lessons = Lesson(sequelize, Sequelize);
+db.logbooks = Logbook(sequelize, Sequelize);
+db.schools = School(sequelize, Sequelize);
+db.students = Student(sequelize, Sequelize);
+db.teachers = Teacher(sequelize, Sequelize);
+db.timetables = Timetable(sequelize, Sequelize);
+db.users = User(sequelize, Sequelize);
+>>>>>>> 660115b9c083f8b29ad5757dedcf91bead1c976f
 
 export default db;
