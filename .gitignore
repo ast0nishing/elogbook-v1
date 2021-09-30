@@ -1,6 +1,5 @@
 node_modules
 .DS_Store
 migrations
-config
 seeders
 README.md
