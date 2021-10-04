@@ -1,27 +1,53 @@
 export default function (sequelize, Sequelize) {
-    const Teacher = sequelize.define('teachers', {
-        id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-        name: { type: Sequelize.STRING, allowNull: false },
-        address: { type: Sequelize.STRING, allowNull: true },
-        phoneNumber: { type: Sequelize.INTEGER },
-        email: {
-            type: Sequelize.STRING,
-            allowNull: true,
-            validate: {
-                isEmail: true,
-            },
-        },
-        dob: {
-            type: Sequelize.STRING,
-            validate: {
-                isDate: true,
-            },
-        },
-        major: { type: Sequelize.STRING },
-        school_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-    });
-    return Teacher;
+  const Teacher = sequelize.define("teacher", {
+    id: {
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      primaryKey: true,
+    },
+
+    username: {
+      type: Sequelize.STRING,
+      unique: true,
+      allowNull: false,
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    role: {
+      type: Sequelize.TINYINT(1),
+      defaultValue: 2,
+    },
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    address: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    phoneNumber: {
+      type: Sequelize.STRING(10),
+    },
+    email: {
+      type: Sequelize.STRING,
+      validate: {
+        isEmail: true,
+      },
+    },
+    dob: {
+      type: Sequelize.DATEONLY,
+      validate: {
+        isDate: true,
+      },
+    },
+
+    major: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+  });
+
+  return Teacher;
 }

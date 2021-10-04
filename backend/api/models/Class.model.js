@@ -1,13 +1,18 @@
 export default function (sequelize, Sequelize) {
-    const Class = sequelize.define('classes', {
-        id: {
-            type: Sequelize.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        schoolId: { type: Sequelize.INTEGER, allowNull: false },
-        academicYearId: { type: Sequelize.INTEGER, allowNull: false },
-        headTeacherId: { type: Sequelize.INTEGER, allowNull: false },
-    });
-    return Class;
+  const Class = sequelize.define("class", {
+    id: {
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      primaryKey: true,
+    },
+    name: {
+      type: Sequelize.STRING(4),
+      allowNull: false,
+    },
+    academicYearId: {
+      type: Sequelize.INTEGER(4),
+      allowNull: false,
+    },
+  });
+  return Class;
 }

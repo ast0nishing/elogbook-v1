@@ -1,24 +1,34 @@
 export default function (sequelize, Sequelize) {
-    const Timetable = sequelize.define('timetables', {
-        id: {
-            type: Sequelize.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        fromWeek: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        toWeek: {
-            type: Sequelize.INTEGER,
-            allowNull: true,
-        },
-        classId: { type: Sequelize.INTEGER, allowNull: false },
-        academicYearId: { type: Sequelize.INTEGER, allowNull: false },
-        teacherId: { type: Sequelize.INTEGER, allowNull: false },
-        courseId: { type: Sequelize.INTEGER, allowNull: false },
-        periodId: { type: Sequelize.INTEGER, allowNull: false },
-        weekDayId: { type: Sequelize.INTEGER, allowNull: false },
-    });
-    return Timetable;
+  const Timetable = sequelize.define("timetable", {
+    id: {
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      primaryKey: true,
+    },
+
+    fromWeek: {
+      type: Sequelize.INTEGER(2),
+      allowNull: false,
+    },
+
+    toWeek: {
+      type: Sequelize.INTEGER(2),
+      allowNull: false,
+      defaultValue: 0,
+    },
+
+    weekDay: {
+      type: Sequelize.TINYINT(1),
+      allowNull: false,
+    },
+
+    time: {
+      type: Sequelize.TIME,
+      allowNull: false,
+    },
+
+    // classId: { type: Sequelize.INTEGER, allowNull: false },
+    // teacherId: { type: Sequelize.INTEGER, allowNull: false },
+  });
+  return Timetable;
 }
