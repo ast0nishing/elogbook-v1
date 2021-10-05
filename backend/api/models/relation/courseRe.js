@@ -5,6 +5,8 @@ export default function (db) {
     foreignKey: {
       allowNull: false,
     },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   });
   db.lesson.belongsTo(db.course);
 
@@ -13,6 +15,8 @@ export default function (db) {
     foreignKey: {
       allowNull: false,
     },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   });
   db.timetable.belongsTo(db.course);
 }

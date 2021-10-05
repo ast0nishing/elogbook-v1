@@ -1,4 +1,5 @@
 import { default as dbConfig } from "../db.config.js";
+import { Sequelize } from "sequelize";
 
 import { default as classRe } from "./relation/classRe.js";
 import { default as courseRe } from "./relation/courseRe.js";
@@ -8,21 +9,22 @@ import { default as teacherRe } from "./relation/teacherRe.js";
 import { default as timetableRe } from "./relation/timetableRe.js";
 
 import { default as School } from "./School.model.js";
-
 import { default as Teacher } from "./Teacher.model.js";
 import { default as Student } from "./Student.model.js";
 
 import { default as Class } from "./Class.model.js";
 import { default as Logbook } from "./Logbook.model.js";
 import { default as Timetable } from "./Timetable.model.js";
-// import { default as MakeUpLesson } from "./Makeup.model.js";
 
 import { default as Lesson } from "./Lesson.model.js";
 import { default as Course } from "./Course.model.js";
 
-import { Sequelize } from "sequelize";
+// bulk create
+import { default as createSchool } from "./bulkcreate/school.js";
+import { default as createTeacher } from "./bulkcreate/teacher.js";
+import { default as createClass } from "./bulkcreate/class.js";
 
-export default () => {
+export default async () => {
   const sequelize = new Sequelize(
     dbConfig.DB,
     dbConfig.USER,
@@ -33,7 +35,6 @@ export default () => {
       define: {
         timestamps: false,
         freezeTableName: true,
-
         // operatorAliases: false,
         // pool: {
         //   max: dbConfig.pool.max,
@@ -53,8 +54,8 @@ export default () => {
     .catch((err) => {
       "Unable to connect to the database:", err;
     });
-  const db = {};
 
+  const db = {};
   db.Sequelize = Sequelize;
   db.sequelize = sequelize;
 
@@ -78,8 +79,45 @@ export default () => {
   teacherRe(db);
   timetableRe(db);
 
+  // const { name, username, town} = ttu;
+  // console.log(alo);
+  // const schoolExist = await db.school.findOne({
+  //   where: { username: "ttu123" },
+  // });
+
+  // const teachers = await schoolExist.getTeachers({
+  //   where: { name: "Nguyễn Văn A", major: "Vật Lí" },
+  // });
+  // const teacher = teachers[0];
+
+  // if (await Object.is(teachers, [])) {
+  //   console.log("not found");
+  // } else {
+  //   teachers.forEach(async (teacher) => {
+  //     console.log(await schoolExist.hasTeacher(teacher));
+  //     console.log(teacher.toJSON());
+  //   });
+  // }
+
+  // const a_class = {
+  //   name: "8A9",
+  //   academicYearId: 2018,
+  //   teacherId: "",
+  // };
+
+  // a_class.teacherId = teacher.id;
+  // console.log("this is teacher id");
+  // console.log(a_class.teacherId);
+
+  // schoolExist.createClass(a_class);
+
   // sync to database if not exists
-  db.sequelize.sync({ force: true });
+  // db.sequelize.sync({ force: true });
+
+  // bulk create
+  // createSchool(db);
+  // createTeacher(db);
+  createClass(db);
 
   return db;
 };

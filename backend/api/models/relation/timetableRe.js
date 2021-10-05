@@ -4,6 +4,8 @@ export default function (db) {
     foreignKey: {
       allowNull: false,
     },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   });
   db.logbook.belongsTo(db.timetable);
 }

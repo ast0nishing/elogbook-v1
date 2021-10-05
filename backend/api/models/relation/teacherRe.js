@@ -4,6 +4,8 @@ export default function (db) {
     foreignKey: {
       allowNull: false,
     },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   });
   db.timetable.belongsTo(db.teacher);
 
@@ -12,6 +14,8 @@ export default function (db) {
     foreignKey: {
       allowNull: false,
     },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   });
   db.class.belongsTo(db.teacher);
 }
