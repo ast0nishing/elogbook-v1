@@ -17,6 +17,7 @@ export default function (sequelize, Sequelize) {
     },
     role: {
       type: Sequelize.TINYINT(1),
+      allowNull: false,
       defaultValue: 3,
     },
     name: {
@@ -29,9 +30,12 @@ export default function (sequelize, Sequelize) {
     },
     phoneNumber: {
       type: Sequelize.STRING(10),
+      allowNull: false,
     },
     email: {
       type: Sequelize.STRING,
+      allowNull: false,
+
       validate: {
         isEmail: true,
       },

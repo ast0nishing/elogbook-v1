@@ -17,9 +17,14 @@ export default function (sequelize, Sequelize) {
     },
     role: {
       type: Sequelize.TINYINT(1),
+      allowNull: false,
       defaultValue: 2,
     },
     name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    major: {
       type: Sequelize.STRING,
       allowNull: false,
     },
@@ -29,9 +34,11 @@ export default function (sequelize, Sequelize) {
     },
     phoneNumber: {
       type: Sequelize.STRING(10),
+      allowNull: false,
     },
     email: {
       type: Sequelize.STRING,
+      allowNull: false,
       validate: {
         isEmail: true,
       },
@@ -41,11 +48,6 @@ export default function (sequelize, Sequelize) {
       validate: {
         isDate: true,
       },
-    },
-
-    major: {
-      type: Sequelize.STRING,
-      allowNull: false,
     },
   });
 

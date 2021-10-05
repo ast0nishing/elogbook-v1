@@ -14,7 +14,6 @@ export default function (sequelize, Sequelize) {
       unique: true,
       allowNull: false,
     },
-
     password: {
       type: Sequelize.STRING,
       allowNull: false,

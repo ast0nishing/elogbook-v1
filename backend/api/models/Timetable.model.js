@@ -5,30 +5,23 @@ export default function (sequelize, Sequelize) {
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
-
     fromWeek: {
       type: Sequelize.INTEGER(2),
       allowNull: false,
     },
-
     toWeek: {
       type: Sequelize.INTEGER(2),
       allowNull: false,
       defaultValue: 0,
     },
-
     weekDay: {
       type: Sequelize.TINYINT(1),
       allowNull: false,
     },
-
     time: {
       type: Sequelize.TIME,
       allowNull: false,
     },
-
-    // classId: { type: Sequelize.INTEGER, allowNull: false },
-    // teacherId: { type: Sequelize.INTEGER, allowNull: false },
   });
   return Timetable;
 }
