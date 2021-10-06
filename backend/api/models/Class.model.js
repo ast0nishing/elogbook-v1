@@ -5,6 +5,11 @@ export default function (sequelize, Sequelize) {
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
+    idSchool: {
+      type: Sequelize.STRING(14),
+      allowNull: false,
+      unique: true,
+    },
     name: {
       type: Sequelize.STRING(4),
       allowNull: false,

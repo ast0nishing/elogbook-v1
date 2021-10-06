@@ -3,8 +3,14 @@ export default function (sequelize, Sequelize) {
     // id: {
     //   type: Sequelize.UUID,
     //   defaultValue: Sequelize.UUIDV4,
-    //   primaryKey: true,
     // },
+    // course id: sample VATLI0820, HOAHOC1021, GDCD1020
+    code: {
+      type: Sequelize.STRING(20),
+      allowNull: false,
+      primaryKey: true,
+      // unique: true,
+    },
     name: {
       type: Sequelize.STRING,
       allowNull: false,

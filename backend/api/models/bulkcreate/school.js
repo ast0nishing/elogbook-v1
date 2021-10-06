@@ -1,10 +1,10 @@
 export default async (db) => {
-  // const school = db.school;
-
-  await db.school.bulkCreate([
+  // await db.school.bulkCreate()
+  const schools = [
     {
+      idSchool: "LA0102",
       name: "ttu",
-      username: "ttu123",
+      username: "sa@LA0102",
       password: "vtn",
 
       province: "Long An",
@@ -12,8 +12,9 @@ export default async (db) => {
       town: "Đức Hòa",
     },
     {
+      idSchool: "LA1002",
       name: "tts",
-      username: "tts123",
+      username: "sa@LA1002",
       password: "vtn",
 
       province: "Long An",
@@ -21,8 +22,9 @@ export default async (db) => {
       town: "Đức Hòa",
     },
     {
+      idSchool: "LA0105",
       name: "thpt đức hòa",
-      username: "thptduchoa",
+      username: "sa@LA0105",
       password: "vtn",
 
       province: "Long An",
@@ -30,8 +32,9 @@ export default async (db) => {
       town: "Đức Hòa Hạ",
     },
     {
+      idSchool: "SG0102",
       name: "Võ Văn Tần",
-      username: "vovantan123",
+      username: "sa@SG0102",
       password: "vtn",
 
       province: "Long An",
@@ -39,14 +42,46 @@ export default async (db) => {
       town: "Đức Hòa Thượng",
     },
     {
+      idSchool: "LA0302",
       name: "Hậu Nghĩa",
-      username: "haunghia123",
+      username: "sa@LA0302",
       password: "vtn",
 
       province: "Long An",
       district: "Đức Hòa",
       town: "Đức Hòa Đông",
     },
-  ]);
-  console.log("create 5 schools including Tân Tạo");
+  ];
+
+  console.log(`BEFORE`);
+  schools.forEach(async (school) => {
+    console.log(`BEFORE`);
+    await db.school
+      .findOne({
+        where: { idSchool: school.idSchool },
+      })
+      .then(async (schoolExist) => {
+        if (!schoolExist) {
+          console.log(`CREATE NEW SCHOOL ${(school.idSchool, school.name)}`);
+          await db.school.create(school);
+        } else {
+          console.log(
+            `ID ${school.idSchool} already exists ---> cannot create ${school.name}`
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    console.log(`AFTER`);
+  });
+
+  //   if (!schoolExist) {
+  //     db.school.create(school);
+  //   } else {
+  //     console.log(
+  //       `ID ${school.idSchool} already exist ==> cannot create school ${school.name}`
+  //     );
+  //   }
 };

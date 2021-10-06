@@ -5,9 +5,13 @@ export default function (sequelize, Sequelize) {
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
-
+    idSchool: {
+      type: Sequelize.STRING(14),
+      allowNull: false,
+      unique: true,
+    },
     username: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(100),
       unique: true,
       allowNull: false,
     },
@@ -21,7 +25,7 @@ export default function (sequelize, Sequelize) {
       defaultValue: 3,
     },
     name: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(64),
       allowNull: false,
     },
     address: {
@@ -34,8 +38,7 @@ export default function (sequelize, Sequelize) {
     },
     email: {
       type: Sequelize.STRING,
-      // allowNull: false,
-
+      allowNull: false,
       validate: {
         isEmail: true,
       },

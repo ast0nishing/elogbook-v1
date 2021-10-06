@@ -19,10 +19,7 @@ import { default as Timetable } from "./Timetable.model.js";
 import { default as Lesson } from "./Lesson.model.js";
 import { default as Course } from "./Course.model.js";
 
-// bulk create
-import { default as createSchool } from "./bulkcreate/school.js";
-import { default as createTeacher } from "./bulkcreate/teacher.js";
-import { default as createClass } from "./bulkcreate/class.js";
+import { default as createData } from "./bulkcreate/index.js";
 
 export default async () => {
   const sequelize = new Sequelize(
@@ -77,47 +74,13 @@ export default async () => {
   lessonRe(db);
   schoolRe(db);
   teacherRe(db);
-  timetableRe(db);
+  // timetableRe(db);
 
-  // const { name, username, town} = ttu;
-  // console.log(alo);
-  // const schoolExist = await db.school.findOne({
-  //   where: { username: "ttu123" },
-  // });
-
-  // const teachers = await schoolExist.getTeachers({
-  //   where: { name: "Nguyễn Văn A", major: "Vật Lí" },
-  // });
-  // const teacher = teachers[0];
-
-  // if (await Object.is(teachers, [])) {
-  //   console.log("not found");
-  // } else {
-  //   teachers.forEach(async (teacher) => {
-  //     console.log(await schoolExist.hasTeacher(teacher));
-  //     console.log(teacher.toJSON());
-  //   });
-  // }
-
-  // const a_class = {
-  //   name: "8A9",
-  //   academicYearId: 2018,
-  //   teacherId: "",
-  // };
-
-  // a_class.teacherId = teacher.id;
-  // console.log("this is teacher id");
-  // console.log(a_class.teacherId);
-
-  // schoolExist.createClass(a_class);
+  // // fake data
+  createData(db);
 
   // sync to database if not exists
   // db.sequelize.sync({ force: true });
-
-  // bulk create
-  // createSchool(db);
-  // createTeacher(db);
-  createClass(db);
 
   return db;
 };

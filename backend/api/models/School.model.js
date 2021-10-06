@@ -5,12 +5,17 @@ export default function (sequelize, Sequelize) {
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
+    idSchool: {
+      type: Sequelize.STRING(7),
+      unique: true,
+      allowNull: false,
+    },
     name: {
       type: Sequelize.STRING,
       allowNull: false,
     },
     username: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(10),
       unique: true,
       allowNull: false,
     },
@@ -24,19 +29,19 @@ export default function (sequelize, Sequelize) {
       defaultValue: 1,
     },
     province: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(20),
       allowNull: false,
     },
     district: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(64),
       allowNull: false,
     },
     town: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(64),
       allowNull: false,
     },
     street: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(100),
       allowNull: true,
     },
     streetNo: {
