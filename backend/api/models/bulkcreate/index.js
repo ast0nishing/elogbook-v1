@@ -1,41 +1,15 @@
-// bulk create
-import { default as createSchool } from "./school.js";
-import { default as createTeacher } from "./teacher.js";
-import { default as createClass } from "./class.js";
-import { default as createStudent } from "./student.js";
-import { default as createCourse } from "./course.js";
-import { default as createLesson } from "./lesson.js";
-import { default as classAddStudent } from "./classAddStudent.js";
-
+// import { default as classAddStudent } from "./classAddStudent.js";
+import { default as bulkCreate } from "./bulkCreate.js";
+import { default as logbookRelated } from "./bulkTTLogbook.js";
 export default async (db) => {
-  // bulk create
-  // await createSchool(db)
-  //   .then(async (ab) => await createTeacher(db))
-  //   .then(async (adf) => {
-  //     await createClass(db);
-  //   })
+  await bulkCreate(db);
+  await logbookRelated(db);
 
-  //   .then(async (afd) => {
-  //     await createStudent(db);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-
-  // // create
-  // createSchool(db)
-  // createTeacher(db);
-  // createClass(db);
-  // createStudent(db);
-  // createCourse(db);
-  createLesson(db);
-
+  //
   // add students to new class/ modify class
   // classAddStudent(db);
-
-  const targetSchool = "LA0102";
-  const targetTeacher = "LA0102-T12001";
-
+  // const targetSchool = "LA0102";
+  // const targetTeacher = "LA0102-T12001";
   // // Delete teacher ---
   // await db.school
   //   .findOne({
@@ -61,7 +35,6 @@ export default async (db) => {
   //   .catch((err) => {
   //     console.log(err);
   //   });
-
   // const targetSchool2 = "SG0102";
   //   // delete school
   //   db.school
@@ -76,7 +49,6 @@ export default async (db) => {
   //         console.log(`cannot find school ${(school.idSchool, school.name)}`);
   //       }
   //     });
-
   // // delete all Classes
   // await db.school
   //   .findOne({ where: { idSchool: targetSchool } })
@@ -95,6 +67,5 @@ export default async (db) => {
   //       });
   //     }
   //   });
-
   // delete all student from a class
 };

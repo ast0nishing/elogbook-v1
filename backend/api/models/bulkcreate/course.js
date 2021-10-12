@@ -1,4 +1,4 @@
-export default async (db) => {
+export default () => {
   const courses = [
     {
       code: "SE19CS311",
@@ -26,40 +26,5 @@ export default async (db) => {
     },
   ];
 
-  courses.forEach(async (course) => {
-    await db.course
-      .findOne({ where: { code: course.code } })
-      .then(async (courseExist) => {
-        if (courseExist) {
-          console.log(`COURSE ${(course.code, course.name)} ALREADY EXIST`);
-        } else {
-          console.log(
-            `GET READY TO CREATE NEW COURSE ${(course.code, course.name)}`
-          );
-          db.course.create(course);
-        }
-      });
-  });
-
-  // console.log(`BEFORE`);
-  // schools.forEach(async (school) => {
-  //   console.log(`BEFORE`);
-  //   await db.school
-  //     .findOne({
-  //       where: { idSchool: school.idSchool },
-  //     })
-  //     .then(async (schoolExist) => {
-  //       if (!schoolExist) {
-  //         console.log(`CREATE NEW SCHOOL ${(school.idSchool, school.name)}`);
-  //         await db.school.create(school);
-  //       } else {
-  //         console.log(
-  //           `ID ${school.idSchool} already exists ---> cannot create ${school.name}`
-  //         );
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // });
+  return courses;
 };

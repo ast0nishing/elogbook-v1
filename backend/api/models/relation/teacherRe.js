@@ -2,8 +2,9 @@ export default function (db) {
   // teacher has many time tables
   db.teacher.hasMany(db.timetable, {
     // foreignKey: {
-    //   allowNull: false,
+    //   allowNull: true,
     // },
+
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });
@@ -11,9 +12,9 @@ export default function (db) {
 
   // each class has a head teacher (on a academic year) -- teacher has a head teacher
   db.teacher.hasMany(db.class, {
-    // foreignKey: {
-    //   allowNull: true,
-    // },
+    foreignKey: {
+      allowNull: true,
+    },
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });

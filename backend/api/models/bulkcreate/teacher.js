@@ -1,4 +1,4 @@
-export default async (db) => {
+export default () => {
   // const schoolId = "027c13cb-c0eb-4b8d-b4b4-d6d8adc7ed37";
   const teachers = [
     {
@@ -63,40 +63,40 @@ export default async (db) => {
     },
   ];
 
-  const schoolId = "LA0102";
+  // const schoolId = "LA0102";
 
-  await db.school
-    .findOne({
-      where: { idSchool: schoolId },
-    })
-    .then((schoolExist) => {
-      console.log(`CHECK BEFORE`);
+  // await db.school
+  //   .findOne({
+  //     where: { idSchool: schoolId },
+  //   })
+  //   .then((schoolExist) => {
+  //     console.log(`CHECK BEFORE`);
 
-      if (schoolExist) {
-        teachers.forEach(async (teacher) => {
-          await schoolExist
-            .getTeachers({ where: { idSchool: teacher.idSchool } })
-            .then(async (teacherExist) => {
-              if (JSON.stringify(teacherExist) === JSON.stringify([])) {
-                console.log(
-                  `CREATE NEW TEACHER ${(teacher.idSchool, teacher.name)}`
-                );
-                await schoolExist.createTeacher(teacher);
-              } else {
-                console.log(`---- adf -----`);
-                console.log(
-                  `ID ${teacher.idSchool} already exists --> cannot create new teacher ${teacher.name}`
-                );
-              }
-            });
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  //     if (schoolExist) {
+  //       teachers.forEach(async (teacher) => {
+  //         await schoolExist
+  //           .getTeachers({ where: { idSchool: teacher.idSchool } })
+  //           .then(async (teacherExist) => {
+  //             if (JSON.stringify(teacherExist) === JSON.stringify([])) {
+  //               console.log(
+  //                 `CREATE NEW TEACHER ${(teacher.idSchool, teacher.name)}`
+  //               );
+  //               await schoolExist.createTeacher(teacher);
+  //             } else {
+  //               console.log(`---- adf -----`);
+  //               console.log(
+  //                 `ID ${teacher.idSchool} already exists --> cannot create new teacher ${teacher.name}`
+  //               );
+  //             }
+  //           });
+  //       });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 
-  console.log(`CHECK AFTER`);
+  // console.log(`CHECK AFTER`);
   // db.school.findOne
 
   // if (schoolExist) {
@@ -110,4 +110,5 @@ export default async (db) => {
   //     }
   //   });
   // }
+  return teachers;
 };

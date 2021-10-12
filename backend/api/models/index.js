@@ -49,7 +49,7 @@ export default async () => {
       console.log("Connection has been established successfully.");
     })
     .catch((err) => {
-      "Unable to connect to the database:", err;
+      console.log("Unable to connect to the database:", err);
     });
 
   const db = {};
@@ -74,13 +74,13 @@ export default async () => {
   lessonRe(db);
   schoolRe(db);
   teacherRe(db);
-  // timetableRe(db);
-
-  // // fake data
-  createData(db);
+  timetableRe(db);
 
   // sync to database if not exists
-  // db.sequelize.sync({ force: true });
+  // await db.sequelize.sync({ force: true });
+
+  // // fake data
+  await createData(db);
 
   return db;
 };
