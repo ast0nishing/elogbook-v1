@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+{{>head}}
+  </head>
+  <body>
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <nav class="side-navbar z-index-40">
+          <!-- Sidebar Header-->
+          <div class="sidebar-header d-flex align-items-center py-4 px-3"><img class="avatar shadow-0 img-fluid rounded-circle" src="img/avatar-1.jpg" alt="...">
+            <div class="ms-3 title">
+              <h1 class="h4 mb-2">Mark Stephen</h1>
+              <p class="text-sm text-gray-500 fw-light mb-0 lh-1">Web Designer</p>
+            </div>
+          </div>
+          <!-- Sidebar Navidation Menus--><span class="text-uppercase text-gray-400 text-xs letter-spacing-0 mx-3 px-2 heading">Main</span>
+          <ul class="list-unstyled py-4">
+            <li class="sidebar-item"><a class="sidebar-link" href="/"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#real-estate-1"> </use>
+                </svg>Home </a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="/logbook"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#sales-up-1"> </use>
+                </svg>Logbook</a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="/timetable"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#survey-1"> </use>
+                </svg>Time table</a></li>
+            <li class="sidebar-item act"><a class="sidebar-link" href="#exampledropdownDropdown" data-bs-toggle="collapse"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#browser-window-1"> </use>
+                </svg>User Information</a>
+              <ul class="collapse list-unstyled " id="exampledropdownDropdown">
+                <li><a class="sidebar-link" href="teacher">Teacher information</a></li>
+                <li><a class="sidebar-link" href="student">Student information</a></li>
+              </ul>
+            </li>
+            <li class="sidebar-item"><a class="sidebar-link" href="/login"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#disable-1"> </use>
+                </svg>Login page </a></li>
+          </ul><span class="text-uppercase text-gray-400 text-xs letter-spacing-0 mx-3 px-2 heading">Extras</span>
+        </nav>
+        <div class="content-inner w-100">
+          <!-- Page Header-->
+          <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+            <div class="container-fluid px-0">
+              <h2 class="mb-0 p-1">Dashboard</h2>
+            </div>
+          </header>
+          <!-- Breadcrumb-->
+          <div class="bg-white">
+            <div class="container-fluid">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 py-3">
+                  <li class="breadcrumb-item"><a class="fw-light" href="/">Home</a></li>
+                  <li class="breadcrumb-item active fw-light" aria-current="page">Dashboard</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </section>
+        <section class="tables">   
+            <div class="container-fluid">
+              <div class="row gy-10">
+                <div class="col-lg-16">
+                  <div class="card mb-0">
+                    <div class="card-header">
+                      <div class="card-close">
+                        <div class="dropdown">
+                          <button class="dropdown-toggle text-sm" type="button" id="closeCard1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                          <div class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="closeCard1"><a class="dropdown-item py-1 px-3 remove" href="#"> <i class="fas fa-times"></i>Close</a><a class="dropdown-item py-1 px-3 edit" href="#"> <i class="fas fa-cog"></i>Edit</a></div>
+                        </div>
+                      </div>
+                      <h3 class="h4 mb-0">Teacher information</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table mb-0">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>First Name</th>
+                              <th>Last Name</th>
+                              <th>Username</th>
+                              <th>Course</th>
+                              <th>Heade teacher</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">1</th>
+                              <td>
+                                <a href="profile1.html">
+                                  <div style="height:100%;width:100%">
+                                    Mark
+                                  </div>
+                                </a>
+                              </td>
+                              <td>Otto</td>
+                              <td>@mdo</td>
+                              <td>Math</td>
+                              <td>6.1</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">2</th>
+                              <td>Jacob</td>
+                              <td>Thornton</td>
+                              <td>@fat</td>
+                              <td>Math</td>
+                              <td>6.2</td>
+                            </tr>
+                            <tr>
+                              <th class="border-bottom-0" scope="row">3</th>
+                              <td class="border-bottom-0">Larry</td>
+                              <td class="border-bottom-0">the Bird</td>
+                              <td class="border-bottom-0">@twitter</td>
+                              <td>Math</td>
+                              <td>6.1</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </section>
+{{>footer}}
+{{>scripts}}
+  <script>
+    // ------------------------------------------------------- //
+    //   Inject SVG Sprite - 
+    //   see more here 
+    //   https://css-tricks.com/ajaxing-svg-sprite/
+    // ------------------------------------------------------ //
+    function injectSvgSprite(path) {
+    
+        var ajax = new XMLHttpRequest();
+        ajax.open("GET", path, true);
+        ajax.send();
+        ajax.onload = function(e) {
+        var div = document.createElement("div");
+        div.className = 'd-none';
+        div.innerHTML = ajax.responseText;
+        document.body.insertBefore(div, document.body.childNodes[0]);
+        }
+    }
+    // this is set to BootstrapTemple website as you cannot 
+    // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+    // while using file:// protocol
+    // pls don't forget to change to your domain :)
+    injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg'); 
+    
+    
+  </script>
+  <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</body>
+</html>

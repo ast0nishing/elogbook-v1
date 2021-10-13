@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+{{>head}}
+  </head>
+  <body>
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <nav class="side-navbar z-index-40">
+          <!-- Sidebar Header-->
+          <div class="sidebar-header d-flex align-items-center py-4 px-3"><img class="avatar shadow-0 img-fluid rounded-circle" src="img/avatar-1.jpg" alt="...">
+            <div class="ms-3 title">
+              <h1 class="h4 mb-2">Mark Stephen</h1>
+              <p class="text-sm text-gray-500 fw-light mb-0 lh-1">Web Designer</p>
+            </div>
+          </div>
+          <!-- Sidebar Navidation Menus--><span class="text-uppercase text-gray-400 text-xs letter-spacing-0 mx-3 px-2 heading">Main</span>
+          <ul class="list-unstyled py-4">
+            <li class="sidebar-item active"><a class="sidebar-link" href="/"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#real-estate-1"> </use>
+                </svg>Home </a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="/logbook"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#sales-up-1"> </use>
+                </svg>Logbook</a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="/timetable"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#survey-1"> </use>
+                </svg>Time table</a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="#exampledropdownDropdown" data-bs-toggle="collapse"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#browser-window-1"> </use>
+                </svg>User Information</a>
+              <ul class="collapse list-unstyled " id="exampledropdownDropdown">
+                <li><a class="sidebar-link" href="student">Teacher information</a></li>
+                <li><a class="sidebar-link" href="teacher">Student information</a></li>
+              </ul>
+            </li>
+            <li class="sidebar-item"><a class="sidebar-link" href="/login"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#disable-1"> </use>
+                </svg>Login page </a></li>
+          </ul><span class="text-uppercase text-gray-400 text-xs letter-spacing-0 mx-3 px-2 heading">Extras</span>
+        </nav>
+        <div class="content-inner w-100">
+          <!-- Page Header-->
+          <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+            <div class="container-fluid px-0">
+              <h2 class="mb-0 p-1">Dashboard</h2>
+            </div>
+          </header>
+          <!-- Breadcrumb-->
+          <div class="bg-white">
+            <div class="container-fluid">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 py-3">
+                  <li class="breadcrumb-item"><a class="fw-light" href="/">Home</a></li>
+                  <li class="breadcrumb-item active fw-light" aria-current="page">Dashboard</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page Footer-->
+{{>footer}}
+      </div>
+    </div>
+  </div>
+  <!-- JavaScript files-->
+{{>scripts}}
+  <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</body>
+</html>
