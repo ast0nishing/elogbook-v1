@@ -109,6 +109,7 @@ export default async (db) => {
       await targetSchool.createClass(eachClass);
     }
 
+    // Create Student
     const targetClass = await db.class.findOne({
       where: { idSchool: classID },
     });

@@ -1,6 +1,5 @@
 import { default as dbConfig } from "../db.config.js";
 import { Sequelize } from "sequelize";
-
 import { default as classRe } from "./relation/classRe.js";
 import { default as courseRe } from "./relation/courseRe.js";
 import { default as lessonRe } from "./relation/lessonRe.js";
@@ -8,6 +7,7 @@ import { default as schoolRe } from "./relation/schoolRe.js";
 import { default as teacherRe } from "./relation/teacherRe.js";
 import { default as timetableRe } from "./relation/timetableRe.js";
 
+import { default as Admin } from "./superadmin.js";
 import { default as School } from "./School.model.js";
 import { default as Teacher } from "./Teacher.model.js";
 import { default as Student } from "./Student.model.js";
@@ -57,6 +57,7 @@ export default async () => {
   db.sequelize = sequelize;
 
   // create tables
+  db.admin = Admin(sequelize, Sequelize);
   db.school = School(sequelize, Sequelize);
   db.teacher = Teacher(sequelize, Sequelize);
   db.student = Student(sequelize, Sequelize);
@@ -80,7 +81,7 @@ export default async () => {
   // await db.sequelize.sync({ force: true });
 
   // // fake data
-  await createData(db);
+  // await createData(db);
 
   return db;
 };
