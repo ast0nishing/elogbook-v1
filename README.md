@@ -1,3 +1,6 @@
+Frontend: Tuyt + Giang
+Backend: Thai + Nguyen
+
 **BACKEND** /api/v1<br/>
 <ul>
 <li>GET		/users --> Returns all users</li>
