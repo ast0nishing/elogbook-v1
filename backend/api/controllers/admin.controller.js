@@ -26,7 +26,32 @@ export default {
           missingInfo.push(school);
           continue;
         }
+        // return
+
+        const schoolExist = await database.school.findOne({
+          where: { idSchool: school.idSchool },
+        });
+        if (schoolExist) {
+          console.log(
+            `ID ${school.idSchool} already exists ---> cannot create ${school.name}`
+          );
+          alreadyExist.push(school.idSchool);
+          continue;
+        }
+        console.log(`CREATE NEW SCHOOL %s - %s`, school.idSchool, school.name);
+        const salt = randomBytes(32);
+        school.password = await argon2.hash(school.password, { salt });
+        await database.school.create(school);
       }
+
+      if (alreadyExist.length === 0 && missingInfo.length === 0) {
+        return res.status(200).json({ msg: "success adding all schools" });
+      }
+
+      return res.status(httpStatus.BAD_REQUEST).json({
+        "Missing info": missingInfo,
+        "IdSchool already exists": alreadyExist,
+      });
     } catch (err) {
       console.log(err);
     }
