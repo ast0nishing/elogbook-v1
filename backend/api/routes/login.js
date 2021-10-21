@@ -4,5 +4,8 @@ import httpStatus from "http-status";
 
 export const router = express.Router();
 router.post("/admin", controller.Auth.adminLogin);
+router.post("/school", controller.Auth.schoolLogin);
+router.post("/teacher", controller.Auth.teacherLogin);
+router.post("/student", controller.Auth.studentLogin);
 // router.post("/:teacher", controller.Auth.teacherLogin);
 // router.post("/:student", controller.Auth.studentLogin);

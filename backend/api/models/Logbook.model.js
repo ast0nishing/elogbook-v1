@@ -5,6 +5,10 @@ export default function (sequelize, Sequelize) {
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
+    week: {
+      type: Sequelize.INTEGER(2),
+      allowNull: false,
+    },
     grade: {
       type: Sequelize.INTEGER(3),
       allowNull: false,

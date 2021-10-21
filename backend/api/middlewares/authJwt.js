@@ -1,71 +1,93 @@
-import jwt from 'jsonwebtoken';
-import { default as config } from '../config/auth.config.js';
-import db from '../models/index.js';
+import jwt from "jsonwebtoken";
+import { default as config } from "../config/auth.config.js";
+// import db from "../models/index.js";
+import { default as db } from "../models/index.js";
 
 // const Admin = db.admin;
-const Moderator = db.school;
-const Teacher = db.teacher;
-const Student = db.student;
+const database = await db();
+const Moderator = database.school;
+const Teacher = database.teacher;
+const Student = database.student;
+const Admin = database.admin;
 
-const verifyToken = (req, res, next) => {
-    let token = req.headers['x-access-token'];
+const verifyToken = async (req, res, next) => {
+  try {
+    const token = req.headers["x-access-token"];
 
     if (!token) {
-        return res.status(403).send({ message: 'No token provided!' });
+      return res.status(403).send({ message: "No token provided!" });
     }
+    console.log(`HAHA`);
 
-    jwt.verify(token, config.secret, (err, decoded) => {
-        if (err) {
-            return res.status(401).send({ message: 'Unauthorized!' });
-        }
-        req.userId = decoded.id;
-        next();
+    await jwt.verify(token, config.secret, (err, decoded) => {
+      if (err) {
+        console.log(`HAHA`);
+        return res.status(401).send({ message: "Unauthorized!" });
+      }
+      console.log(`HIHI`);
+      req.userId = decoded.id;
+      next();
     });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // const isAdmin = (req, res, next) => {
-//     Admin.findById(req.userId).exec((err, user) => {
-//         if (err) {
-//             res.status(500).send({ message: err });
-//             return;
-//         }
-//     });
+//   const admin = await database.admin.findOne({ where: { id: req.userId } });
+//   if (!admin) {
+//     return false;
+//   }
+//   console.log(req.body.userId);
+//   return true;
 // };
+const isAdmin = (req, res, next) => {
+  Admin.findOne({
+    where: { id: req.userId },
+  }).then((user) => {
+    if (!user) {
+      return res.status(500).send({ message: "User Not found." });
+    }
+    next();
+  });
+};
 
 const isModerator = (req, res, next) => {
-    Moderator.findOne({
-        where: { id: req.userId },
-    }).then((user) => {
-        if (!user) {
-            return res.status(500).send({ message: 'User Not found.' });
-        }
-        next();
-    });
+  Moderator.findOne({
+    where: { id: req.userId },
+  }).then((user) => {
+    if (!user) {
+      return res.status(500).send({ message: "User Not found." });
+    }
+    next();
+  });
 };
 const isTeacher = (req, res, next) => {
-    Teacher.findOne({
-        where: { id: req.userId },
-    }).then((user) => {
-        if (!user) {
-            return res.status(500).send({ message: 'User Not found.' });
-        }
-        next();
-    });
+  Teacher.findOne({
+    where: { id: req.userId },
+  }).then((user) => {
+    if (!user) {
+      return res.status(500).send({ message: "User Not found." });
+    }
+
+    next();
+  });
 };
 const isStudent = (req, res, next) => {
-    Student.findOne({
-        where: { username: req.body.username },
-    }).then((user) => {
-        if (!user) {
-            return res.status(500).send({ message: 'User Not found.' });
-        }
-        next();
-    });
+  Student.findOne({
+    where: { username: req.body.username },
+  }).then((user) => {
+    if (!user) {
+      return res.status(500).send({ message: "User Not found." });
+    }
+    next();
+  });
 };
 const authJwt = {
-    verifyToken,
-    isModerator,
-    isTeacher,
-    isStudent,
+  verifyToken,
+  isModerator,
+  isTeacher,
+  isStudent,
+  isAdmin,
 };
 export default authJwt;

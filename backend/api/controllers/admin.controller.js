@@ -2,16 +2,27 @@ import { randomBytes } from "crypto";
 import argon2 from "argon2";
 import { default as db } from "../models/index.js";
 import httpStatus from "http-status";
+// import { default as jwt } from "jsonwebtoken";
+import { default as authJwt } from "../middlewares/authJwt.js";
 
 const database = await db();
+
+// const isAdmin = async(req) => {
+//   const admin = await database.admin.findOne({
+//     where: { id: req.body.userId },
+//   });
+//   if (!admin) {
+//     return false;
+//   }
+//   console.log(red.body.userID);
+//   return true;
+// };
 
 export default {
   async createSchool(req, res) {
     const alreadyExist = [];
-
     const missingInfo = [];
     const schools = req.body;
-    // const database = await db();
     try {
       for (const school of schools) {
         if (
@@ -26,7 +37,6 @@ export default {
           missingInfo.push(school);
           continue;
         }
-        // return
 
         const schoolExist = await database.school.findOne({
           where: { idSchool: school.idSchool },
@@ -56,40 +66,40 @@ export default {
       console.log(err);
     }
   },
-  async createAdmin(req, res) {
-    const username = req.body.username;
-    const password = req.body.password;
-    try {
-      if (!username || !password) {
-        return res
-          .status(httpStatus.BAD_REQUEST)
-          .json({ msg: "invalid register" });
-      }
-      // const database = await db();
-      const adminExist = await database.admin.findOne({ where: { username } });
-      if (adminExist) {
-        return res
-          .status(httpStatus.BAD_REQUEST)
-          .json({ msg: "Already exist admin account" });
-      }
-      // return res.status(200).json({ msg: "ok" });
-      const salt = randomBytes(32);
+  // async createAdmin(req, res) {
+  //   const username = req.body.username;
+  //   const password = req.body.password;
+  //   try {
+  //     if (!username || !password) {
+  //       return res
+  //         .status(httpStatus.BAD_REQUEST)
+  //         .json({ msg: "invalid register" });
+  //     }
+  //     // const database = await db();
+  //     const adminExist = await database.admin.findOne({ where: { username } });
+  //     if (adminExist) {
+  //       return res
+  //         .status(httpStatus.BAD_REQUEST)
+  //         .json({ msg: "Already exist admin account" });
+  //     }
+  //     // return res.status(200).json({ msg: "ok" });
+  //     const salt = randomBytes(32);
 
-      await database.admin.create({
-        username,
-        password: await argon2.hash(password, { salt }),
-      });
-      return res.status(httpStatus.OK).json({ msg: "success" });
-    } catch (err) {
-      console.log(err);
-    }
-  },
+  //     await database.admin.create({
+  //       username,
+  //       password: await argon2.hash(password, { salt }),
+  //     });
+  //     return res.status(httpStatus.OK).json({ msg: "success" });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // },
 
   async createCourse(req, res) {
+    console.log(req.body.userId);
     const courses = req.body;
     const alreadyExist = [];
 
-    // const database = await db();
     try {
       for (const course of courses) {
         const courseExist = await database.course.findOne({
@@ -114,9 +124,9 @@ export default {
     }
   },
   async createLesson(req, res) {
+    console.log(req.body.userId);
     const courses = req.body;
     const alreadyExist = [];
-    // const database = await db();
 
     try {
       for (const course of courses) {

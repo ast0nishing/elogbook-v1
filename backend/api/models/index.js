@@ -77,9 +77,6 @@ export default async () => {
   teacherRe(db);
   timetableRe(db);
 
-  // sync to database if not exists
-  // await db.sequelize.sync({ force: true });
-
   // // fake data
   // await createData(db);
 
