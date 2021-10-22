@@ -1,8 +1,8 @@
 export default {
     HOST: 'localhost',
-    USER: 'logbook',
-    PASSWORD: 'logbook',
-    DB: 'logbook',
+    USER: 'root',
+    PASSWORD: '12345678',
+    DB: 'testdb',
     dialect: 'mysql',
     pool: {
         max: 5,
