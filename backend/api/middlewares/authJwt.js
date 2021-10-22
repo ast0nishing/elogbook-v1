@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { default as config } from '../config/auth.config.js';
 import db from '../models/index.js';
 
-// const Admin = db.admin;
+const Admin = db.admin;
 const Moderator = db.school;
 const Teacher = db.teacher;
 const Student = db.student;
@@ -19,19 +19,21 @@ const verifyToken = (req, res, next) => {
             return res.status(401).send({ message: 'Unauthorized!' });
         }
         req.userId = decoded.id;
+        req.schoolId = decoded.schoolId;
         next();
     });
 };
 
-// const isAdmin = (req, res, next) => {
-//     Admin.findById(req.userId).exec((err, user) => {
-//         if (err) {
-//             res.status(500).send({ message: err });
-//             return;
-//         }
-//     });
-// };
-
+const isAdmin = (req, res, next) => {
+    Admin.findOne({
+        where: { id: req.userId },
+    }).then((user) => {
+        if (!user) {
+            return res.status(500).send({ message: 'Admin user Not found.' });
+        }
+        next();
+    });
+};
 const isModerator = (req, res, next) => {
     Moderator.findOne({
         where: { id: req.userId },
@@ -62,10 +64,27 @@ const isStudent = (req, res, next) => {
         next();
     });
 };
+const teacherBelongToSchool = (req, res, next) => {
+    Teacher.findOne({
+        where: { id: req.userId },
+    }).then((user) => {
+        if (!user) {
+            return res.status(500).send({ message: 'User not found!' });
+        }
+        if (req.schoolId != user.schoolId) {
+            return res
+                .status(500)
+                .send({ message: 'you are not belong to this school' });
+        }
+        next();
+    });
+};
 const authJwt = {
     verifyToken,
+    isAdmin,
     isModerator,
     isTeacher,
     isStudent,
+    teacherBelongToSchool,
 };
 export default authJwt;

@@ -1,4 +1,4 @@
-import { default as dbConfig } from '../db.config.js';
+import { default as dbConfig } from '../config/db.config.js';
 import { Sequelize } from 'sequelize';
 
 import { default as classRe } from './relation/classRe.js';
@@ -8,6 +8,7 @@ import { default as schoolRe } from './relation/schoolRe.js';
 import { default as teacherRe } from './relation/teacherRe.js';
 import { default as timetableRe } from './relation/timetableRe.js';
 
+import { default as Admin } from './Admin.model.js';
 import { default as School } from './School.model.js';
 import { default as Teacher } from './Teacher.model.js';
 import { default as Student } from './Student.model.js';
@@ -51,6 +52,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // create tables
+db.admin = Admin(sequelize, Sequelize);
 db.school = School(sequelize, Sequelize);
 db.teacher = Teacher(sequelize, Sequelize);
 db.student = Student(sequelize, Sequelize);
@@ -62,7 +64,6 @@ db.logbook = Logbook(sequelize, Sequelize);
 db.course = Course(sequelize, Sequelize);
 db.lesson = Lesson(sequelize, Sequelize);
 
-// db.ROLES = ['admin', 'moderator', 'teacher', 'student'];
 // create relation
 classRe(db);
 courseRe(db);
