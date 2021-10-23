@@ -4,7 +4,8 @@ import { default as route } from './routes/index.js';
 const app = express();
 
 // sync to database if not exists
-// await database.sequelize.sync({ force: true });
+// import { default as db } from './models/index.js';
+// await db.sequelize.sync({ force: true });
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
