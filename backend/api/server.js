@@ -7,7 +7,7 @@ const app = express();
 const database = await db();
 
 // sync to database if not exists
-// await database.sequelize.sync({ force: true });
+await database.sequelize.sync({ force: true });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -12,6 +12,7 @@ router.post(
   controller.Admin.createSchool
 );
 // router.post("/createAdmin", controller.Admin.createAdmin);
+
 router.post(
   "/createCourse",
   authJwt.verifyToken,
