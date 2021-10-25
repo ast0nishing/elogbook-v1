@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-export default function (sequalize, Sequalize) {
-  const Student = sequalize.define("student", {
-    id: { type: Sequalize.INTEGER, autoIncrement: true, primaryKey: true },
-    name: { type: Sequalize.STRING, allowNull: false },
-    address: { type: Sequalize.STRING },
-    phoneNumber: { type: Sequalize.INTEGER },
-    email: { type: Sequalize.STRING },
-=======
 export default function (sequelize, Sequelize) {
   const Student = sequelize.define("student", {
     id: {
@@ -58,7 +49,6 @@ export default function (sequelize, Sequelize) {
         isDate: true,
       },
     },
->>>>>>> 389c7cd0faca020fa9ccf63e2cc6c3764f549c74
   });
   return Student;
 }
