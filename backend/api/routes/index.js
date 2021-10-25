@@ -1,4 +1,5 @@
 import { router as schoolRoute } from './school.route.js';
+import { router as logbookRoute } from './logbook.route.js';
 import { router as admin } from './admin.route.js';
 import { router as serviceLogin } from './login.js';
 
@@ -10,9 +11,9 @@ export default (app) => {
         );
         next();
     });
-
-    app.use('/api/v1/schools', schoolRoute);
-
     app.use('/admin', admin);
     app.use('/login', serviceLogin);
+
+    app.use('/api/v1/schools', schoolRoute);
+    app.use('/api/v1/logbooks', logbookRoute);
 };

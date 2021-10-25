@@ -24,6 +24,7 @@ import { default as createData } from './bulkcreate/index.js';
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
+    logging: false,
     define: {
         timestamps: false,
         freezeTableName: true,
