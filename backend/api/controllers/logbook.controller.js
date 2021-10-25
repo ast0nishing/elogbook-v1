@@ -83,22 +83,19 @@ export default {
 
     //
     async findAll(req, res) {
-        try {
-            const token = req.headers['x-access-token'];
-
-            if (!token) {
-                return res.status(403).send({ message: 'No token provided!' });
-            }
-
-            jwt.verify(token, config.secret, (err, decoded) => {
-                if (err) {
-                    return res.status(401).send({ message: 'Unauthorized!' });
-                }
-                req.userId = decoded.id;
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        const days = {
+            1: 'Monday',
+            2: 'Tuesday',
+            3: 'Wednesday',
+            4: 'Thursday',
+            5: 'Friday',
+            6: 'Saturday',
+            7: 'Sunday',
+        };
+        const token = req.headers['x-access-token'];
+        jwt.verify(token, config.secret, (err, decoded) => {
+            req.userId = decoded.id;
+        });
         let timetableData = await db.timetable.findAll({
             where: { teacherId: req.userId },
         });
@@ -119,16 +116,6 @@ export default {
             const classData = await db.class.findOne({
                 where: { id: data.dataValues.classId },
             });
-            const days = [
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-                'Sunday',
-            ];
-            console.log(logbookData.dataValues.week);
             fullData.push({
                 className: classData.dataValues.name,
                 week: logbookData.dataValues.week,
@@ -141,25 +128,109 @@ export default {
                 lessonName: lessonData.dataValues.name,
                 teacherName: teacherData.dataValues.name,
             });
-            // fullData.push([data.dataValues.teacherId, data.dataValues.fromWeek, data.dataValues.toWeek, ])
-            // console.log(data.dataValues.teacherId);
         }
         res.json(fullData);
     },
 
-    async findOne(req, res) {
-        const classData = await db.class.findOne({
-            where: { name: req.params.className },
+    async findByClass(req, res) {
+        const days = {
+            1: 'Monday',
+            2: 'Tuesday',
+            3: 'Wednesday',
+            4: 'Thursday',
+            5: 'Friday',
+            6: 'Saturday',
+            7: 'Sunday',
+        };
+        const token = req.headers['x-access-token'];
+        jwt.verify(token, config.secret, (err, decoded) => {
+            req.userId = decoded.id;
         });
-        const timetableData = await db.timetable.findOne({
-            where: { classId: classData.dataValues.id },
+        let timetableData = await db.timetable.findAll({
+            where: { teacherId: req.userId },
         });
-        const logbookData = await db.logbook.findOne({
-            where: { timetableId: timetableData.dataValues.id },
-        });
-        console.log(timetableData.dataValues.id);
-        res.send(logbookData.dataValues);
+        const fullData = [];
+        for (const data of timetableData) {
+            const logbookData = await db.logbook.findOne({
+                where: { timetableId: data.dataValues.id },
+            });
+            const lessonData = await db.lesson.findOne({
+                where: { id: logbookData.dataValues.lessonId },
+            });
+            const courseData = await db.course.findOne({
+                where: { code: data.dataValues.courseCode },
+            });
+            const teacherData = await db.teacher.findOne({
+                where: { id: data.dataValues.teacherId },
+            });
+            const classData = await db.class.findOne({
+                where: { id: data.dataValues.classId },
+            });
+            fullData.push({
+                className: classData.dataValues.name,
+                week: logbookData.dataValues.week,
+                day: days[data.dataValues.weekDay],
+                time: data.dataValues.time,
+                grade: logbookData.dataValues.grade,
+                comment: logbookData.dataValues.comment,
+                note: logbookData.dataValues.note,
+                courseName: courseData.dataValues.name,
+                lessonName: lessonData.dataValues.name,
+                teacherName: teacherData.dataValues.name,
+            });
+        }
+        res.json(fullData);
     },
+    async findByClassAndDay(req, res) {
+        const days = {
+            monday: 1,
+            tuesday: 2,
+            wednesday: 3,
+            thursday: 4,
+            friday: 5,
+            saturday: 6,
+            sunday: 7,
+        };
+        const token = req.headers['x-access-token'];
+        jwt.verify(token, config.secret, (err, decoded) => {
+            req.userId = decoded.id;
+        });
+        let timetableData = await db.timetable.findAll({
+            where: { teacherId: req.userId, weekDay: days[req.params.day] },
+        });
+        const fullData = [];
+        for (const data of timetableData) {
+            const logbookData = await db.logbook.findOne({
+                where: { timetableId: data.dataValues.id },
+            });
+            const lessonData = await db.lesson.findOne({
+                where: { id: logbookData.dataValues.lessonId },
+            });
+            const courseData = await db.course.findOne({
+                where: { code: data.dataValues.courseCode },
+            });
+            const teacherData = await db.teacher.findOne({
+                where: { id: data.dataValues.teacherId },
+            });
+            const classData = await db.class.findOne({
+                where: { id: data.dataValues.classId },
+            });
+            fullData.push({
+                className: classData.dataValues.name,
+                week: logbookData.dataValues.week,
+                day: req.params.day,
+                time: data.dataValues.time,
+                grade: logbookData.dataValues.grade,
+                comment: logbookData.dataValues.comment,
+                note: logbookData.dataValues.note,
+                courseName: courseData.dataValues.name,
+                lessonName: lessonData.dataValues.name,
+                teacherName: teacherData.dataValues.name,
+            });
+        }
+        res.json(fullData);
+    },
+    async findByStudent(req, res) {},
     async update(req, res) {},
     async delete(req, res) {},
 };

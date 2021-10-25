@@ -56,9 +56,8 @@ const isTeacher = (req, res, next) => {
         where: { id: req.userId },
     }).then((user) => {
         if (!user) {
-            return res.status(500).send({ message: 'User Not found.' });
+            return res.status(500).send({ message: 'Only for Teacher.' });
         }
-
         next();
     });
 };
