@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -16,3 +17,12 @@ import db from "./api/models/index.js";
     process.exit(1);
   }
 })();
+=======
+import app from "./api/server.js";
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server is listening on http://localhost:${port}`);
+});
+>>>>>>> 389c7cd0faca020fa9ccf63e2cc6c3764f549c74
