@@ -109,7 +109,9 @@ export default {
                 : 'not found!';
             fullData.push({
                 className: classData.dataValues.name,
-                academicYear: classData.dataValues.academicYearId,
+                academicYear: `${classData.dataValues.academicYearId}-${
+                    parseInt(classData.dataValues.academicYearId) + 1
+                }`,
                 headTeacherName: headTeacherName,
                 week: req.params.week,
                 grade: totalPoint,
@@ -150,10 +152,11 @@ export default {
             let headTeacherName = headTeacherData
                 ? headTeacherData.dataValues.name
                 : 'not found!';
-            console.log(headTeacherData);
             fullData.push({
                 className: classData.dataValues.name,
-                academicYear: classData.dataValues.academicYearId,
+                academicYear: `${classData.dataValues.academicYearId}-${
+                    parseInt(classData.dataValues.academicYearId) + 1
+                }`,
                 headTeacherName: headTeacherName,
                 week: req.params.week,
                 grade: totalPoint,
