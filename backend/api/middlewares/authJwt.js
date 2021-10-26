@@ -15,14 +15,11 @@ const verifyToken = async (req, res, next) => {
         if (!token) {
             return res.status(403).send({ message: 'No token provided!' });
         }
-        console.log(`HAHA`);
 
         jwt.verify(token, config.secret, (err, decoded) => {
             if (err) {
-                console.log(`HAHA`);
                 return res.status(401).send({ message: 'Unauthorized!' });
             }
-            console.log(`HIHI`);
             req.userId = decoded.id;
             next();
         });
@@ -59,9 +56,8 @@ const isTeacher = (req, res, next) => {
         where: { id: req.userId },
     }).then((user) => {
         if (!user) {
-            return res.status(500).send({ message: 'User Not found.' });
+            return res.status(500).send({ message: 'Only for Teacher.' });
         }
-
         next();
     });
 };

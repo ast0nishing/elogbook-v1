@@ -98,8 +98,6 @@ export default {
             return res.status(400).json({ msg: 'invalid login' });
         }
 
-        const db = await db();
-
         const user = await db.student.findOne({ where: { username } });
         console.log(user);
 
