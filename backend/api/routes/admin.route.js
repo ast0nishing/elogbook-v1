@@ -22,6 +22,7 @@ router.post(
     authJwt.isAdmin,
     controller.Admin.createLesson
 );
+
 // router.get("/", controller.User.findAll);
 // router.get("/:id/", controller.User.findOne);
 // router.put("/:id/", controller.User.update);

@@ -5,18 +5,18 @@ import authJwt from '../middlewares/authJwt.js';
 export const router = express.Router();
 
 router.get(
-    '/',
+    '/:year',
     [authJwt.verifyToken, authJwt.isTeacher],
     controller.Logbook.findAll
 );
 router.post('/', authJwt.verifyToken, controller.Logbook.create);
 router.get(
-    '/:className/',
+    '/:year/:className/',
     [authJwt.verifyToken, authJwt.isTeacher],
     controller.Logbook.findByClass
 );
 router.get(
-    '/:className/:day',
+    '/:year/:className/:day',
     [authJwt.verifyToken, authJwt.isTeacher],
     controller.Logbook.findByClassAndDay
 );

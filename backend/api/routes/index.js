@@ -2,6 +2,7 @@ import { router as schoolRoute } from './school.route.js';
 import { router as logbookRoute } from './logbook.route.js';
 import { router as admin } from './admin.route.js';
 import { router as studentRoute } from './student.route.js';
+import { router as teacherRoute } from './teacher.route.js';
 import { router as serviceLogin } from './login.js';
 
 export default (app) => {
@@ -17,5 +18,6 @@ export default (app) => {
 
     app.use('/api/v1/schools', schoolRoute);
     app.use('/api/v1/logbooks', logbookRoute);
-    app.use('/api/v1/student', studentRoute);
+    app.use('/api/v1/students', studentRoute);
+    app.use('/api/v1/teachers', teacherRoute);
 };

@@ -99,7 +99,6 @@ export default {
         }
 
         const user = await db.student.findOne({ where: { username } });
-        console.log(user);
 
         if (!user) {
             return res.status(404).json({ msg: 'username does not exist' });

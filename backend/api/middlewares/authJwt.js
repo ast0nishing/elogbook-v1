@@ -63,7 +63,7 @@ const isTeacher = (req, res, next) => {
 };
 const isStudent = (req, res, next) => {
     Student.findOne({
-        where: { username: req.body.username },
+        where: { id: req.userId },
     }).then((user) => {
         if (!user) {
             return res.status(500).send({ message: 'User Not found.' });
