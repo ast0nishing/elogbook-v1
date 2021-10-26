@@ -98,6 +98,9 @@ export default {
                 academicYearId: req.params.year,
             },
         });
+        if (!allClassData || allClassData.length === 0) {
+            return res.status(400).json({ message: 'data not found!' });
+        }
         const fullData = [];
         for (const classData of allClassData) {
             const timetableData = await db.timetable.findAll({
@@ -159,6 +162,9 @@ export default {
                 name: req.params.className,
             },
         });
+        if (!allClassData || allClassData.length === 0) {
+            return res.status(400).json({ message: 'data not found!' });
+        }
         const fullData = [];
         for (const classData of allClassData) {
             const timetableData = await db.timetable.findAll({
@@ -209,6 +215,9 @@ export default {
             saturday: 6,
             sunday: 7,
         };
+        if (!(req.params.day in days)) {
+            return res.status(400).json({ message: 'day is not valid' });
+        }
         const token = req.headers['x-access-token'];
         jwt.verify(token, config.secret, (err, decoded) => {
             req.userId = decoded.id;
@@ -219,6 +228,9 @@ export default {
                 name: req.params.className,
             },
         });
+        if (!allClassData || allClassData.length === 0) {
+            return res.status(400).json({ message: 'data not found!' });
+        }
         const fullData = [];
         for (const classData of allClassData) {
             const timetableData = await db.timetable.findAll({
@@ -258,41 +270,7 @@ export default {
                 });
             }
         }
-        return res.send(fullData);
-        // let timetableData = await db.timetable.findAll({
-        //     where: { teacherId: req.userId, weekDay: days[req.params.day] },
-        // });
-        // const fullData = [];
-        // for (const data of timetableData) {
-        //     const logbookData = await db.logbook.findOne({
-        //         where: { timetableId: data.dataValues.id },
-        //     });
-        //     const lessonData = await db.lesson.findOne({
-        //         where: { id: logbookData.dataValues.lessonId },
-        //     });
-        //     const courseData = await db.course.findOne({
-        //         where: { code: data.dataValues.courseCode },
-        //     });
-        //     const teacherData = await db.teacher.findOne({
-        //         where: { id: data.dataValues.teacherId },
-        //     });
-        //     const classData = await db.class.findOne({
-        //         where: { id: data.dataValues.classId },
-        //     });
-        //     fullData.push({
-        //         className: classData.dataValues.name,
-        //         week: logbookData.dataValues.week,
-        //         day: req.params.day,
-        //         time: data.dataValues.time,
-        //         grade: logbookData.dataValues.grade,
-        //         comment: logbookData.dataValues.comment,
-        //         note: logbookData.dataValues.note,
-        //         courseName: courseData.dataValues.name,
-        //         lessonName: lessonData.dataValues.name,
-        //         teacherName: teacherData.dataValues.name,
-        //     });
-        // }
-        // res.json(fullData);
+        res.send(fullData);
     },
     async findByStudent(req, res) {},
     async update(req, res) {},

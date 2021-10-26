@@ -13,7 +13,17 @@ router.get(
 
 // get all teachers of the school
 router.get(
-    '/:year/:className',
+    '/getTeachers/:year/:className',
     [authJwt.verifyToken, authJwt.isTeacher],
     controller.Teacher.findAllTeachersByClassAndYear
+);
+router.get(
+    '/getStudent/:studentId',
+    [authJwt.verifyToken, authJwt.isTeacher],
+    controller.Teacher.findStudent
+);
+router.get(
+    '/getClass/:classId',
+    [authJwt.verifyToken, authJwt.isTeacher],
+    controller.Teacher.findClass
 );

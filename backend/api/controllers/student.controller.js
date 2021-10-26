@@ -1,6 +1,8 @@
 import { default as db } from '../models/index.js';
 import jwt from 'jsonwebtoken';
 import { default as config } from '../config/auth.config.js';
+import { randomBytes } from 'crypto';
+import argon2 from 'argon2';
 
 export default {
     async findAllStudents(req, res) {
@@ -18,29 +20,48 @@ export default {
         }
         res.send(allStudentData);
     },
+    // find student given studentId
     async findStudent(req, res) {
         const token = req.headers['x-access-token'];
         jwt.verify(token, config.secret, (err, decoded) => {
             req.userId = decoded.id;
         });
-        const studentData = await db.student.findOne({
-            include: [{ model: db.class, though: 'class_student' }],
-            where: { id: req.userId },
-        });
+
+        // if given studentId
         if (req.params.studentId.length > 30) {
+            const studentData2 = await db.student.findOne({
+                include: [{ model: db.class, though: 'class_student' }],
+                where: { id: req.userId },
+            });
             const studentData = await db.student.findOne({
                 where: { id: req.params.studentId },
             });
-
+            const studentClassId =
+                studentData2.dataValues.classes.pop().dataValues.id;
+            const classData = await db.class.findOne({
+                include: [{ model: db.student, though: 'class_student' }],
+                where: { id: studentClassId },
+            });
+            const teacherData = await db.teacher.findOne({
+                where: { id: classData.dataValues.teacherId },
+            });
             const schoolData = await db.school.findOne({
-                where: { id: studentData.dataValues.schoolId },
+                where: { id: classData.dataValues.schoolId },
             });
             studentData.dataValues.schoolName = schoolData.dataValues.name;
             delete studentData.dataValues.password;
             delete studentData.dataValues.schoolId;
             delete studentData.dataValues.id;
+            delete studentData.dataValues.idSchool;
+            studentData.dataValues.className = classData.dataValues.name;
+            studentData.dataValues.headTeacherName =
+                teacherData.dataValues.name;
             return res.send(studentData);
         }
+        const studentData = await db.student.findOne({
+            include: [{ model: db.class, though: 'class_student' }],
+            where: { id: req.userId },
+        });
         if (studentData.dataValues.classes.length === 0) {
             return res.json({
                 message: 'Student does not belong to any class',
@@ -48,6 +69,7 @@ export default {
         }
         const studentClassId =
             studentData.dataValues.classes.pop().dataValues.id;
+        console.log(studentClassId);
         const classData = await db.class.findOne({
             include: [{ model: db.student, though: 'class_student' }],
             where: { id: studentClassId },
@@ -83,6 +105,9 @@ export default {
         const allClassData = await db.class.findAll({
             where: { schoolId: req.schoolId, academicYearId: req.params.year },
         });
+        if (!allClassData || allClassData.length === 0) {
+            return res.status(400).json({ message: 'data not found!' });
+        }
         const fullData = [];
         for (const classData of allClassData) {
             const allTimetableData = await db.timetable.findAll({
@@ -94,6 +119,63 @@ export default {
                 const allLogbookData = await db.logbook.findAll({
                     where: {
                         week: req.params.week,
+                        timetableId: timetableData.dataValues.id,
+                    },
+                });
+                if (!allLogbookData || allLogbookData.length === 0) {
+                    continue;
+                } else {
+                    console.log(allLogbookData);
+                }
+
+                for (const logbookData of allLogbookData) {
+                    totalPoint += logbookData.dataValues.grade;
+                }
+                const headTeacherData = await db.teacher.findOne({
+                    where: { id: classData.dataValues.teacherId },
+                });
+                let headTeacherName = headTeacherData
+                    ? headTeacherData.dataValues.name
+                    : 'not found!';
+                fullData.push({
+                    className: classData.dataValues.name,
+                    academicYear: `${classData.dataValues.academicYearId}-${
+                        parseInt(classData.dataValues.academicYearId) + 1
+                    }`,
+                    headTeacherName: headTeacherName,
+                    week: req.params.week,
+                    grade: totalPoint,
+                });
+            }
+        }
+        if (fullData.length === 0) {
+            res.status(400).json({ message: 'data not found!' });
+        } else {
+            res.json(fullData);
+        }
+    },
+    async rankingByYear(req, res) {
+        const token = req.headers['x-access-token'];
+        jwt.verify(token, config.secret, (err, decoded) => {
+            req.userId = decoded.id;
+            req.schoolId = decoded.schoolId;
+        });
+        const allClassData = await db.class.findAll({
+            where: { schoolId: req.schoolId, academicYearId: req.params.year },
+        });
+        if (!allClassData || allClassData.length === 0) {
+            return res.status(400).json({ message: 'data not found!' });
+        }
+        const fullData = [];
+        for (const classData of allClassData) {
+            const allTimetableData = await db.timetable.findAll({
+                where: { classId: classData.dataValues.id },
+            });
+
+            let totalPoint = 0;
+            for (const timetableData of allTimetableData) {
+                const allLogbookData = await db.logbook.findAll({
+                    where: {
                         timetableId: timetableData.dataValues.id,
                     },
                 });
@@ -120,49 +202,43 @@ export default {
 
         res.json(fullData);
     },
-    async rankingByYear(req, res) {
+    async updatePassword(req, res) {
         const token = req.headers['x-access-token'];
         jwt.verify(token, config.secret, (err, decoded) => {
             req.userId = decoded.id;
             req.schoolId = decoded.schoolId;
         });
-        const allClassData = await db.class.findAll({
-            where: { schoolId: req.schoolId, academicYearId: req.params.year },
+
+        const studentData = await db.student.findOne({
+            where: { id: req.userId },
         });
-        const fullData = [];
-        for (const classData of allClassData) {
-            const allTimetableData = await db.timetable.findAll({
-                where: { classId: classData.dataValues.id },
+        if (
+            await argon2.verify(
+                studentData.dataValues.password,
+                req.body.oldPassword
+            )
+        ) {
+            const salt = randomBytes(32);
+            const hashedPassword = await argon2.hash(req.body.newPassword, {
+                salt,
             });
-
-            let totalPoint = 0;
-            for (const timetableData of allTimetableData) {
-                const allLogbookData = await db.logbook.findAll({
-                    where: {
-                        timetableId: timetableData.dataValues.id,
+            await db.student
+                .update(
+                    {
+                        password: hashedPassword,
                     },
+                    {
+                        where: { id: req.userId },
+                    }
+                )
+                .then((data) => {
+                    res.json({ message: 'updated password' });
+                })
+                .catch((err) => {
+                    console.log(err);
                 });
-                for (const logbookData of allLogbookData) {
-                    totalPoint += logbookData.dataValues.grade;
-                }
-            }
-            const headTeacherData = await db.teacher.findOne({
-                where: { id: classData.dataValues.teacherId },
-            });
-            let headTeacherName = headTeacherData
-                ? headTeacherData.dataValues.name
-                : 'not found!';
-            fullData.push({
-                className: classData.dataValues.name,
-                academicYear: `${classData.dataValues.academicYearId}-${
-                    parseInt(classData.dataValues.academicYearId) + 1
-                }`,
-                headTeacherName: headTeacherName,
-                week: req.params.week,
-                grade: totalPoint,
-            });
+        } else {
+            res.status(400).json({ message: 'password does not match' });
         }
-
-        res.json(fullData);
     },
 };

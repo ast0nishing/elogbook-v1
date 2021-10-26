@@ -30,3 +30,10 @@ router.get(
     [authJwt.verifyToken, authJwt.isStudent],
     controller.Student.rankingByYear
 );
+
+// update password
+router.put(
+    '/updatePassword',
+    [authJwt.verifyToken, authJwt.isStudent],
+    controller.Student.updatePassword
+);
