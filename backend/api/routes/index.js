@@ -17,5 +17,5 @@ export default (app) => {
 
     app.use('/api/v1/schools', schoolRoute);
     app.use('/api/v1/logbooks', logbookRoute);
-    app.use('/api/v1/student', studentRoute);
+    app.use('/api/v1/students', studentRoute);
 };
