@@ -616,7 +616,6 @@ export default {
             where: { schoolId: req.userId },
         });
         for (const teacherData of allTeacherData) {
-            console.log(teacherData.dataValues);
             teacherId.push({
                 id: teacherData.dataValues.id,
                 name: teacherData.dataValues.name,
