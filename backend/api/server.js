@@ -41,7 +41,6 @@ const getUserStrategy = {
 
 const verify = async (token, done) => {
   try {
-    console.log("fadsfads I'm here");
     const decodedToken = await jwt.verifyAccessToken(token);
     console.log(decodedToken);
 
