@@ -5,6 +5,7 @@ import { default as db } from "../models/index.js";
 const getUserSecret = async (token) => {
   const decoded = await jwt.decode(token);
   const role = decoded.role;
+  console.log(role);
   switch (role) {
     case "admin": {
       const user = await db.admin.findOne({ where: { id: decoded.sub } });
@@ -15,11 +16,11 @@ const getUserSecret = async (token) => {
       return user.securitySecret;
     }
     case "teacher": {
-      const user = await db.teacher.findByPK(decoded.sub);
+      const user = await db.teacher.findOne({ where: { id: decoded.sub } });
       return user.securitySecret;
     }
     case "student": {
-      const user = await db.student.findByPK(decoded.sub);
+      const user = await db.student.findOne({ where: { id: decoded.sub } });
       return user.securitySecret;
     }
     default:
@@ -40,14 +41,18 @@ const signRefreshToken = async (userId, role, userSecret) =>
   await sign(userId, role, config.refreshToken, userSecret);
 
 const verify = (token, verifyOption, userSecret) => {
-  return new Promise((resolve, reject) =>
-    jwt.verify(token, verifyOption.SECRET + userSecret, (err, decoded) => {
-      if (err) {
-        resolve();
+  return new Promise((resolve, reject) => {
+    return jwt.verify(
+      token,
+      verifyOption.SECRET + userSecret,
+      (err, decoded) => {
+        if (err) {
+          resolve();
+        }
+        resolve(decoded);
       }
-      resolve(decoded);
-    })
-  );
+    );
+  });
 };
 const verifyAccessToken = async (token) => {
   const info = await verify(

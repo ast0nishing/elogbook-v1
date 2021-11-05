@@ -54,34 +54,34 @@ export default {
     }
   },
   // async createAdmin(req, res) {
-  //     const username = req.body.username;
-  //     const password = req.body.password;
-  //     try {
-  //         if (!username || !password) {
-  //             return res
-  //                 .status(httpStatus.BAD_REQUEST)
-  //                 .json({ msg: 'invalid register' });
-  //         }
-  //         // const database = await db();
-  //         const adminExist = await db.admin.findOne({
-  //             where: { username },
-  //         });
-  //         if (adminExist) {
-  //             return res
-  //                 .status(httpStatus.BAD_REQUEST)
-  //                 .json({ msg: 'Already exist admin account' });
-  //         }
-  //         // return res.status(200).json({ msg: "ok" });
-  //         const salt = randomBytes(32);
-
-  //         await db.admin.create({
-  //             username,
-  //             password: await argon2.hash(password, { salt }),
-  //         });
-  //         return res.status(httpStatus.OK).json({ msg: 'success' });
-  //     } catch (err) {
-  //         console.log(err);
+  //   const username = req.body.username;
+  //   const password = req.body.password;
+  //   try {
+  //     if (!username || !password) {
+  //       return res
+  //         .status(httpStatus.BAD_REQUEST)
+  //         .json({ msg: "invalid register" });
   //     }
+  //     // const database = await db();
+  //     const adminExist = await db.admin.findOne({
+  //       where: { username },
+  //     });
+  //     if (adminExist) {
+  //       return res
+  //         .status(httpStatus.BAD_REQUEST)
+  //         .json({ msg: "Already exist admin account" });
+  //     }
+  //     // return res.status(200).json({ msg: "ok" });
+  //     const salt = randomBytes(32);
+
+  //     await db.admin.create({
+  //       username,
+  //       password: await argon2.hash(password, { salt }),
+  //     });
+  //     return res.status(httpStatus.OK).json({ msg: "success" });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
   // },
 
   async createCourse(req, res) {
