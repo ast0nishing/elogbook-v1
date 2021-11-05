@@ -1,3 +1,5 @@
+import { randomBytes } from "crypto";
+
 export default function (sequelize, Sequelize) {
   const Admin = sequelize.define("admin", {
     id: {
@@ -15,9 +17,14 @@ export default function (sequelize, Sequelize) {
       allowNull: false,
     },
     role: {
-      type: Sequelize.TINYINT(1),
+      type: Sequelize.STRING(5),
       allowNull: false,
-      defaultValue: 0,
+      defaultValue: "admin",
+    },
+    securitySecret: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: randomBytes(32).toString("hex"),
     },
   });
   return Admin;

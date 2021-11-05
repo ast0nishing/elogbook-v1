@@ -24,9 +24,9 @@ export default function (sequelize, Sequelize) {
       allowNull: false,
     },
     role: {
-      type: Sequelize.TINYINT(1),
+      type: Sequelize.STRING(6),
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: "school",
     },
     province: {
       type: Sequelize.STRING(20),
@@ -47,6 +47,10 @@ export default function (sequelize, Sequelize) {
     streetNo: {
       type: Sequelize.INTEGER,
       allowNull: true,
+    },
+    securitySecret: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
   });
   return School;

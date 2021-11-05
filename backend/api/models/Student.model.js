@@ -20,9 +20,9 @@ export default function (sequelize, Sequelize) {
       allowNull: false,
     },
     role: {
-      type: Sequelize.TINYINT(1),
+      type: Sequelize.STRING(7),
       allowNull: false,
-      defaultValue: 3,
+      defaultValue: "student",
     },
     name: {
       type: Sequelize.STRING(64),
@@ -49,6 +49,7 @@ export default function (sequelize, Sequelize) {
         isDate: true,
       },
     },
+    securitySecret: { type: Sequelize.STRING, allowNull: false },
   });
   return Student;
 }
