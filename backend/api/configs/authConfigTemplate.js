@@ -1,12 +1,13 @@
 const config = {
   accessToken: {
-    SECRET: "sfsdfdsfdsfewrwerlkvasldkfjfdfddsfsad",
+    SECRET: "",
     EXPIRED: "5m",
   },
   refreshToken: {
-    SECRET: "fsdfdsasdfdsafasdafddsafhjddfdfdddd",
+    SECRET: "",
     EXPIRED: "5d",
   },
+  adminKey: "",
 };
 
 export default config;

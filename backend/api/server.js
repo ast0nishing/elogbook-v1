@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import { default as route } from "./routes/index.js";
@@ -9,13 +12,13 @@ import passport from "passport";
 // SEQUELIZE
 import { default as db } from "./models/index.js";
 // sync to database if not exists
-// await db.sequelize.sync({ force: true });
+await db.sequelize.sync({ alter: true });
 
 // EXPRESS
 const app = express();
 app.use(cors());
 app.get("/", (req, res) => {
-  return res.status(httpStatus.OK).json({ message: "App is working" });
+  return res.status(200).json({ message: "🦈 App is working 🦈" });
 });
 
 // define http bearer strategy

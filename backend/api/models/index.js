@@ -1,4 +1,4 @@
-import { default as dbConfig } from "../configs/dbConfig.js";
+// import { default as dbConfig } from "../configs/dbConfig.js";
 
 import { Sequelize } from "sequelize";
 import { default as classRe } from "./relation/classRe.js";
@@ -20,22 +20,34 @@ import { default as Timetable } from "./Timetable.model.js";
 import { default as Lesson } from "./Lesson.model.js";
 import { default as Course } from "./Course.model.js";
 
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  logging: false,
-  define: {
-    timestamps: false,
-    freezeTableName: true,
-    // operatorAliases: false,
-    // pool: {
-    //   max: dbConfig.pool.max,
-    //   min: dbConfig.pool.min,
-    //   acquire: dbConfig.pool.acquire,
-    //   idle: dbConfig.pool.idle,
-    // },
-  },
-});
+import { config } from "dotenv";
+config();
+
+console.log("-------------------");
+console.log("db name -- dialect -- host -- port");
+console.log(
+  process.env.DB_NAME,
+  process.env.DB_DIALECT,
+  process.env.DB_HOST,
+  process.env.DB_PORT
+);
+console.log("-------------------");
+
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: process.env.DB_DIALECT,
+
+    define: {
+      timestamps: false,
+      freezeTableName: true,
+    },
+  }
+);
 
 sequelize
   .authenticate()
