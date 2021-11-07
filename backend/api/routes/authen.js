@@ -9,6 +9,7 @@ router.post("/refresh-token", controller.Auth.refreshToken);
 // need token
 router.post("/change-password", authJwt, controller.Auth.changePassword);
 router.get("/log-out-all-devices", authJwt, controller.Auth.logOutAll);
+router.get("/getUsername", authJwt, controller.Auth.getUsername);
 
 // router.post("/login/school", controller.Auth.schoolLogin);
 // router.post('/teacher', controller.Auth.teacherLogin);

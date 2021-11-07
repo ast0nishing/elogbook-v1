@@ -4,6 +4,14 @@ import { default as db } from "../models/index.js";
 import httpStatus from "http-status";
 import { default as config } from "../configs/authConfig.js";
 
+const isAdmin = (role) => {
+  if (role !== "admin") {
+    return res
+      .status(httpStatus.UNAUTHORIZED)
+      .json({ msg: "user do not have admin authority" });
+  }
+  return true;
+};
 export default {
   async createAdmin(req, res) {
     const username = req.body.username;
@@ -40,6 +48,7 @@ export default {
     }
   },
   async createSchool(req, res) {
+    isAdmin(req.user.role);
     const alreadyExist = [];
     const missingInfo = [];
     const schools = req.body;
@@ -90,6 +99,8 @@ export default {
   },
 
   async createCourse(req, res) {
+    isAdmin(req.user.role);
+
     console.log(req.user);
     const courses = req.body;
     const alreadyExist = [];
@@ -118,6 +129,8 @@ export default {
     }
   },
   async createLesson(req, res) {
+    isAdmin(req.user.role);
+
     console.log(req.user);
     const courses = req.body;
     const alreadyExist = [];

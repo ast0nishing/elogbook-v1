@@ -53,6 +53,7 @@ const verify = async (token, done) => {
     // Get user info by role
     const user = await getUserStrategy[decodedToken.role](decodedToken.sub);
     const userInfo = {
+      username: user.username,
       id: user.id,
       role: user.role,
       schoolId: user.schoolId || "",

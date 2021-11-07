@@ -3,6 +3,7 @@ import { default as jwt } from "../utils/jwt.js";
 import { default as db } from "../models/index.js";
 import httpStatus from "http-status";
 import { randomBytes } from "crypto";
+import { EWOULDBLOCK } from "constants";
 
 const signToken = async (user) => {
   const accessToken = await jwt.signAccessToken(
@@ -131,5 +132,8 @@ export default {
         .status(httpStatus.BAD_REQUEST)
         .json({ msg: "something wrong" });
     }
+  },
+  async getUsername(req, res) {
+    return res.status(httpStatus.OK).json({ username: req.user.username });
   },
 };
