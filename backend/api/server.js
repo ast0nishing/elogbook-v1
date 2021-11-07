@@ -12,7 +12,6 @@ import passport from "passport";
 // SEQUELIZE
 import { default as db } from "./models/index.js";
 // sync to database if not exists
-await db.sequelize.sync({ alter: true });
 
 // EXPRESS
 const app = express();

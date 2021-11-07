@@ -49,16 +49,17 @@ const sequelize = new Sequelize(
   }
 );
 
+const db = {};
 sequelize
   .authenticate()
   .then(() => {
     console.log("Connection has been established successfully.");
+    db.sequelize.sync();
   })
   .catch((err) => {
     console.log("Unable to connect to the database:", err);
   });
 
-const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
