@@ -5,7 +5,4 @@ seeders
 README.md
 authConfig.js
 dbConfig.js
-Dockerfile
-docker-compose.yml
-.dockerignore
 .env
