@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+migrations
+seeders
+README.md
+authConfig.js
+dbConfig.js
+Dockerfile
+docker-compose.yml
+.dockerignore
+.env

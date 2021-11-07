@@ -1,10 +1,10 @@
 import { default as controller } from "../controllers/index.js";
 import express from "express";
-import authJwt from "../middlewares/auth.js";
+import auth from "../middlewares/auth.js";
 
 export const router = express.Router();
 
-router.post("/", authJwt, controller.Logbook.create);
+router.post("/", auth.verifyToken, auth.isTeacher, controller.Logbook.create);
 
 // router.get(
 //   "/:year",

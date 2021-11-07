@@ -1,18 +1,48 @@
 import { default as controller } from "../controllers/index.js";
 import express from "express";
-import authJwt from "../middlewares/auth.js";
+import auth from "../middlewares/auth.js";
 
 export const router = express.Router();
 router.get("/", (req, res) => {
   return res.status(200).json("Hello");
 });
-router.post("/createClass", authJwt, controller.School.createClass);
-router.post("/createTeacher", authJwt, controller.School.createTeacher);
-router.post("/createStudent", authJwt, controller.School.createStudent);
-router.post("/createTimeTable", authJwt, controller.School.createTimeTable);
+router.post(
+  "/createClass",
+  auth.verifyToken,
+  auth.isSchool,
+  controller.School.createClass
+);
+router.post(
+  "/createTeacher",
+  auth.verifyToken,
+  auth.isSchool,
+  controller.School.createTeacher
+);
+router.post(
+  "/createStudent",
+  auth.verifyToken,
+  auth.isSchool,
+  controller.School.createStudent
+);
+router.post(
+  "/createTimeTable",
+  auth.verifyToken,
+  auth.isSchool,
+  controller.School.createTimeTable
+);
 
-router.post("/addStudent", authJwt, controller.School.classAddStudents);
-router.post("/addTeacher", authJwt, controller.School.classAddTeacher);
+router.post(
+  "/addStudent",
+  auth.verifyToken,
+  auth.isSchool,
+  controller.School.classAddStudents
+);
+router.post(
+  "/addTeacher",
+  auth.verifyToken,
+  auth.isSchool,
+  controller.School.classAddTeacher
+);
 
 // // get all teacher of a class in a year
 // router.get(

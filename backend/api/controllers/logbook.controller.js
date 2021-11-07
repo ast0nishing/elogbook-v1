@@ -1,8 +1,6 @@
 // import db from "../models/index.js";
 import { default as db } from "../models/index.js";
 import httpStatus from "http-status";
-import jwt from "jsonwebtoken";
-import { default as config } from "../configs/authConfig.js";
 
 export default {
   async create(req, res) {

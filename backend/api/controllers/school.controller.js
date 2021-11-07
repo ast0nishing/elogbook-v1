@@ -14,11 +14,11 @@ export default {
   // TIME TABLE
   async createTimeTable(req, res) {
     const school = await isSchool(req);
-    if (school === null) {
-      return res
-        .status(httpStatus.UNAUTHORIZED)
-        .json({ msg: "do not have authority" });
-    }
+    // if (school === null) {
+    //   return res
+    //     .status(httpStatus.UNAUTHORIZED)
+    //     .json({ msg: "do not have authority" });
+    // }
 
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
@@ -128,11 +128,11 @@ export default {
   // TEACHER
   async createTeacher(req, res) {
     const school = await isSchool(req);
-    if (school === null) {
-      return res
-        .status(httpStatus.UNAUTHORIZED)
-        .json({ msg: "do not have authority" });
-    }
+    // if (school === null) {
+    //   return res
+    //     .status(httpStatus.UNAUTHORIZED)
+    //     .json({ msg: "do not have authority" });
+    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -215,11 +215,11 @@ export default {
   // CLASS
   async createClass(req, res) {
     const school = await isSchool(req);
-    if (school === null) {
-      return res
-        .status(httpStatus.UNAUTHORIZED)
-        .json({ msg: "do not have authority" });
-    }
+    // if (school === null) {
+    //   return res
+    //     .status(httpStatus.UNAUTHORIZED)
+    //     .json({ msg: "do not have authority" });
+    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -297,11 +297,11 @@ export default {
   // STUDENT
   async createStudent(req, res) {
     const school = await isSchool(req);
-    if (school === null) {
-      return res
-        .status(httpStatus.UNAUTHORIZED)
-        .json({ msg: "do not have authority" });
-    }
+    // if (school === null) {
+    //   return res
+    //     .status(httpStatus.UNAUTHORIZED)
+    //     .json({ msg: "do not have authority" });
+    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -403,11 +403,11 @@ export default {
   // CLASS ADD TEACHER
   async classAddTeacher(req, res) {
     const school = await isSchool(req);
-    if (school === null) {
-      return res
-        .status(httpStatus.UNAUTHORIZED)
-        .json({ msg: "do not have authority" });
-    }
+    // if (school === null) {
+    //   return res
+    //     .status(httpStatus.UNAUTHORIZED)
+    //     .json({ msg: "do not have authority" });
+    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -495,11 +495,11 @@ export default {
   // CLASS ADD STUDENT
   async classAddStudents(req, res) {
     const school = await isSchool(req);
-    if (school === null) {
-      return res
-        .status(httpStatus.UNAUTHORIZED)
-        .json({ msg: "do not have authority" });
-    }
+    // if (school === null) {
+    //   return res
+    //     .status(httpStatus.UNAUTHORIZED)
+    //     .json({ msg: "do not have authority" });
+    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");

@@ -3,7 +3,6 @@ import { default as jwt } from "../utils/jwt.js";
 import { default as db } from "../models/index.js";
 import httpStatus from "http-status";
 import { randomBytes } from "crypto";
-import { EWOULDBLOCK } from "constants";
 
 const signToken = async (user) => {
   const accessToken = await jwt.signAccessToken(
@@ -49,7 +48,10 @@ export default {
     try {
       const decodedToken = await jwt.verifyRefreshToken(token);
       if (!decodedToken) {
-        throw new Error("No refresh token");
+        return res
+          .status(httpStatus.BAD_REQUEST)
+          .json({ msg: "Invalid refresh token!" });
+        // throw new Error("No refresh token");
       }
       const database = getUserDbStrategy[decodedToken.role]();
 
@@ -102,7 +104,7 @@ export default {
       if (await argon2.verify(user.password, newPassword)) {
         return res
           .status(httpStatus.BAD_REQUEST)
-          .json({ msg: "please enter a new password!" });
+          .json({ msg: "It's the same, please enter a new password." });
       }
       const salt = randomBytes(32);
       user.password = await argon2.hash(req.body.newPassword, { salt });
