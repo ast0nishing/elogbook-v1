@@ -440,9 +440,6 @@ export default {
             schoolId: school.id,
           },
         });
-        console.log("------------ Execution --------------");
-        console.log(targetClass.toJSON());
-        console.log("------------ Execution --------------");
 
         if (!targetClass) {
           console.log(
@@ -451,6 +448,9 @@ export default {
           invalidIdSchool.push(aClass.idSchool);
           continue;
         }
+        console.log("------------ Execution --------------");
+        console.log(targetClass.toJSON());
+        console.log("------------ Execution --------------");
 
         if (!teacher.idSchool.includes(schoolCheck)) {
           console.log(
