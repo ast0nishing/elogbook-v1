@@ -5,6 +5,7 @@ import { randomBytes } from 'crypto';
 // import timetable from '../models/bulkcreate/timetable.js';
 import jwt from 'jsonwebtoken';
 import { default as config } from '../configs/authConfig.js';
+import { EDESTADDRREQ } from 'constants';
 
 export default {
     async findAllTeachersByClassAndYear(req, res) {
@@ -131,5 +132,94 @@ export default {
             delete data.dataValues.schoolId;
         }
         res.send(classData);
+    },
+    async updatePassword(req, res) {
+        const teacherDataToChangePassword = await db.teacher.findOne({
+            where: { id: req.user.id },
+        });
+        if (
+            await argon2.verify(
+                teacherDataToChangePassword.dataValues.password,
+                req.body.oldPassword
+            )
+        ) {
+            const salt = randomBytes(32);
+            const hashedPassword = await argon2.hash(req.body.newPassword, {
+                salt,
+            });
+
+            await db.teacher
+                .update(
+                    {
+                        password: hashedPassword,
+                    },
+                    {
+                        where: { id: req.user.id },
+                    }
+                )
+                .then((data) => {
+                    res.json({ message: 'updated password' });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            res.status(400).json({ message: 'password does not match' });
+        }
+    },
+    async timetableByWeekAndClass(req, res) {
+        const timetableData = await db.timetable.findAll({
+            where: { classId: req.params.classId },
+        });
+        const days = {
+            1: 'Monday',
+            2: 'Tuesday',
+            3: 'Wednesday',
+            4: 'Thursday',
+            5: 'Friday',
+            6: 'Saturday',
+            7: 'Sunday',
+        };
+        const weekInRange = [];
+        for (let data of timetableData) {
+            if (
+                data.dataValues.fromWeek <= req.params.week &&
+                (data.dataValues.toWeek === -1 ||
+                    data.dataValues.toWeek >= req.params.week)
+            ) {
+                const teacherData = await db.teacher.findOne({
+                    where: { id: data.dataValues.teacherId },
+                });
+                const classData = await db.class.findOne({
+                    where: { id: data.dataValues.classId },
+                });
+                data.dataValues.teacherName = teacherData.dataValues.name;
+                data.dataValues.className = classData.dataValues.name;
+                data.dataValues.day = days[data.dataValues.weekDay];
+                delete data.dataValues.id;
+                delete data.dataValues.fromWeek;
+                delete data.dataValues.toWeek;
+                delete data.dataValues.weekDay;
+                weekInRange.push(data.dataValues);
+            }
+        }
+        res.send(weekInRange);
+    },
+    async getLogbookById(req, res) {
+        const logbookData = await db.logbook.findOne({
+            where: { id: req.params.logbookId },
+        });
+        res.send(logbookData.dataValues);
+    },
+    async updateLogbook(req, res) {
+        await db.logbook.update(
+            {
+                grade: req.body.grade,
+                comment: req.body.comment,
+                note: req.body.note,
+            },
+            { where: { id: req.params.logbookId } }
+        );
+        res.json({ message: 'updates logbook successfully' });
     },
 };

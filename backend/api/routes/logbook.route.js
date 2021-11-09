@@ -21,4 +21,9 @@ router.get(
     [auth.verifyToken, auth.isTeacher],
     controller.Logbook.findByClassAndDay
 );
+router.get(
+    '/:year',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Logbook.findByYear
+);
 // router.get("/:studentId", controller.Logbook.findByStudent);

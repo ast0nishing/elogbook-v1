@@ -27,6 +27,30 @@ router.get(
     [auth.verifyToken, auth.isTeacher],
     controller.Teacher.findClass
 );
+router.get(
+    '/timetable/:week/:classId',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Teacher.timetableByWeekAndClass
+);
+
+// get logbook data
+router.get(
+    '/logbook/:logbookId',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Teacher.getLogbookById
+);
+// update password
+router.put(
+    '/updatePassword',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Teacher.updatePassword
+);
+// update logbook
+router.put(
+    '/logbook/:logbookId',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Teacher.updateLogbook
+);
 // router.get(
 //     '/:year/:className/',
 //     [authJwt.verifyToken, authJwt.isTeacher],

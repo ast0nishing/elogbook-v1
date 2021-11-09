@@ -30,10 +30,15 @@ router.get(
     [auth.verifyToken, auth.isStudent],
     controller.Student.rankingByYear
 );
+router.get(
+    '/timetable/:week',
+    [auth.verifyToken, auth.isStudent],
+    controller.Student.timetableByWeek
+);
 
-// // update password
-// router.put(
-//     '/updatePassword',
-//     [auth.verifyToken, auth.isStudent],
-//     controller.Student.updatePassword
-// );
+// update password
+router.put(
+    '/updatePassword',
+    [auth.verifyToken, auth.isStudent],
+    controller.Student.updatePassword
+);

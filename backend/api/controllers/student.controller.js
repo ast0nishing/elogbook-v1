@@ -160,16 +160,61 @@ export default {
 
         res.json(fullData);
     },
-    async updatePassword(req, res) {
-        const token = req.headers['x-access-token'];
-        jwt.verify(token, config.secret, (err, decoded) => {
-            req.userId = decoded.id;
-            req.schoolId = decoded.schoolId;
+    async timetableByWeek(req, res) {
+        // const classData = await db.class.findOne({
+        //     where: { studentId: req.user.id },
+        //     order: [['createdAt', 'DESC']],
+        // });
+        const studentData2 = await db.student.findOne({
+            include: [{ model: db.class, though: 'class_student' }],
+            where: { id: req.user.id },
         });
+        const timetableData = await db.timetable.findAll({
+            where: {
+                classId: studentData2.dataValues.classes.pop().dataValues.id,
+            },
+        });
+        const days = {
+            1: 'Monday',
+            2: 'Tuesday',
+            3: 'Wednesday',
+            4: 'Thursday',
+            5: 'Friday',
+            6: 'Saturday',
+            7: 'Sunday',
+        };
+        const weekInRange = [];
+        for (let data of timetableData) {
+            if (
+                data.dataValues.fromWeek <= req.params.week &&
+                (data.dataValues.toWeek === -1 ||
+                    data.dataValues.toWeek >= req.params.week)
+            ) {
+                const teacherData = await db.teacher.findOne({
+                    where: { id: data.dataValues.teacherId },
+                });
+                const classData = await db.class.findOne({
+                    where: { id: data.dataValues.classId },
+                });
+                data.dataValues.teacherName = teacherData.dataValues.name;
+                data.dataValues.className = classData.dataValues.name;
+                data.dataValues.day = days[data.dataValues.weekDay];
+                delete data.dataValues.id;
+                delete data.dataValues.fromWeek;
+                delete data.dataValues.toWeek;
+                delete data.dataValues.weekDay;
+                weekInRange.push(data.dataValues);
+            }
+        }
+        res.send(weekInRange);
+    },
 
+    async updatePassword(req, res) {
         const studentData = await db.student.findOne({
-            where: { id: req.userId },
+            where: { id: req.user.id },
         });
+        console.log(studentData.dataValues);
+        // return;
         if (
             await argon2.verify(
                 studentData.dataValues.password,
@@ -186,7 +231,7 @@ export default {
                         password: hashedPassword,
                     },
                     {
-                        where: { id: req.userId },
+                        where: { id: req.user.id },
                     }
                 )
                 .then((data) => {
