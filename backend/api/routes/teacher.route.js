@@ -12,6 +12,12 @@ export const router = express.Router();
 // );
 
 // get all teachers of the school
+router.get('/', [auth.verifyToken, auth.isTeacher], controller.Teacher.getSelf);
+router.put(
+    '/',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Teacher.editSelf
+);
 router.get(
     '/getTeachers/:year/:className',
     [auth.verifyToken, auth.isTeacher],
@@ -56,3 +62,16 @@ router.put(
 //     [authJwt.verifyToken, authJwt.isTeacher],
 //     controller.Logbook.findByClass
 // );
+// ranking by year + week
+router.get(
+    '/ranking/:year/byweek/:week',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Student.rankingByWeek
+);
+
+// ranking by year
+router.get(
+    '/ranking/:year',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Student.rankingByYear
+);

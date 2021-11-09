@@ -6,21 +6,21 @@ import argon2 from 'argon2';
 import { time } from 'console';
 
 export default {
-    // async findAllStudents(req, res) {
-    //     const token = req.headers['x-access-token'];
-    //     jwt.verify(token, config.secret, (err, decoded) => {
-    //         req.userId = decoded.id;
-    //         req.schoolId = decoded.schoolId;
-    //     });
-    //     const allStudentData = await db.student.findAll({
-    //         where: { schoolId: req.schoolId },
-    //     });
-    //     for (const studentData of allStudentData) {
-    //         delete studentData.dataValues.password;
-    //         delete studentData.dataValues.schoolId;
-    //     }
-    //     res.send(allStudentData);
-    // },
+    async editSelf(req, res) {
+        const data = await db.student.update(
+            {
+                name: req.body.name,
+                address: req.body.address,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+                dob: req.body.dob,
+            },
+            { where: { id: req.user.id } }
+        );
+        if (data[0] === 1)
+            res.json({ message: 'updates profile successfully' });
+        else res.json({ message: 'edit failed' });
+    },
     // find student given studentId
     async findStudent(req, res) {
         const studentData = await db.student.findOne({
@@ -51,13 +51,23 @@ export default {
                 name: student.dataValues.name,
             });
         }
+        const studentProfile = await db.student.findOne({
+            where: { id: req.user.id },
+        });
         const fullData = {
+            username: studentProfile.dataValues.username,
+            role: studentProfile.dataValues.role,
             studentName: studentData.dataValues.name,
+            email: studentProfile.dataValues.email,
+            address: studentProfile.dataValues.address,
+            phoneNumber: studentProfile.dataValues.phoneNumber,
+            dob: studentProfile.dataValues.dob,
             schoolId: schoolData.dataValues.idSchool,
             schoolName: schoolData.dataValues.name,
             className: classData.dataValues.name,
             teacherName: teacherData.dataValues.name,
         };
+
         res.json(fullData);
     },
     async rankingByWeek(req, res) {

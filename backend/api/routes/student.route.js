@@ -16,6 +16,11 @@ router.get(
     [auth.verifyToken, auth.isStudent],
     controller.Student.findStudent
 );
+router.put(
+    '/',
+    [auth.verifyToken, auth.isStudent],
+    controller.Student.editSelf
+);
 
 // ranking by year + week
 router.get(

@@ -212,7 +212,7 @@ export default {
         res.send(logbookData.dataValues);
     },
     async updateLogbook(req, res) {
-        await db.logbook.update(
+        const success = await db.logbook.update(
             {
                 grade: req.body.grade,
                 comment: req.body.comment,
@@ -220,6 +220,30 @@ export default {
             },
             { where: { id: req.params.logbookId } }
         );
-        res.json({ message: 'updates logbook successfully' });
+        if (success[0] === 1)
+            res.json({ message: 'updates logbook successfully' });
+        else res.json({ message: 'edit failed' });
+    },
+    async getSelf(req, res) {
+        const data = await db.teacher.findOne({ where: { id: req.user.id } });
+        delete data.dataValues.password;
+        delete data.dataValues.securitySecret;
+        delete data.dataValues.id;
+        res.send(data.dataValues);
+    },
+    async editSelf(req, res) {
+        const data = await db.teacher.update(
+            {
+                name: req.body.name,
+                address: req.body.address,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+                dob: req.body.dob,
+            },
+            { where: { id: req.user.id } }
+        );
+        if (data[0] === 1)
+            res.json({ message: 'updates profile successfully' });
+        else res.json({ message: 'edit failed' });
     },
 };
