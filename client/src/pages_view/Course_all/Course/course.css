@@ -1,0 +1,132 @@
+/** @format */
+
+.course {
+  flex: 4;
+  padding: 20px;
+}
+
+.courseTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.courseAddButton {
+  width: 80px;
+  border: none;
+  padding: 5px;
+  background-color: teal;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.courseTop {
+  display: flex;
+}
+
+.courseTopLeft,
+.courseTopRight {
+  flex: 1;
+}
+
+.courseTopRight {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.courseInfoImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.courseInfoTop {
+  display: flex;
+  align-items: center;
+}
+
+.courseName {
+  font-weight: 600;
+}
+
+.courseInfoBottom {
+  margin-top: 10px;
+}
+
+.courseInfoItem {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.courseInfoValue {
+  font-weight: 300;
+}
+
+.courseBottom {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.courseForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.courseFormLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.courseFormLeft > label {
+  margin-bottom: 10px;
+  color: gray;
+}
+
+.courseFormLeft > input {
+  margin-bottom: 10px;
+  border: none;
+  padding: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.courseFormLeft > select {
+  margin-bottom: 10px;
+}
+
+.courseUploadImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.courseFormRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.courseUpload {
+  display: flex;
+  align-items: center;
+}
+
+.courseButton {
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: darkblue;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}

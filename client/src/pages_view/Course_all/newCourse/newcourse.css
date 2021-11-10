@@ -1,0 +1,41 @@
+/** @format */
+
+.newcourse {
+  flex: 4;
+}
+
+.addcourseForm {
+  margin-top: 10px;
+}
+
+.addcourseItem {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.addcourseItem > label {
+  color: gray;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.addcourseItem > input {
+  padding: 10px;
+}
+
+.addcourseItem > select {
+  padding: 10px;
+}
+
+.addcourseButton {
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: darkblue;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}

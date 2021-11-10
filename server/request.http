@@ -1,0 +1,116 @@
+### Authentication
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin",
+  "role":"admin"}
+###
+GET http://localhost:5000/api/auth/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODc1NDl9.wVBFMhdAc1zsKgusibHFqSpidoab6JuPm2m6oNKzZzY
+
+###
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "nttg3112",
+  "password": "12345ddd"
+}
+
+### Academic year
+POST http://localhost:5000/api/academicyear
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+
+{
+  "academicyear": "2020-2021",
+  "semester":"Semester 1"
+}
+###
+GET http://localhost:5000/api/academicyear
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+
+{
+  "code": "React",
+  "name": "React",
+  "academictyear": "2020-2021",
+  "school":"Tan Tao PMS"
+}
+###
+PUT http://localhost:5000/api/academicyear/618ac654affc1285837f8143
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+
+{
+  "code": "React",
+  "name": "Test",
+  "academicyear": "2020-2021",
+  "school":"Tan Tao PMS"
+}
+###
+DELETE http://localhost:5000/api/academicyear/618ac654affc1285837f8143
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+
+{
+  "code": "React",
+  "name": "Test",
+  "academicyear": "2020-2021",
+  "school":"Tan Tao PMS"
+}
+### School
+POST http://localhost:5000/api/school
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+
+{
+  "name":"Cainhum",
+  "province": "Long AN",
+  "district":"Duc Hoa",
+  "town":"Hau Nghia"
+}
+###
+PUT http://localhost:5000/api/school/618acdeece8c4e8d20f30b61
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+
+{
+  "name":"Cai Nhum",
+  "province": "Long AN",
+  "district":"Duc Hoa",
+  "town":"Hau Nghia"
+}
+###
+DELETE http://localhost:5000/api/school/618acf0496fb2e8fb99df31a
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+
+### Student
+POST http://localhost:5000/api/student
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+
+{
+  "username": "giang08",
+  "id":"04",
+  "password": "12345ddd",
+  "role":"student",
+  "fullname":"Nguyen Tan Thanh Giang",
+  "phone":"0364002059"}
+###
+GET http://localhost:5000/api/student
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODc1NDl9.wVBFMhdAc1zsKgusibHFqSpidoab6JuPm2m6oNKzZzY
+
+###
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "nttg3112",
+  "password": "12345ddd"
+}
