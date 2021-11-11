@@ -2,8 +2,6 @@ version: "3.8"
 
 services:
   mysql:
-    networks:
-      - logbook-net
     image: mysql:5.7
     hostname: mysql
     container_name: docker-logbook-mysql
@@ -13,8 +11,6 @@ services:
       - MYSQL_USER=logbook
       - MYSQL_PASSWORD=logbook
       - MYSQL_DATABASE=logbook
-    ports:
-      - 3307:3306
     volumes:
       - db:/var/lib/mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -35,24 +31,6 @@ services:
       - DB_DIALECT=mysql
       - DB_PORT=3306
       - PORT=8000
-    networks:
-      - logbook-net
-
-  nginx:
-    hostname: nginx
-    build: .
-    depends_on:
-      - server
-      - mysql
-    container_name: docker-logbook-reverse-proxy
-    ports:
-      - 80:80
-    networks:
-      - logbook-net
-
-networks:
-  logbook-net:
-    external: true
 
 volumes:
   db:

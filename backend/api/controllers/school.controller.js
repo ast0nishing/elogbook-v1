@@ -14,12 +14,6 @@ export default {
   // TIME TABLE
   async createTimeTable(req, res) {
     const school = await isSchool(req);
-    // if (school === null) {
-    //   return res
-    //     .status(httpStatus.UNAUTHORIZED)
-    //     .json({ msg: "do not have authority" });
-    // }
-
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -128,11 +122,6 @@ export default {
   // TEACHER
   async createTeacher(req, res) {
     const school = await isSchool(req);
-    // if (school === null) {
-    //   return res
-    //     .status(httpStatus.UNAUTHORIZED)
-    //     .json({ msg: "do not have authority" });
-    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -215,11 +204,7 @@ export default {
   // CLASS
   async createClass(req, res) {
     const school = await isSchool(req);
-    // if (school === null) {
-    //   return res
-    //     .status(httpStatus.UNAUTHORIZED)
-    //     .json({ msg: "do not have authority" });
-    // }
+
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -297,11 +282,6 @@ export default {
   // STUDENT
   async createStudent(req, res) {
     const school = await isSchool(req);
-    // if (school === null) {
-    //   return res
-    //     .status(httpStatus.UNAUTHORIZED)
-    //     .json({ msg: "do not have authority" });
-    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -403,11 +383,6 @@ export default {
   // CLASS ADD TEACHER
   async classAddTeacher(req, res) {
     const school = await isSchool(req);
-    // if (school === null) {
-    //   return res
-    //     .status(httpStatus.UNAUTHORIZED)
-    //     .json({ msg: "do not have authority" });
-    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -495,11 +470,6 @@ export default {
   // CLASS ADD STUDENT
   async classAddStudents(req, res) {
     const school = await isSchool(req);
-    // if (school === null) {
-    //   return res
-    //     .status(httpStatus.UNAUTHORIZED)
-    //     .json({ msg: "do not have authority" });
-    // }
     console.log("------------ Execution --------------");
     console.log(school.toJSON());
     console.log("------------ Execution --------------");
@@ -575,5 +545,48 @@ export default {
     } catch (err) {
       console.log(err);
     }
+  },
+
+  async findAllTeachersByClassAndYear(req, res) {
+    const classData = await db.class.findOne({
+      where: {
+        name: req.params.className,
+        academicYearId: req.params.year,
+        schoolId: req.user.id,
+      },
+    });
+    if (!classData) {
+      return res.json({ message: "class not found!" });
+    }
+    const teacherId = [];
+    const allTeacherData = await db.teacher.findAll();
+    for (const teacherData of allTeacherData) {
+      const timetableData = await db.timetable.findOne({
+        where: {
+          teacherId: teacherData.dataValues.id,
+          classId: classData.dataValues.id,
+        },
+      });
+      if (timetableData) {
+        teacherId.push({
+          id: timetableData.dataValues.teacherId,
+          name: teacherData.dataValues.name,
+        });
+      }
+    }
+    res.json(teacherId);
+  },
+  async findAllTeachers(req, res) {
+    const teacherId = [];
+    const allTeacherData = await db.teacher.findAll({
+      where: { schoolId: req.user.id },
+    });
+    for (const teacherData of allTeacherData) {
+      teacherId.push({
+        id: teacherData.dataValues.id,
+        name: teacherData.dataValues.name,
+      });
+    }
+    res.json(teacherId);
   },
 };
