@@ -4,26 +4,25 @@ services:
   mysql:
     image: mysql:5.7
     hostname: mysql
-    container_name: docker-db-node
-    restart: always
+    container_name: docker-logbook-mysql
+    restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=logbook
       - MYSQL_PASSWORD=logbook
       - MYSQL_DATABASE=logbook
-    ports:
-      - 3307:3306
     volumes:
       - db:/var/lib/mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-  app:
+  server:
+    hostname: logbookserver
     depends_on:
       - mysql
     image: vtn13042000/server:1.0.0
-    container_name: docker-node-mysql
-    restart: always
+    container_name: docker-logbook-server
+    restart: unless-stopped
     ports:
-      - 3000:80
+      - 3000:8000
     environment:
       - DB_HOST=mysql
       - DB_NAME=logbook
@@ -31,9 +30,7 @@ services:
       - DB_PASSWORD=logbook
       - DB_DIALECT=mysql
       - DB_PORT=3306
-      - PORT=80
-    stdin_open: true
-    tty: true
+      - PORT=8000
 
 volumes:
   db:

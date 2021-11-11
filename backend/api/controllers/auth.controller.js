@@ -91,7 +91,13 @@ export default {
   async changePassword(req, res) {
     const role = req.user.role;
     const id = req.user.id;
+    const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
+    if (oldPassword === newPassword) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ msg: "It's the same, please enter other password" });
+    }
 
     const database = getUserDbStrategy[role]();
     try {
@@ -101,13 +107,13 @@ export default {
           .status(httpStatus.BAD_REQUEST)
           .json({ msg: "user does not exist" });
       }
-      if (await argon2.verify(user.password, newPassword)) {
+      if (await argon2.verify(user.password, oldPassword)) {
         return res
           .status(httpStatus.BAD_REQUEST)
-          .json({ msg: "It's the same, please enter a new password." });
+          .json({ msg: "Wrong current password" });
       }
       const salt = randomBytes(32);
-      user.password = await argon2.hash(req.body.newPassword, { salt });
+      user.password = await argon2.hash(newPassword, { salt });
       // Generate new secret to invalid all the tokens
       user.securitySecret = randomBytes(32).toString("hex");
       await user.save();

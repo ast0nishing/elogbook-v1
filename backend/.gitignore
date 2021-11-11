@@ -4,5 +4,4 @@ migrations
 seeders
 README.md
 authConfig.js
-dbConfig.js
 .env
