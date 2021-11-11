@@ -107,7 +107,7 @@ export default {
           .status(httpStatus.BAD_REQUEST)
           .json({ msg: "user does not exist" });
       }
-      if (await argon2.verify(user.password, oldPassword)) {
+      if (!(await argon2.verify(user.password, oldPassword))) {
         return res
           .status(httpStatus.BAD_REQUEST)
           .json({ msg: "Wrong current password" });
