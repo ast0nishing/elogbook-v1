@@ -194,4 +194,12 @@ export default {
             res.json({ message: 'updates course successfully' });
         else res.json({ message: 'update failed' });
     },
+    async deleteCourse(req, res) {
+        const success = await db.course.destroy({
+            where: { code: req.params.code },
+        });
+
+        if (success === 1) res.json({ message: 'delete course successfully' });
+        else res.json({ message: 'failed' });
+    },
 };

@@ -40,4 +40,10 @@ router.put(
     auth.isAdmin,
     controller.Admin.updateCourse
 );
+router.delete(
+    '/course/:code',
+    auth.verifyToken,
+    auth.isAdmin,
+    controller.Admin.deleteCourse
+);
 // router.get('/course/:code', auth.verifyToken, controller.Admin.getCourse);
