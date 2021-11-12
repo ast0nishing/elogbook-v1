@@ -7,23 +7,24 @@ export const router = express.Router();
 router.post('/', auth.verifyToken, auth.isTeacher, controller.Logbook.create);
 
 // router.get(
-//   "/:year",
-//   [authJwt.verifyToken, authJwt.isTeacher],
-//   controller.Logbook.findAll
+//     '/:year',
+//     [auth.verifyToken, auth.isTeacher],
+//     controller.Logbook.findByYear
 // );
 router.get(
-    '/:year/:className/',
+    '/:year/:idSchool/',
     [auth.verifyToken, auth.isTeacher],
     controller.Logbook.findByClass
 );
 router.get(
-    '/:year/:className/:day',
+    '/:year/:idSchool/:day',
     [auth.verifyToken, auth.isTeacher],
     controller.Logbook.findByClassAndDay
 );
 router.get(
-    '/:year',
+    '/:year/:idSchool/:week/:day',
     [auth.verifyToken, auth.isTeacher],
-    controller.Logbook.findByYear
+    controller.Logbook.findByYearClassWeekDay
 );
+
 // router.get("/:studentId", controller.Logbook.findByStudent);

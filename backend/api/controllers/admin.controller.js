@@ -178,6 +178,7 @@ export default {
         const course = await db.course.findOne({
             where: { code: req.params.code },
         });
+        if (course === null) return res.json({ error: 'course not found.' });
         res.send(course.dataValues);
     },
     async updateCourse(req, res) {

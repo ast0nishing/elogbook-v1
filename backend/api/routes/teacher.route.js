@@ -38,6 +38,11 @@ router.get(
     [auth.verifyToken, auth.isTeacher],
     controller.Teacher.timetableByWeekAndClass
 );
+router.get(
+    '/timetables/:year/:week',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Teacher.timetablesByYearAndWeek
+);
 
 // get logbook data
 router.get(
