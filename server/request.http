@@ -16,14 +16,15 @@ POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "nttg3112",
-  "password": "12345ddd"
+  "username": "admin",
+  "password": "admin",
+  "role":"admin"
 }
 
 ### Academic year
 POST http://localhost:5000/api/academicyear
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 {
   "academicyear": "2020-2021",
@@ -32,7 +33,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhY
 ###
 GET http://localhost:5000/api/academicyear
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 {
   "code": "React",
@@ -41,21 +42,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhY
   "school":"Tan Tao PMS"
 }
 ###
-PUT http://localhost:5000/api/academicyear/618ac654affc1285837f8143
+PUT http://localhost:5000/api/academicyear/618d53e37af3fee179ecec6a
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 {
   "code": "React",
   "name": "Test",
   "academicyear": "2020-2021",
-  "school":"Tan Tao PMS"
+  "school":"TPMS"
 }
 ###
-DELETE http://localhost:5000/api/academicyear/618ac654affc1285837f8143
+DELETE http://localhost:5000/api/academicyear/618dd13e0b0f280ca9539432
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
+###
 {
   "code": "React",
   "name": "Test",
@@ -65,52 +66,63 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhY
 ### School
 POST http://localhost:5000/api/school
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 {
-  "name":"Cainhum",
+  "name":"TanChanh1",
   "province": "Long AN",
   "district":"Duc Hoa",
   "town":"Hau Nghia"
 }
 ###
-PUT http://localhost:5000/api/school/618acdeece8c4e8d20f30b61
+GET http://localhost:5000/api/school
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
+
+###
+PUT http://localhost:5000/api/school/618dd2050b0f280ca953943a
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 {
-  "name":"Cai Nhum",
-  "province": "Long AN",
+  "name":"TanChanh1",
+  "province": "LongfsdfasdAN",
   "district":"Duc Hoa",
   "town":"Hau Nghia"
 }
 ###
-DELETE http://localhost:5000/api/school/618acf0496fb2e8fb99df31a
+DELETE http://localhost:5000/api/school/618dd2050b0f280ca953943a
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 ### Student
 POST http://localhost:5000/api/student
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODQ2NzR9.QEsaJtVnXK7RtPDg7fS6v1WdONqOH8KfzpBV4IEeXaE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 {
-  "username": "giang08",
-  "id":"04",
-  "password": "12345ddd",
+  "username": "giang12345",
+  "password": "giang12345",
   "role":"student",
   "fullname":"Nguyen Tan Thanh Giang",
   "phone":"0364002059"}
 ###
 GET http://localhost:5000/api/student
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODc1NDl9.wVBFMhdAc1zsKgusibHFqSpidoab6JuPm2m6oNKzZzY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 ###
-POST http://localhost:5000/api/auth/login
+PUT http://localhost:5000/api/student/618ade4f5ca6709f6f477839
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhZTRiMjY5NDM5YWE1YjczMTM3NWYiLCJpYXQiOjE2MzY2NTE5MTZ9.9THydPGO8y3nap_iGFM2soKr-_KM5517zJMYlT_tsGs
 
 {
-  "username": "nttg3112",
-  "password": "12345ddd"
-}
+  "username": "giang01",
+  "password": "giang10",
+  "role":"student",
+  "fullname":"Nguyen Tan Thanh Giang",
+  "phone":"0364002059"}
+###  
+DELETE  http://localhost:5000/api/student/618afc8e69439aa5b7313762
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODc1NDl9.wVBFMhdAc1zsKgusibHFqSpidoab6JuPm2m6oNKzZzY

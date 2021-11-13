@@ -3,23 +3,39 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const StudentSchema = new Schema({
-  school: {
-    type: Schema.Types.ObjectId,
-    ref: "school",
+  username: {
+    type: String,
+    required: true,
+    unique: true,
   },
-  // classname: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "class",
-  // },
-  acedemicyear: {
-    type: Schema.Types.ObjectId,
-    ref: "academicyear",
+  password: {
+    type: String,
     required: true,
   },
-  user: {
+  name: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  school: {
     type: Schema.Types.ObjectId,
-    ref: "user",
-    required: "True",
+    required: true,
+    ref: "school",
+  },
+  class: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "class",
+  },
+  teacher: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "teacher",
   },
 });
 

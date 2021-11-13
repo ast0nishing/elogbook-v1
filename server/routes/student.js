@@ -7,20 +7,22 @@ const verifyToken = require("../middleware/auth");
 const User = require("../models/User");
 const Student = require("../models/Student");
 const School = require("../models/School");
+
 // @route GET api/auth
 // @desc Check if user is logged in
 // @access Public
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const students = await User.find({ id: "04" });
+    const students = await User.find({ role: "student" });
     res.json({ success: true, students });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
-// @route POST api/auth/register
-// @desc Register user
+
+// @route POST api/student
+// @desc Create student from the admin, school and teacher
 // @access Public
 router.post("/", verifyToken, async (req, res) => {
   const auth = await User.findById(req.userId).select("role");
@@ -30,9 +32,9 @@ router.post("/", verifyToken, async (req, res) => {
       message: "User not found or do not have authority",
     });
 
-  const { username, password, role, fullname, phone, id } = req.body;
+  const { username, password, role, fullname, phone } = req.body;
   // Simple validation
-  if (!username || !password || !role || !fullname || !phone || !id)
+  if (!username || !password || !role || !fullname || !phone)
     return res.status(400).json({
       success: false,
       message: "Missing information",
@@ -65,7 +67,6 @@ router.post("/", verifyToken, async (req, res) => {
       role,
       fullname,
       phone,
-      id,
     });
     await newUser.save();
 
@@ -81,49 +82,81 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// // @route POST api/auth/login
-// // @desc Login user
-// // @access Public
-// router.post("/login", async (req, res) => {
-//   const { username, password, role } = req.body;
+// @route PUT api/student
+// @desc Update student
+// @access Private
+router.put("/:id", verifyToken, async (req, res) => {
+  const { username, password, fullname, phone } = req.body;
 
-//   // Simple validation
-//   if (!username || !password)
-//     return res
-//       .status(400)
-//       .json({ success: false, message: "Missing username and/or password" });
+  // Simple validation
+  if (!username || !password || !fullname || !phone)
+    return res.status(400).json({ success: false, message: "Missing infor" });
 
-//   try {
-//     // Check for existing user
-//     const user = await User.findOne({ username });
-//     if (!user)
-//       return res
-//         .status(400)
-//         .json({ success: false, message: "Incorrect username or password" });
+  try {
+    let updatedStudent = {
+      username,
+      password,
+      fullname,
+      phone,
+    };
 
-//     // Username found
-//     const passwordValid = await argon2.verify(user.password, password);
-//     if (!passwordValid)
-//       return res
-//         .status(400)
-//         .json({ success: false, message: "Incorrect username or password" });
+    const studentUpdateCondition = {
+      _id: req.params.id,
+      // user: req.userId,
+    };
 
-//     // All good
-//     // Return token
-//     const accessToken = jwt.sign(
-//       { userId: user._id },
-//       process.env.ACCESS_TOKEN_SECRET
-//     );
+    updatedStudent = await Student.findOneAndUpdate(
+      studentUpdateCondition,
+      updatedStudent,
+      { new: true }
+    );
 
-//     res.json({
-//       success: true,
-//       message: "User logged in successfully",
-//       accessToken,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ success: false, message: "Internal server error" });
-//   }
-// });
+    //Simple check
+    if (!updatedStudent)
+      return res.status(401).json({
+        success: false,
+        message: updatedStudent,
+      });
+
+    res.json({
+      success: true,
+      message: "Excellent progress!",
+      student: updatedStudent,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+// @route DELETE api/student
+// @desc Delete post
+// @access Private
+router.delete("/:id", verifyToken, async (req, res) => {
+  try {
+    const studentDeleteCondition = {
+      _id: req.params.id,
+      user: req.userId,
+    };
+    const deletedStudent = await Student.findOneAndDelete(
+      studentDeleteCondition
+    );
+
+    // User not authorised or post not found
+    if (!deletedStudent)
+      return res.status(401).json({
+        success: false,
+        message: "Student not found or user not authorised",
+      });
+
+    res.json({
+      success: true,
+      student: deletedStudent,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
 
 module.exports = router;

@@ -4,21 +4,42 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const TeacherSchema = new Schema({
-  school: {
-    type: Schema.Types.ObjectId,
-    ref: "school",
+  username: {
+    type: String,
+    required: true,
+    unique: true,
   },
-  class: {
-    type: Schema.Types.ObjectId,
-    ref: "class",
+  password: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+  },
+  major: {
+    type: String,
+  },
+  role: {
+    type: String,
+    enum: ["admin", "school", "teacher", "student"],
+    required: true,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  user: {
+  school: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    required: true,
+    ref: "school",
+  },
+  class: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "class",
   },
 });
 

@@ -15,9 +15,9 @@ const TimetableSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "class",
   },
-  user: {
+  school: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "school",
   },
   acedemicyear: {
     type: Schema.Types.ObjectId,

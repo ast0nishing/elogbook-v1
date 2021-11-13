@@ -9,18 +9,13 @@ const ClassSchema = new Schema({
     ref: "school",
     required: true,
   },
-  classname: {
+  name: {
     type: String,
     required: true,
   },
   acedemicyear: {
     type: Schema.Types.ObjectId,
-    ref: "academicyear",
     required: true,
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "user",
   },
 });
 

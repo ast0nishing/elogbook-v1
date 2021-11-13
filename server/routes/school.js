@@ -116,7 +116,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
     if (!deletedSchool)
       return res.status(401).json({
         success: false,
-        message: "Academic year not found or user not authorised",
+        message: "School not found or user not authorised",
       });
 
     res.json({

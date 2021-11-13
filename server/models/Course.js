@@ -13,20 +13,6 @@ const CourseSchema = new Schema({
     type: String,
     require: true,
   },
-  school: {
-    type: Schema.Types.ObjectId,
-    ref: "school",
-    required: true,
-  },
-  acedemicyear: {
-    type: Schema.Types.ObjectId,
-    ref: "academicyear",
-    required: true,
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "user",
-  },
 });
 
 module.exports = mongoose.model("course", CourseSchema);

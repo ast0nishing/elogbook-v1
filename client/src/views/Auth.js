@@ -1,7 +1,6 @@
 /** @format */
 
 import LoginForm from "../components/auth/LoginForm";
-import RegisterForm from "../components/auth/RegisterForm";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
@@ -21,13 +20,7 @@ const Auth = ({ authRoute }) => {
       </div>
     );
   else if (isAuthenticated) return <Redirect to="/" />;
-  else
-    body = (
-      <>
-        {authRoute === "login" && <LoginForm />}
-        {authRoute === "register" && <RegisterForm />}
-      </>
-    );
+  else body = <>{authRoute === "login" && <LoginForm />}</>;
 
   return (
     <>

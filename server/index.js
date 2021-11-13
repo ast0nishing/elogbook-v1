@@ -5,7 +5,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const academicyearRouter = require("./routes/academicyear");
+// const academicyearRouter = require("./routes/academicyear");
 const classRouter = require("./routes/class");
 const courseRouter = require("./routes/course");
 // const lessonRouter = require("/routes/lesson");
@@ -15,7 +15,7 @@ const studentRouter = require("./routes/student");
 // const teacherRouter = require("./routes/teahcer");
 // const timetableRouter = require("./routes/timetable");
 const authRouter = require("./routes/auth");
-
+const postRouter = require("./routes/post");
 const connectDB = async () => {
   try {
     await mongoose.connect(
@@ -43,9 +43,9 @@ app.use(cors());
 
 app.use("/api/auth", authRouter);
 // app.use("/api/course", courseRouter);
-app.use("/api/academicyear", academicyearRouter);
+// app.use("/api/academicyear", academicyearRouter);
 app.use("/api/school", schoolRouter);
 app.use("/api/student", studentRouter);
-
+app.use("/api/posts", postRouter);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

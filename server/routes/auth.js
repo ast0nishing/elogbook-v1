@@ -5,7 +5,10 @@ const router = express.Router();
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/auth");
-
+const Admin = require("../models/Admin");
+const School = require("../models/School");
+const Teacher = require("../models/Teacher");
+const Student = require("../models/Student");
 const User = require("../models/User");
 
 // @route GET api/auth
@@ -17,7 +20,7 @@ router.get("/", verifyToken, async (req, res) => {
     if (!user)
       return res
         .status(400)
-        .json({ success: false, message: "User not found" });
+        .json({ success: false, message: "Missing information" });
     res.json({ success: true, user });
   } catch (error) {
     console.log(error);

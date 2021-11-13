@@ -4,10 +4,26 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const SchoolSchema = new Schema({
-  name: {
+  username: {
     type: String,
     required: true,
     unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
   },
   province: {
     type: String,
@@ -21,13 +37,20 @@ const SchoolSchema = new Schema({
     type: String,
     required: true,
   },
+  street: {
+    type: String,
+  },
+  streetNo: {
+    type: String,
+  },
   createAT: {
     type: Date,
     default: Date.now,
   },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "user",
+  role: {
+    type: String,
+    required: true,
+    default: "school",
   },
 });
 
