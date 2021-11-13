@@ -18,11 +18,11 @@ services:
     hostname: logbookserver
     depends_on:
       - mysql
-    image: vtn13042000/server:1.0.0
+    image: vtn13042000/server:2.0.0
     container_name: docker-logbook-server
     restart: unless-stopped
     ports:
-      - 3000:8000
+      - 3333:8000
     environment:
       - DB_HOST=mysql
       - DB_NAME=logbook

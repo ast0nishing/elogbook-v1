@@ -21,98 +21,163 @@ export default {
     const alreadyExist = [];
 
     const missingInfo = [];
-    const invalidId = [];
-    const timeTables = req.body;
+    const invalidClassId = [];
+    const invalidTeacherId = [];
+    const invalidCourseCode = [];
+    const nonExistId = [];
     const schoolCheck = [school.idSchool, "-"].join("");
 
+    const classes = req.body;
+
     try {
-      for (const timeTable of timeTables) {
-        if (
-          !timeTable.fromWeek ||
-          !timeTable.toWeek ||
-          !timeTable.weekDay ||
-          !timeTable.time ||
-          !timeTable.classId ||
-          !timeTable.courseCode ||
-          !timeTable.teacherId
-        ) {
-          missingInfo.push(timeTable);
-          continue;
-        }
-
-        if (
-          !timeTable.teacherId.includes(schoolCheck) ||
-          !timeTable.classId.includes(schoolCheck)
-        ) {
+      for (const aClass of classes) {
+        const classId = aClass.classId;
+        if (!classId.includes(schoolCheck)) {
           console.log(
-            `Teacher ID ${timeTable.teacherId} or class ID ${timeTable.classId}  do not belong to the school, cannot create time table`
+            `class ID ${classId} do not belong to the school, cannot create all the timetables related to the class`
           );
-          invalidId.push({
-            "class ID": timeTable.classId,
-            "teacher ID": timeTable.teacherId,
-          });
+          invalidClassId.push(classId);
           continue;
         }
-
-        const teacherExist = await db.teacher.findOne({
-          where: { idSchool: timeTable.teacherId },
-        });
-        const classExist = await db.class.findOne({
-          where: { idSchool: timeTable.classId },
-        });
-        if (!teacherExist || !classExist) {
+        const fromWeek = aClass.fromWeek;
+        if (!fromWeek) {
           console.log(
-            `Class ID ${timeTable.classId} or Teacher ID ${timeTable.teacherId} do not exist --> cannot create new timeTable`
+            `class ${classId} missing fromWeek info, cannot create timetables`
           );
-          invalidId.push({
-            "class ID": timeTable.classId,
-            "teacher ID": timeTable.teacherId,
+          missingInfo.push(aClass);
+          continue;
+        }
+        const subjects = aClass.subjects;
+        for (const subject of subjects) {
+          const courseCode = subject.courseCode;
+          const teacherId = subject.teacherId;
+          const blocks = subject.blocks;
+          // Check for missing info and invalid teacher ID
+          if (!courseCode || !blocks || JSON.stringify(blocks) === "{}") {
+            console.log(
+              `class ${classId} missing course code or blocks property, cannot create all the timetables related to the missing course or blocks`
+            );
+            missingInfo.push(aClass);
+            continue;
+          }
+          if (!teacherId.includes(schoolCheck)) {
+            console.log(
+              `Teacher ID ${teacherId} do not belong to the school, cannot create all the timetables related to the teacher ID`
+            );
+            invalidTeacherId.push(teacherId);
+            continue;
+          }
+
+          // Check for existent
+          const courseExist = await db.course.findOne({
+            where: { code: courseCode },
           });
-          continue;
+          if (!courseExist) {
+            console.log(
+              `code course ${courseCode} does not exist, cannot create all the timetables related to the course`
+            );
+            invalidCourseCode.push(courseCode);
+            continue;
+          }
+          const teacherExist = await db.teacher.findOne({
+            where: { idSchool: teacherId },
+          });
+          const classExist = await db.class.findOne({
+            where: { idSchool: classId },
+          });
+          if (!teacherExist || !classExist) {
+            console.log(
+              `Class ID ${classId} or Teacher ID ${teacherId} do not exist --> cannot create new timeTable`
+            );
+            nonExistId.push({
+              "class ID": classId,
+              "teacher ID": teacherId,
+            });
+            continue;
+          }
+          // Update for timeTable
+
+          for (const block of blocks) {
+            const timeTable = {};
+            timeTable.courseCode = courseCode;
+            timeTable.classId = classExist.id;
+            timeTable.teacherId = teacherExist.id;
+            timeTable.fromWeek = fromWeek;
+            timeTable.weekDay = block.weekDay;
+            timeTable.time = block.time;
+            const currentTimetableByBlock = await db.timetable.findOne({
+              where: {
+                classId: timeTable.classId,
+                toWeek: 0,
+                weekDay: timeTable.weekDay,
+                time: timeTable.time,
+              },
+            });
+            // Update toWeek property for related current time table
+            if (currentTimetableByBlock) {
+              currentTimetableByBlock.toWeek = timeTable.fromWeek - 1;
+              await currentTimetableByBlock.save();
+            }
+
+            const currentTimetablesByCourse = await db.timetable.findAll({
+              where: {
+                classId: timeTable.classId,
+                toWeek: 0,
+                courseCode: timeTable.courseCode,
+              },
+            });
+            if (!(JSON.stringify(currentTimetablesByCourse) === "[]")) {
+              for (const eachTimeTable of currentTimetablesByCourse) {
+                eachTimeTable.toWeek = timeTable.fromWeek - 1;
+                await eachTimeTable.save();
+              }
+            }
+
+            const timetableExist = await db.timetable.findOne({
+              where: {
+                fromWeek: timeTable.fromWeek,
+                weekDay: timeTable.weekDay,
+                time: timeTable.time,
+                classId: timeTable.classId,
+                courseCode: timeTable.courseCode,
+                teacherId: timeTable.teacherId,
+              },
+            });
+
+            console.log(timetableExist);
+            if (timetableExist) {
+              console.log(`Time table already exist, cannot create`);
+              alreadyExist.push(timeTable);
+              continue;
+            }
+
+            const newTimeTable = await db.timetable.create(timeTable);
+            console.log(`CREATE NEW TIME TABLE`, newTimeTable.toJSON());
+          }
         }
-
-        // Update id for class and teacher
-
-        timeTable.classId = classExist.id;
-        timeTable.teacherId = teacherExist.id;
-        const timetableExist = await db.timetable.findOne({
-          where: {
-            fromWeek: timeTable.fromWeek,
-            toWeek: timeTable.toWeek,
-            weekDay: timeTable.weekDay,
-            time: timeTable.time,
-            classId: timeTable.classId,
-            courseCode: timeTable.courseCode,
-            teacherId: timeTable.teacherId,
-          },
-        });
-
-        console.log(timetableExist);
-        if (timetableExist) {
-          console.log(`Time table already exist, cannot create`);
-          // console.log(timetableExist.toJSON());
-
-          alreadyExist.push(timeTable);
-          continue;
-        }
-
-        const newTimeTable = await db.timetable.create(timeTable);
-        console.log(`CREATE NEW TIME TABLE`, newTimeTable.toJSON());
       }
 
       if (
         missingInfo.length === 0 &&
-        invalidId.length === 0 &&
+        invalidTeacherId.length === 0 &&
+        invalidClassId.length === 0 &&
+        invalidCourseCode.length === 0 &&
+        nonExistId.length === 0 &&
         alreadyExist.length === 0
       ) {
         return res
           .status(httpStatus.OK)
           .json({ msg: "Create all timetable success" });
       }
+      console.log("------------------------------------------");
+
       return res.status(httpStatus.OK).json({
         "Missing primary info": missingInfo,
-        "Invalid Class or Teacher ID": invalidId,
-        "Already exists time table": alreadyExist,
+        "Invalid Class ID": invalidClassId,
+        "Invalid Teacher ID": invalidTeacherId,
+        "Invalid Course Code": invalidCourseCode,
+        "Non Exist Id": nonExistId,
+        "Already exists timetable": alreadyExist,
       });
     } catch (err) {
       console.log(err);
@@ -130,6 +195,7 @@ export default {
 
     const missingInfo = [];
     const invalidIdSchool = [];
+    const invalidUsernameSuffix = [];
     const teachers = req.body;
     const schoolCheck = [school.idSchool, "-"].join("");
 
@@ -152,6 +218,24 @@ export default {
             `ID ${teacher.idSchool} do not belong to the school, cannot create`
           );
           invalidIdSchool.push(teacher.idSchool);
+          continue;
+        }
+
+        // Check for consistent username
+        // Ex: idSchool -- LA0102-T12001 --> username t12001@LA0102
+        const idSchoolarray = teacher.idSchool.split("-");
+        const validUsernameSuffix = `${idSchoolarray[1].toLowerCase()}@${
+          idSchoolarray[0]
+        }`;
+        const usernameArray = teacher.username.split(".");
+        const usernameSuffix = usernameArray[usernameArray.length - 1];
+        if (usernameSuffix !== validUsernameSuffix) {
+          console.log(
+            `ID ${teacher.idSchool} does not have a consistent username suffix (teacherId@schoolId), please check for typo error`
+          );
+          invalidUsernameSuffix.push(
+            `${teacher.idSchool} --- ${teacher.username}`
+          );
           continue;
         }
 
@@ -184,7 +268,8 @@ export default {
       if (
         alreadyExist.length === 0 &&
         missingInfo.length === 0 &&
-        invalidIdSchool.length === 0
+        invalidIdSchool.length === 0 &&
+        invalidUsernameSuffix.length === 0
       ) {
         return res
           .status(httpStatus.OK)
@@ -195,6 +280,7 @@ export default {
         "Already exist(s) idSchool(s)": alreadyExist,
         "Missing primary information (7 fields in total)": missingInfo,
         "Invalid idSchool": invalidIdSchool,
+        "Inconsistent username suffix": invalidUsernameSuffix,
       });
     } catch (err) {
       console.log(err);
@@ -214,11 +300,11 @@ export default {
     const missingInfo = [];
     const invalidIdSchool = [];
     const invalidTeacherId = [];
-    const students = req.body;
+    const classes = req.body;
     const schoolCheck = [school.idSchool, "-"].join("");
 
     try {
-      for (const aClass of students) {
+      for (const aClass of classes) {
         if (!aClass.idSchool || !aClass.name || !aClass.academicYearId) {
           missingInfo.push(aClass);
           continue;
@@ -231,6 +317,13 @@ export default {
           continue;
         }
         if (aClass.teacherId) {
+          if (!aClass.teacherId.includes(schoolCheck)) {
+            console.log(
+              `ID ${aClass.teacherId} do not belong to the school, cannot become head teacher`
+            );
+            invalidTeacherId.push(aClass.teacherId);
+            continue;
+          }
           const teacherExist = await db.teacher.findOne({
             where: { idSchool: aClass.teacherId },
           });
@@ -291,6 +384,7 @@ export default {
     const missingInfo = [];
     const invalidIdSchool = [];
     const invalidClassId = [];
+    const invalidUsernameSuffix = [];
     const students = req.body;
     const schoolCheck = [school.idSchool, "-"].join("");
 
@@ -312,6 +406,21 @@ export default {
             `ID ${student.idSchool} do not belong to the school, cannot create`
           );
           invalidIdSchool.push(student.idSchool);
+          continue;
+        }
+        // Check for consistent username
+        // Ex: idSchool -- LA0102-120001 --> username 120001@LA0102
+        const idSchoolarray = student.idSchool.split("-");
+        const validUsernameSuffix = `${idSchoolarray[1]}@${idSchoolarray[0]}`;
+        const usernameArray = student.username.split(".");
+        const usernameSuffix = usernameArray[usernameArray.length - 1];
+        if (usernameSuffix !== validUsernameSuffix) {
+          console.log(
+            `ID ${student.idSchool} does not have a consistent username suffix (studentId@schoolId), please check for typo error`
+          );
+          invalidUsernameSuffix.push(
+            `${student.idSchool} --- ${student.username}`
+          );
           continue;
         }
 
@@ -361,7 +470,8 @@ export default {
       if (
         alreadyExist.length === 0 &&
         missingInfo.length === 0 &&
-        invalidIdSchool.length === 0
+        invalidIdSchool.length === 0 &&
+        invalidUsernameSuffix.length === 0
       ) {
         return res.status(httpStatus.OK).json({
           msg: "Add all students success",
