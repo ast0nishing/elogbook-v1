@@ -1,68 +1,134 @@
+import {
+    PermIdentity,
+    Publish,
+  } from "@material-ui/icons";
+
+
+import "../Css/element.css";
 import { Link } from "react-router-dom";
-import "./course.css";
-import Chart from "../../components/chart/Chart"
 import {courseData} from "../../dummyData"
-import { Publish } from "@material-ui/icons";
+import { SchoolContext } from '../../contexts/SchoolContext'
+import { AuthContext } from '../../contexts/AuthContext'
+import { useContext, useEffect,useState} from 'react'
+
 
 export default function Course() {
-  return (
-    <div className="course">
-      <div className="courseTitleContainer">
-        <h1 className="courseTitle">Course</h1>
-        <Link to="/newcourse">
-          <button className="courseAddButton">Create</button>
-        </Link>
-      </div>
-      <div className="courseTop">
-          {/* <div className="courseTopLeft">
-              <Chart data={courseData} dataKey="Sales" title="Sales Performance"/>
-          </div> */}
-          <div className="courseTopRight">
-              <div className="courseInfoTop">
-                  <img src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" className="courseInfoImg" />
-                  <span className="courseName">Math101</span>
-              </div>
-              <div className="courseInfoBottom">
-                  <div className="courseInfoItem">
-                      <span className="courseInfoKey">Code:</span>
-                      <span className="courseInfoValue">101</span>
-                  </div>
-                  <div className="courseInfoItem">
-                      <span className="courseInfoKey">Name:</span>
-                      <span className="courseInfoValue">Math101</span>
-                  </div>
-              </div>
+
+  	// // Contexts
+    // const {
+    //   courseState: { course },
+    //   showUpdateCourseTable,
+    //   setShowUpdateCourseTable,
+    //   updateCourse,
+    //   setShowToast
+    // } = useContext(CourseContext)
+
+	// State
+
+	// const [updatedCourse, setUpdatedCourse] = useState(course)
+  
+	// useEffect(() => setUpdatedCourse(course), [course])
+  // const {username,name,phone,email,password,address,phoneNumber} = updatedCourse
+	// const onChangeUpdatedCourseForm = event =>
+	// 	setUpdatedCourse({ ...updatedCourse, [event.target.name]: event.target.value })
+    // Context  
+    // Local state
+    const [updatedCourse, setUpdatedCourse] = useState({    
+            id: "1",
+            code: "1",
+            name: "Data Science",
+  }
+      );  
+  
+    const {id,code,name} = updatedCourse
+      const onChangeUpdatedCourseForm = event =>
+          setUpdatedCourse({ ...updatedCourse, [event.target.name]: event.target.value })
+  
+      // const closeDialog = () => {
+      // 	setUpdatedCourse(course)
+      // 	setShowUpdateCourseTable(course)
+      // }
+  
+      // const onSubmit = async event => {
+      // 	event.preventDefault()
+      // 	const { success, message } = await updateCourse(updatedCourse)
+      // 	setShowUpdateCourseTable(false)
+      // 	setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
+      // }
+
+
+    return (
+        <div className="element">
+          <div className="elementTitleContainer">
+            <h1 className="elementTitle">Edit Course</h1>
+            <Link to="/newcourse">
+              <button className="elementAddButton">Create</button>
+            </Link>
           </div>
-      </div>
-      <div className="courseBottom">
-          <form className="courseForm">
-              <div className="courseFormLeft">
-                  <label>Course Code</label>
-                  <input type="text" placeholder="Apple AirPod" />
-                  <label>Course Name</label>
-                  <input type="text" placeholder="Apple AirPod" />
-                  {/* <select name="inStock" id="idStock">
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                  </select>
-                  <label>Active</label>
-                  <select name="active" id="active">
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                  </select> */}
+          <div className="elementContainer">
+            <div className="elementShow">
+              <div className="elementShowTop">
+                <div className="elementShowTopTitle">
+                  <span className="elementShowElement">{code}</span>
+                  <span className="elementShowElementTitle">{name}</span>
+                </div>
               </div>
-              <div className="courseFormRight">
-                  {/* <div className="courseUpload">
-                      <img src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" className="courseUploadImg" />
-                      <label for="file">
-                          <Publish/>
-                      </label>
-                      <input type="file" id="file" style={{display:"none"}} />
+              <div className="elementShowBottom">
+                <span className="elementShowTitle">Course Details</span>
+                <div className="elementShowInfo">
+                  <PermIdentity className="elementShowIcon" />
+                  <span className="elementShowInfoTitle">{name}</span>
+                </div>
+                <span className="elementShowTitle"></span>
+              </div>
+            </div>
+            <div className="elementUpdate">
+              <span className="elementUpdateTitle">Edit</span>
+              <form className="elementUpdateForm">
+                <div className="elementUpdateLeft">
+                  <div className="elementUpdateItem">
+                    <label>Course name</label>
+                    <input
+                      type="text"
+                      placeholder={name}
+                      className="elementUpdateInput"
+                      value={name}
+                      name="name"
+                      onChange={onChangeUpdatedCourseForm}
+                    />
+                  </div>
+                  <div className="elementUpdateItem">
+                    <label>Course code</label>
+                    <input
+                      type="text"
+                      placeholder={code}
+                      className="elementUpdateInput"
+                      value={code}
+                      name="code"
+                      onChange={onChangeUpdatedCourseForm}
+                    />
+                  </div>
+                </div>
+                <div className="elementUpdateRight">
+                  {/* <div className="elementUpdateUpload">
+                    <img
+                      className="elementUpdateImg"
+                      src="https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+                      alt=""
+                    />
+                    <label htmlFor="file">
+                      <Publish className="elementUpdateIcon" />
+                    </label>
+                    <input type="file" id="file" style={{ display: "none" }} />
                   </div> */}
-                  <button className="courseButton">Update</button>
-              </div>
-          </form>
-      </div>
-    </div>
-  );
-}
+                  <button className="elementUpdateButton"
+                  // onSubmit={}
+                  >Update</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    

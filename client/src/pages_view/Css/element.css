@@ -1,0 +1,145 @@
+/** @format */
+
+.element {
+  flex: 4;
+  padding: 20px;
+}
+
+.elementTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.elementContainer {
+  display: flex;
+  margin-top: 20px;
+}
+
+.elementShow {
+  flex: 1;
+  padding: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.elementUpdate {
+  flex: 2;
+  padding: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  margin-left: 20px;
+}
+
+.elementShowTop {
+  display: flex;
+  align-items: center;
+}
+
+.elementShowImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.elementShowTopTitle {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.elementShowelementname {
+  font-weight: 600;
+}
+
+.elementShowelementTitle {
+  font-weight: 300;
+}
+
+.elementShowBottom {
+  margin-top: 20px;
+}
+
+.elementShowTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(175, 170, 170);
+}
+
+.elementShowInfo {
+  display: flex;
+  align-items: center;
+  margin: 20px 0px;
+  color: #444;
+}
+
+.elementShowIcon {
+  font-size: 16px !important;
+}
+
+.elementShowInfoTitle {
+  margin-left: 10px;
+}
+
+.elementUpdateTitle {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.elementUpdateForm {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.elementUpdateItem {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.elementUpdateItem > label {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.elementUpdateInput {
+  border: none;
+  width: 250px;
+  height: 30px;
+  border-bottom: 1px solid gray;
+}
+
+.elementUpdateRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.elementUpdateUpload {
+  display: flex;
+  align-items: center;
+}
+
+.elementUpdateImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.elementUpdateIcon {
+  cursor: pointer;
+}
+
+.elementUpdateButton {
+  border-radius: 5px;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  background-color: darkblue;
+  color: white;
+  font-weight: 600;
+}

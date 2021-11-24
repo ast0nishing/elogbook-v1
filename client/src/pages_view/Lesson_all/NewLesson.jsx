@@ -1,120 +1,94 @@
-import "./newUser.css";
+/** @format */
 
-import { useContext, useState } from 'react'
-import { StudentContext } from '../../contexts/StudentContext'
+import "../Css/newElement.css";
+import { useContext, useState } from "react";
+import { LessonContext } from "../../contexts/LessonContext";
 import React from "react";
 
+export default function NewLesson() {
+  // Contexts
+  const { showAddLessonTable, setShowAddLessonTable, addLesson, setShowToast } =
+    useContext(LessonContext);
 
-export default function newStudent() {
-	// Contexts
-	const {
-		showAddStudentTable,
-		setShowAddStudentTable,
-		addStudent,
-		setShowToast
-	} = useContext(StudentContext)
+  // State
+  const [newLesson, setNewLesson] = useState({
+    id: "",
+    name: "",
+    stt: "",
+    course: "",
+  });
 
-	// State
-	const [newStudent, setNewStudent] = useState({
-		username: '',
-		password: '',
-		fullname: '',
-		phone:"",
-    school:"",
-    id:"",
-    role:"student"
-	})
-  
-	const { username,password,fullname,phone,school,id} = newStudent
+  const { id, name, stt, course } = newLesson;
 
-	const onChangeNewStudentForm = event =>
-		setNewStudent({ ...newStudent, [event.target.name]: event.target.value })
+  const onChangeNewLessonForm = (event) =>
+    setNewLesson({ ...newLesson, [event.target.name]: event.target.value });
 
-	const closeDialog = () => {
-		resetAddStudentData()
-	}
+  const closeDialog = () => {
+    resetAddLessonData();
+  };
 
-	const onSubmit = async event => {
-		event.preventDefault()
-		const { success, message } = await addStudent(newStudent)
-		resetAddStudentData()
-		setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
-	}
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const { success, message } = await addLesson(newLesson);
+    resetAddLessonData();
+    setShowToast({ show: true, message, type: success ? "success" : "danger" });
+  };
 
-	const resetAddStudentData = () => {
-		setNewStudent({ username:"",password:"",fullname:"",phone:"",school:"",id:"" })
-		setShowAddStudentTable(false)
-	}
+  const resetAddLessonData = () => {
+    setNewLesson({ id: "", name: "", stt: "", course: "" });
+    setShowAddLessonTable(false);
+  };
   return (
     <div className="newUser">
-      <h1 className="newUserTitle">New Student</h1>
+      <h1 className="newUserTitle">New Lesson</h1>
       <form className="newUserForm" onSubmit={onSubmit}>
         <div className="newUserItem">
-          <label>Username</label>
-          <input 
-                      type="text"
-                      placeholder="Username"
-                      name="username"
-                      required
-                      value={username}
-                      onChange={onChangeNewStudentForm} />
-        </div>
-        <div className="newUserItem">
-          <label>Full Name</label>
-          <input 
-                                type="text"
-                                placeholder="Nguyen Tan Thanh Giang"
-                                name="fullname"
-                                required
-                                value={fullname}
-                                onChange={onChangeNewStudentForm} />
-        </div>
-        <div className="newUserItem">
-          <label>Password</label>
-          <input 
-                                type="text"
-                                placeholder="Password"
-                                name="password"
-                                required
-                                value={password}
-                                onChange={onChangeNewStudentForm}/>
-        </div>
-        <div className="newUserItem">
-          <label>Phone</label>
-          <input 
-                                type="text"
-                                placeholder="0364002059"
-                                name="phone"
-                                required
-                                value={phone}
-                                onChange={onChangeNewStudentForm} />
-        </div>
-        <div className="newUserItem">
-          <label>School</label>
-          <input 
-                                type="text"
-                                placeholder="TPMS"
-                                name="school"
-                                required
-                                value={school}
-                                onChange={onChangeNewStudentForm} />
-        </div>
-        <div className="newUserItem">
           <label>ID</label>
-          <input 
-                                type="text"
-                                placeholder="001"
-                                name="id"
-                                required
-                                value={id}
-                                onChange={onChangeNewStudentForm} />
+          <input
+            type="text"
+            placeholder="id"
+            name="id"
+            required
+            value={id}
+            onChange={onChangeNewLessonForm}
+          />
         </div>
-        <div>
-          
+        <div className="newUserItem">
+          <label>Name</label>
+          <input
+            type="text"
+            placeholder="Nguyen Tan Thanh Giang"
+            name="name"
+            required
+            value={name}
+            onChange={onChangeNewLessonForm}
+          />
         </div>
+        <div className="newUserItem">
+          <label>STT</label>
+          <input
+            type="stt"
+            placeholder="01"
+            name="stt"
+            required
+            value={stt}
+            onChange={onChangeNewLessonForm}
+          />
+        </div>
+        <div className="newUserItem">
+          <label>Course</label>
+          <input
+            type="text"
+            placeholder="Data science"
+            name="course"
+            required
+            value={course}
+            onChange={onChangeNewLessonForm}
+          />
+        </div>
+        <div></div>
         <button className="newUserButton">Create</button>
       </form>
-      
     </div>
   );
 }

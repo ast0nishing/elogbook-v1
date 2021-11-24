@@ -1,53 +1,53 @@
 import "./newUser.css";
 
 import { useContext, useState } from 'react'
-import { StudentContext } from '../../contexts/StudentContext'
+import { LogbookContext } from '../../contexts/LogbookContext'
 import React from "react";
 
 
-export default function newStudent() {
+export default function newLogbook() {
 	// Contexts
 	const {
-		showAddStudentTable,
-		setShowAddStudentTable,
-		addStudent,
+		showAddLogbookTable,
+		setShowAddLogbookTable,
+		addLogbook,
 		setShowToast
-	} = useContext(StudentContext)
+	} = useContext(LogbookContext)
 
 	// State
-	const [newStudent, setNewStudent] = useState({
+	const [newLogbook, setNewLogbook] = useState({
 		username: '',
 		password: '',
 		fullname: '',
 		phone:"",
     school:"",
     id:"",
-    role:"student"
+    role:"logbook"
 	})
   
-	const { username,password,fullname,phone,school,id} = newStudent
+	const { username,password,fullname,phone,school,id} = newLogbook
 
-	const onChangeNewStudentForm = event =>
-		setNewStudent({ ...newStudent, [event.target.name]: event.target.value })
+	const onChangeNewLogbookForm = event =>
+		setNewLogbook({ ...newLogbook, [event.target.name]: event.target.value })
 
 	const closeDialog = () => {
-		resetAddStudentData()
+		resetAddLogbookData()
 	}
 
 	const onSubmit = async event => {
 		event.preventDefault()
-		const { success, message } = await addStudent(newStudent)
-		resetAddStudentData()
+		const { success, message } = await addLogbook(newLogbook)
+		resetAddLogbookData()
 		setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
 	}
 
-	const resetAddStudentData = () => {
-		setNewStudent({ username:"",password:"",fullname:"",phone:"",school:"",id:"" })
-		setShowAddStudentTable(false)
+	const resetAddLogbookData = () => {
+		setNewLogbook({ username:"",password:"",fullname:"",phone:"",school:"",id:"" })
+		setShowAddLogbookTable(false)
 	}
   return (
     <div className="newUser">
-      <h1 className="newUserTitle">New Student</h1>
+      <h1 className="newUserTitle">New Logbook</h1>
       <form className="newUserForm" onSubmit={onSubmit}>
         <div className="newUserItem">
           <label>Username</label>
@@ -57,7 +57,7 @@ export default function newStudent() {
                       name="username"
                       required
                       value={username}
-                      onChange={onChangeNewStudentForm} />
+                      onChange={onChangeNewLogbookForm} />
         </div>
         <div className="newUserItem">
           <label>Full Name</label>
@@ -67,7 +67,7 @@ export default function newStudent() {
                                 name="fullname"
                                 required
                                 value={fullname}
-                                onChange={onChangeNewStudentForm} />
+                                onChange={onChangeNewLogbookForm} />
         </div>
         <div className="newUserItem">
           <label>Password</label>
@@ -77,7 +77,7 @@ export default function newStudent() {
                                 name="password"
                                 required
                                 value={password}
-                                onChange={onChangeNewStudentForm}/>
+                                onChange={onChangeNewLogbookForm}/>
         </div>
         <div className="newUserItem">
           <label>Phone</label>
@@ -87,7 +87,7 @@ export default function newStudent() {
                                 name="phone"
                                 required
                                 value={phone}
-                                onChange={onChangeNewStudentForm} />
+                                onChange={onChangeNewLogbookForm} />
         </div>
         <div className="newUserItem">
           <label>School</label>
@@ -97,7 +97,7 @@ export default function newStudent() {
                                 name="school"
                                 required
                                 value={school}
-                                onChange={onChangeNewStudentForm} />
+                                onChange={onChangeNewLogbookForm} />
         </div>
         <div className="newUserItem">
           <label>ID</label>
@@ -107,7 +107,7 @@ export default function newStudent() {
                                 name="id"
                                 required
                                 value={id}
-                                onChange={onChangeNewStudentForm} />
+                                onChange={onChangeNewLogbookForm} />
         </div>
         <div>
           

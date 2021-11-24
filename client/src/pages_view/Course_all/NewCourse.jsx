@@ -1,31 +1,76 @@
-import "./newcourse.css";
+/** @format */
+
+import "../Css/newElement.css";
+import { useContext, useState } from "react";
+import { CourseContext } from "../../contexts/CourseContext";
+import React from "react";
 
 export default function Newcourse() {
+  // Contexts
+  const { showAddCourseTable, setShowAddCourseTable, addCourse, setShowToast } =
+    useContext(CourseContext);
+
+  // State
+  const [newCourse, setNewCourse] = useState({
+    code: "",
+    name: "",
+  });
+
+  const { code, name } = newCourse;
+
+  const onChangeNewCourseForm = (event) =>
+    setNewCourse({ ...newCourse, [event.target.name]: event.target.value });
+
+  const closeDialog = () => {
+    resetAddCourseData();
+  };
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const { success, message } = await addCourse(newCourse);
+    resetAddCourseData();
+    setShowToast({ show: true, message, type: success ? "success" : "danger" });
+  };
+
+  const resetAddCourseData = () => {
+    setNewCourse({ name: "", code: "" });
+    setShowAddCourseTable(false);
+  };
   return (
-    <div className="newcourse">
-      <h1 className="addcourseTitle">New course</h1>
-      <form className="addcourseForm">
-        {/* <div className="addcourseItem">
-          <label>Image</label>
-          <input type="file" id="file" />
-        </div> */}
-        <div className="addcourseItem">
-          <label>Code</label>
-          <input type="text" placeholder="Math101" />
+    <>
+      <div className="newElement">
+        <h1 className="newElementTitle">New Course</h1>
+        <form className="newElementForm" onSubmit={onSubmit}>
+          <div className="newElementItem">
+            <label>Course name</label>
+            <input
+              type="text"
+              placeholder="Data Science"
+              name="name"
+              required
+              value={name}
+              onChange={onChangeNewCourseForm}
+            />
+          </div>
+          <div className="newElementItem">
+            <label>Course code</label>
+            <input
+              type="text"
+              placeholder="101"
+              name="code"
+              required
+              value={code}
+              onChange={onChangeNewCourseForm}
+            />
+          </div>
+          <button className="newElementButton">Create</button>
+        </form>
+        <br></br>
+        <div className="newElement">
+          <h1 className="newElementTitle">New School Using File</h1>
+          <button className="elementAddButton">Create</button>
         </div>
-        <div className="addcourseItem">
-          <label>Name</label>
-          <input type="text" placeholder="123" />
-        </div>
-        {/* <div className="addcourseItem">
-          <label>Active</label>
-          <select name="active" id="active">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </div> */}
-        <button className="addcourseButton">Create</button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 }

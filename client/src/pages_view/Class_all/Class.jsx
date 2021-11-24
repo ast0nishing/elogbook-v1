@@ -9,39 +9,39 @@ import {
 import { Link } from "react-router-dom";
 import "./user.css";
 import { useState } from "react";
-import { StudentContext } from '../../contexts/StudentContext'
+import { ClassContext } from '../../contexts/ClassContext'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useContext, useEffect } from 'react'
 
 export default function User() {
   	// Contexts
     const {
-      studentState: { student },
-      showUpdateStudentTable,
-      setShowUpdateStudentTable,
-      updateStudent,
+      classState: { class },
+      showUpdateClassTable,
+      setShowUpdateClassTable,
+      updateClass,
       setShowToast
-    } = useContext(StudentContext)
+    } = useContext(ClassContext)
 
 	// State
-	const [updatedStudent, setUpdatedStudent] = useState(student)
+	const [updatedClass, setUpdatedClass] = useState(class)
 
-	useEffect(() => setUpdatedStudent(student), [student])
+	useEffect(() => setUpdatedClass(class), [class])
 
-	const {username,fullname,phone} = updatedStudent
+	const {username,fullname,phone} = updatedClass
 
-	const onChangeUpdatedStudentForm = event =>
-		setUpdatedStudent({ ...updatedStudent, [event.target.name]: event.target.value })
+	const onChangeUpdatedClassForm = event =>
+		setUpdatedClass({ ...updatedClass, [event.target.name]: event.target.value })
 
 	const closeDialog = () => {
-		setUpdatedStudent(student)
-		setShowUpdateStudentTable(false)
+		setUpdatedClass(class)
+		setShowUpdateClassTable(false)
 	}
 
 	const onSubmit = async event => {
 		event.preventDefault()
-		const { success, message } = await updateStudent(updatedStudent)
-		setShowUpdateStudentTable(false)
+		const { success, message } = await updateClass(updatedClass)
+		setShowUpdateClassTable(false)
 		setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
 	}
   return (

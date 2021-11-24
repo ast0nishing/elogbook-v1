@@ -1,54 +1,53 @@
-
 import "./newUser.css";
 
 import { useContext, useState } from 'react'
-import { ClassContext } from '../../contexts/ClassContext'
+import { TimetableContext } from '../../contexts/TimetableContext'
 import React from "react";
 
 
-export default function newClass() {
+export default function newTimeTable() {
 	// Contexts
 	const {
-		showAddClassTable,
-		setShowAddClassTable,
-		addClass,
+		showAddTimetableTable,
+		setShowAddTimetableTable,
+		addTimetable,
 		setShowToast
-	} = useContext(ClassContext)
+	} = useContext(TimetableContext)
 
 	// State
-	const [newClass, setNewClass] = useState({
+	const [newTimetable, setNewTimetable] = useState({
 		username: '',
 		password: '',
 		fullname: '',
 		phone:"",
     school:"",
     id:"",
-    role:"class"
+    role:"admin"
 	})
   
-	const { username,password,fullname,phone,school,id} = newClass
+	const { username,password,fullname,phone,school,id} = newTimetable
 
-	const onChangeNewClassForm = event =>
-		setNewClass({ ...newClass, [event.target.name]: event.target.value })
+	const onChangeNewTimetableForm = event =>
+		setNewTimetable({ ...newTimetable, [event.target.name]: event.target.value })
 
 	const closeDialog = () => {
-		resetAddClassData()
+		resetAddLogbookData()
 	}
 
 	const onSubmit = async event => {
 		event.preventDefault()
-		const { success, message } = await addClass(newClass)
-		resetAddClassData()
+		const { success, message } = await addTimetable(newTimetable)
+		resetAddTimetableData()
 		setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
 	}
 
-	const resetAddClassData = () => {
-		setNewClass({ username:"",password:"",fullname:"",phone:"",school:"",id:"" })
-		setShowAddClassTable(false)
+	const resetAddTimetableData = () => {
+		setNewTimetable({ username:"",password:"",fullname:"",phone:"",school:"",id:"" })
+		setShowAddLogbookTable(false)
 	}
   return (
     <div className="newUser">
-      <h1 className="newUserTitle">New Class</h1>
+      <h1 className="newUserTitle">New Timetable</h1>
       <form className="newUserForm" onSubmit={onSubmit}>
         <div className="newUserItem">
           <label>Username</label>
@@ -58,7 +57,7 @@ export default function newClass() {
                       name="username"
                       required
                       value={username}
-                      onChange={onChangeNewClassForm} />
+                      onChange={onChangeNewTimetableForm} />
         </div>
         <div className="newUserItem">
           <label>Full Name</label>
@@ -68,7 +67,7 @@ export default function newClass() {
                                 name="fullname"
                                 required
                                 value={fullname}
-                                onChange={onChangeNewClassForm} />
+                                onChange={onChangeNewTimetableForm} />
         </div>
         <div className="newUserItem">
           <label>Password</label>
@@ -78,7 +77,7 @@ export default function newClass() {
                                 name="password"
                                 required
                                 value={password}
-                                onChange={onChangeNewClassForm}/>
+                                onChange={onChangeNewTimetableForm}/>
         </div>
         <div className="newUserItem">
           <label>Phone</label>
@@ -88,7 +87,7 @@ export default function newClass() {
                                 name="phone"
                                 required
                                 value={phone}
-                                onChange={onChangeNewClassForm} />
+                                onChange={onChangeNewTimetableForm} />
         </div>
         <div className="newUserItem">
           <label>School</label>
@@ -98,7 +97,7 @@ export default function newClass() {
                                 name="school"
                                 required
                                 value={school}
-                                onChange={onChangeNewClassForm} />
+                                onChange={onChangeNewTimetableForm} />
         </div>
         <div className="newUserItem">
           <label>ID</label>
@@ -108,7 +107,7 @@ export default function newClass() {
                                 name="id"
                                 required
                                 value={id}
-                                onChange={onChangeNewClassForm} />
+                                onChange={onChangeNewTimetableForm} />
         </div>
         <div>
           

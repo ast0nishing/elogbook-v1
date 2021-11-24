@@ -17,7 +17,7 @@ export const LessonContext = createContext();
 
 const LessonContextProvider = ({ children }) => {
   // State
-  const [courseState, dispatch] = useReducer(lessonReducer, {
+  const [lessonState, dispatch] = useReducer(lessonReducer, {
     lesson: null,
     lessons: [],
     lessonsLoading: true,
@@ -62,9 +62,9 @@ const LessonContextProvider = ({ children }) => {
   };
 
   // Delete post
-  const deleteLessson = async (lessonId) => {
+  const deleteLesson = async (lessonId) => {
     try {
-      const response = await axios.delete(`${apiUrl}/admin/lesson/${courseId}`);
+      const response = await axios.delete(`${apiUrl}/admin/lesson/${lessonId}`);
       if (response.data.success)
         dispatch({ type: DELETE_LESSON, payload: lessonId });
     } catch (error) {
@@ -74,7 +74,7 @@ const LessonContextProvider = ({ children }) => {
 
   // Find post when user is updating post
   const findLesson = (lessonId) => {
-    const lesson = lessonState.lesson.find((lesson) => lesson._id === lessonId);
+    const lesson = lessonState.lessons.find((lesson) => lesson.id === lessonId);
     dispatch({ type: FIND_LESSON, payload: lesson });
   };
 
@@ -82,7 +82,7 @@ const LessonContextProvider = ({ children }) => {
   const updateLesson = async (updatedLesson) => {
     try {
       const response = await axios.put(
-        `${apiUrl}/admin/lesson/${updatedLesson._id}`,
+        `${apiUrl}/admin/lesson/${updatedLesson.id}`,
         updatedLesson
       );
       if (response.data.success) {
@@ -104,7 +104,7 @@ const LessonContextProvider = ({ children }) => {
     setShowAddLessonTable,
     showUpdateLessonTable,
     setShowUpdateLessonTable,
-    addCLesson,
+    addLesson,
     showToast,
     setShowToast,
     deleteLesson,

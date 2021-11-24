@@ -1,54 +1,61 @@
 import {
-  CalendarToday,
-  LocationSearching,
-  MailOutline,
   PermIdentity,
   PhoneAndroid,
   Publish,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import "./user.css";
+import "../Css/element.css";
 import { useState } from "react";
-import { StudentContext } from '../../contexts/StudentContext'
+import { LessonContext } from '../../contexts/LessonContext'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useContext, useEffect } from 'react'
 
-export default function User() {
-  	// Contexts
-    const {
-      studentState: { student },
-      showUpdateStudentTable,
-      setShowUpdateStudentTable,
-      updateStudent,
-      setShowToast
-    } = useContext(StudentContext)
+export default function Lesson() {
+  	// // Contexts
+    // const {
+    //   lessonState: { lesson },
+    //   showUpdateLessonTable,
+    //   setShowUpdateLessonTable,
+    //   updateLesson,
+    //   setShowToast
+    // } = useContext(LessonContext)
 
 	// State
-	const [updatedStudent, setUpdatedStudent] = useState(student)
 
-	useEffect(() => setUpdatedStudent(student), [student])
+	// const [updatedLesson, setUpdatedLesson] = useState(lesson)
+	// useEffect(() => setUpdatedLesson(lesson), [lesson])
+	// const {username,fullname,phone} = updatedLesson
+	// const onChangeUpdatedLessonForm = event =>
+	// 	setUpdatedLesson({ ...updatedLesson, [event.target.name]: event.target.value })
+  // Local state
+  const [updatedCourse, setUpdatedCourse] = useState({    
+    id: "1",
+    code: "1",
+    course: "Data Science",
+    name:"Introduction to 1"
+}
+);  
 
-	const {username,fullname,phone} = updatedStudent
+const {id,code,name,course} = updatedCourse
+const onChangeUpdatedCourseForm = event =>
+  setUpdatedCourse({ ...updatedCourse, [event.target.name]: event.target.value })
 
-	const onChangeUpdatedStudentForm = event =>
-		setUpdatedStudent({ ...updatedStudent, [event.target.name]: event.target.value })
+	// const closeDialog = () => {
+	// 	setUpdatedLesson(lesson)
+	// 	setShowUpdateLessonTable(false)
+	// }
 
-	const closeDialog = () => {
-		setUpdatedStudent(student)
-		setShowUpdateStudentTable(false)
-	}
-
-	const onSubmit = async event => {
-		event.preventDefault()
-		const { success, message } = await updateStudent(updatedStudent)
-		setShowUpdateStudentTable(false)
-		setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
-	}
+	// const onSubmit = async event => {
+	// 	event.preventDefault()
+	// 	const { success, message } = await updateLesson(updatedLesson)
+	// 	setShowUpdateLessonTable(false)
+	// 	setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
+	// }
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Edit User</h1>
-        <Link to="/newUser">
+        <h1 className="userTitle">Edit Lesson</h1>
+        <Link to="/newlesson">
           <button className="userAddButton">Create</button>
         </Link>
       </div>
@@ -61,20 +68,19 @@ export default function User() {
               className="userShowImg"
             />
             <div className="userShowTopTitle">
-              <span className="userShowUsername">{username}</span>
-              <span className="userShowUserTitle">Software Engineer</span>
+              <span className="userShowUsername">STT: {id}</span>
             </div>
           </div>
           <div className="userShowBottom">
-            <span className="userShowTitle">Account Details</span>
+            <span className="userShowTitle">Course Details</span>
             <div className="userShowInfo">
               <PermIdentity className="userShowIcon" />
-              <span className="userShowInfoTitle">{fullname}</span>
+              <span className="userShowInfoTitle">{name}</span>
             </div>
             <span className="userShowTitle"></span>
             <div className="userShowInfo">
               <PhoneAndroid className="userShowIcon" />
-              <span className="userShowInfoTitle">{phone}</span>
+              <span className="userShowInfoTitle">{course}</span>
             </div>
           </div>
         </div>

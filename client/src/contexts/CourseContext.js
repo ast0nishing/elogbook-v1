@@ -85,7 +85,7 @@ const CourseContextProvider = ({ children }) => {
     try {
       const response = await axios.put(
         `${apiUrl}/admin/course/${updatedCourse._id}`,
-        updatedPost
+        updatedCourse
       );
       if (response.data.success) {
         dispatch({ type: UPDATE_COURSE, payload: response.data.course });

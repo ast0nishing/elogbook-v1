@@ -4,7 +4,7 @@ import { DeleteOutline } from "@material-ui/icons";
 import { userRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { StudentContext } from '../../contexts/StudentContext'
+import { ClassContext } from '../../contexts/ClassContext'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useContext, useEffect } from 'react'
 // import Spinner from 'react-bootstrap/Spinner'
@@ -16,7 +16,7 @@ import Tooltip from 'react-bootstrap/Tooltip'
 // import Col from 'react-bootstrap/Col'
 import ActionButtons from "./ActionButtons";
 
-export default function StudentList() {
+export default function ClassList() {
 	// Contexts
 	const {
 		authState: {
@@ -25,26 +25,28 @@ export default function StudentList() {
 	} = useContext(AuthContext)
 
 	const {
-		studentState: { student, students, studentsLoading },
-		getStudents,
-		setShowAddStudentTable,
+		classState: { class, classes, classesLoading },
+		getClasses,
+		setShowAddClassTable,
 		showToast: { show, message, type },
 		setShowToast
-	} = useContext(StudentContext)
+	} = useContext(ClassContext)
 
-	useEffect(() => getStudents(), [])
+	useEffect(() => getClasses(), [])
   
-  const [data, setData] = useState(students);
+  const [data, setData] = useState(classes);
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
-  
+
+
+
   const columns = [
     { field: "_id", headerName: "ID"},
-    { field: "username", headerName: "Username", width: 200 },
-    { field: "fullname", headerName: "Fullname", width: 200 },
-    { field: "phone", headerName: "Phone", width: 200 },
+    { field: "school", headerName: "School", width: 200 },
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "academicyear", headerName: "Academicyear", width: 200 },
     {
       field: "action",
       headerName: "Action",
@@ -74,7 +76,7 @@ export default function StudentList() {
     <div>
     <OverlayTrigger
 					placement='left'
-					overlay={<Tooltip>Add new student</Tooltip>}
+					overlay={<Tooltip>Add new class</Tooltip>}
 				>
        <Link to={"/newuser"}>
 					<Button 

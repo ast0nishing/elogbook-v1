@@ -159,25 +159,42 @@ export const lessons = [
   {
     id: "1",
     name: "Introduction 1",
-    stt: "Normal class",
+    stt: "1",
+    course: "Data science",
   },
   {
     id: "2",
     name: "Introduction 1",
-    stt: "Backup class",
+    stt: "2",
+    course: "Data science",
+  },
+  {
+    id: "3",
+    name: "Introduction 1",
+    stt: "1",
+    course: "Data analysis",
+  },
+  {
+    id: "4",
+    name: "Introduction 2",
+    stt: "2",
+    course: "Data analysis",
   },
 ];
 
 export const courses = [
   {
+    id: "1",
     code: "1",
     name: "Data Science",
   },
   {
+    id: "2",
     code: "2",
     name: "Data Analysis",
   },
   {
+    id: "3",
     code: "3",
     name: "Data Science",
   },
@@ -222,7 +239,6 @@ export const schools = [
     town: "Cai Nhum",
     street: "NA",
     streetNo: "NA",
-    class: "6",
   },
   {
     id: "2",
@@ -235,7 +251,6 @@ export const schools = [
     town: "Cai Nhum",
     street: "NA",
     streetNo: "NA",
-    class: "6",
   },
 ];
 
@@ -392,12 +407,3 @@ export const students = [
     class: "7",
   },
 ];
-
-// export const courseRows = [
-//   {
-//     code: 101,
-//     name: "Math101",
-//     img: "https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&d
-//     price: "$120.00",
-//   },
-// ];

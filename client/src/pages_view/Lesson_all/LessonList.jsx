@@ -1,12 +1,7 @@
-import "./userList.css";
+// Decoration
+import "../Css/element.css"
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { userRows } from "../../dummyData";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { StudentContext } from '../../contexts/StudentContext'
-import { AuthContext } from '../../contexts/AuthContext'
-import { useContext, useEffect } from 'react'
 // import Spinner from 'react-bootstrap/Spinner'
 import addIcon from "../../assets/plus-circle-fill.svg"
 import Button from 'react-bootstrap/Button'
@@ -14,45 +9,66 @@ import Button from 'react-bootstrap/Button'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 // import Col from 'react-bootstrap/Col'
-import ActionButtons from "./ActionButtons";
+// import ActionButtons from "./ActionButtons";
 
-export default function StudentList() {
-	// Contexts
-	const {
-		authState: {
-			user: { username }
-		}
-	} = useContext(AuthContext)
+// React
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { LessonContext } from '../../contexts/LessonContext'
 
-	const {
-		studentState: { student, students, studentsLoading },
-		getStudents,
-		setShowAddStudentTable,
-		showToast: { show, message, type },
-		setShowToast
-	} = useContext(StudentContext)
+// Context
+import { AuthContext } from '../../contexts/AuthContext'
+import { useContext, useEffect } from 'react'
+// Dummy data
+import {lessons} from "../../dummyData"
 
-	useEffect(() => getStudents(), [])
+export default function LessonList() {
+  // // Auth context
+	// const {
+	// 	authState: {
+	// 		user: { username }
+	// 	}
+	// } = useContext(AuthContext)
+  // // Lesson context
+	// const {
+	// 	lessonState: { lesson, lessons, lessonsLoading },
+	// 	getLessons,
+	// 	setShowAddLessonTable,
+	// 	showToast: { show, message, type },
+	// 	setShowToast
+	// } = useContext(LessonContext)
+
+	// useEffect(() => getLessons(), [])
   
-  const [data, setData] = useState(students);
+
+  const [data, setData] = useState(lessons);
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
   
   const columns = [
-    { field: "_id", headerName: "ID"},
-    { field: "username", headerName: "Username", width: 200 },
-    { field: "fullname", headerName: "Fullname", width: 200 },
-    { field: "phone", headerName: "Phone", width: 200 },
+    { field: "id", headerName: "ID"},
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "stt", headerName: "STT", width: 200 },
+    { field: "course", headerName: "Course", width: 200 },
     {
       field: "action",
       headerName: "Action",
       width: 150,
       renderCell: (params) => {
         return (
+          // <>
+          //   <ActionButtons id={params.row.id}/>
+          // </>
           <>
-            <ActionButtons _id={params.row._id}/>
+            <Link to={"/lesson/" + params.row.id}>
+              <button className="elementListEdit">Edit</button>
+            </Link>
+            <DeleteOutline
+              className="elementListDelete"
+              onClick={() => handleDelete(params.row.id)}
+            />
           </>
         );
       },
@@ -62,9 +78,9 @@ export default function StudentList() {
     <>
 
 
-    <div className="userList">
+    <div className="elementList">
       <DataGrid
-        getRowId={(r)=>r._id}
+        // getRowId={(r)=>r._id}
         rows={data}
         disableSelectionOnClick
         columns={columns}
@@ -74,9 +90,9 @@ export default function StudentList() {
     <div>
     <OverlayTrigger
 					placement='left'
-					overlay={<Tooltip>Add new student</Tooltip>}
+					overlay={<Tooltip>Add new lesson</Tooltip>}
 				>
-       <Link to={"/newuser"}>
+       <Link to={"/newlesson"}>
 					<Button 
 						className='btn-floating' style={{"z-index":-1}}
 					>

@@ -1,0 +1,5 @@
+class,fromWeek,toWeek,course,teacher,weekDay,Time
+6,1,-1,Data Analysis,Dung,Monday,8
+6,1,-1,Data Analysis,Dung,Tuesday,9
+7,1,-1,Data Science,Giang,Monday,8
+7,1,-1,Data Science,Giang,Tuesday,9

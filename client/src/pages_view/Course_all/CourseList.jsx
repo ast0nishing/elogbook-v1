@@ -1,42 +1,40 @@
-import "./courseList.css";
+import "../Css/elementList.css"
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { courseRows } from "../../../dummyData";
+import {courses} from "../../dummyData"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
 export default function CourseList() {
-  const [data, setData] = useState(courseRows);
+  // Contexts
+	// const {
+	// 	authState: {
+	// 		user: { username }
+	// 	}
+	// } = useContext(AuthContext)
+
+	// const {
+	// 	coureState: { course, courses, coursesLoading },
+	// 	getCourses,
+	// 	setShowAddCourseTable,
+	// 	showToast: { show, message, type },
+	// 	setShowToast
+	// } = useContext(CourseContext)
+
+	// useEffect(() => getCourses(), [])
+
+  const [data, setData] = useState(courses);
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "code", headerName: "Course Code",width:200},
     {
-      field: "course",
-      headerName: "course",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="courseListItem">
-            <img className="courseListImg" src={params.row.img} alt="" />
-            {params.row.name}
-          </div>
-        );
-      },
-    },
-    { field: "stock", headerName: "Stock", width: 200 },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 120,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 160,
+      field: "name",
+      headerName: "Course name",
+      width:200
     },
     {
       field: "action",
@@ -46,10 +44,10 @@ export default function CourseList() {
         return (
           <>
             <Link to={"/course/" + params.row.id}>
-              <button className="courseListEdit">Edit</button>
+              <button className="elementListEdit">Edit</button>
             </Link>
             <DeleteOutline
-              className="courseListDelete"
+              className="elementListDelete"
               onClick={() => handleDelete(params.row.id)}
             />
           </>
@@ -59,9 +57,10 @@ export default function CourseList() {
   ];
 
   return (
-    <div className="courseList">
+    <div className="elementList">
       <DataGrid
         rows={data}
+        getRowId={(r) => r.code}
         disableSelectionOnClick
         columns={columns}
         pageSize={8}
