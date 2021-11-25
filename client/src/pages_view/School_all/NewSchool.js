@@ -10,6 +10,8 @@ import { useContext, useState } from "react";
 import { SchoolContext } from "../../contexts/SchoolContext";
 import React from "react";
 import Toast from "react-bootstrap/Toast";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function NewSchool() {
   // Contexts
   const {
@@ -117,26 +119,11 @@ export default function NewSchool() {
     console.log(data);
     console.log("---------------------------");
   };
-
+  const notify = () => {
+    toast(message);
+  };
   return (
     <>
-      <Toast
-        show={show}
-        style={{ position: "fixed", top: "20%", right: "10px" }}
-        className={`bg-${type} text-white`}
-        onClose={setShowToast.bind(this, {
-          show: false,
-          message: "",
-          type: null,
-        })}
-        delay={100000}
-        autohide
-      >
-        <Toast.Body>
-          <strong>{message}</strong>
-        </Toast.Body>
-      </Toast>
-
       <div className="newElement">
         <h1 className="newElementTitle">New School</h1>
         <form onSubmit={onSubmit}>
@@ -247,7 +234,21 @@ export default function NewSchool() {
           </div>
           <br></br>
           <div className="form-row">
-            <input type="submit" value="Submit"></input>
+            <input type="submit" value="Submit" onClick={notify}></input>
+          </div>
+          <div>
+            <ToastContainer
+              show={show}
+              style={{ position: "top-left", top: "10%", right: "5%" }}
+              className={`bg-danger text-white`}
+              onClose={setShowToast.bind(this, {
+                show: false,
+                message: "",
+                type: null,
+              })}
+              delay={3000}
+              autohide
+            />
           </div>
         </form>
         <h1 className="newElementTitle">New School Using Files</h1>

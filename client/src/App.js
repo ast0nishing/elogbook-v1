@@ -53,8 +53,7 @@ function App() {
                     path="/login"
                     render={(props) => <Auth {...props} authRoute="login" />}
                   />
-
-                  {/* School all */}
+                  // {/* School all */}
                   <ProtectedRoute
                     exact
                     path="/schools"
@@ -70,8 +69,6 @@ function App() {
                     path="/school/:id"
                     component={SchoolDetail}
                   />
-
-                  {/* Course all */}
                   <ProtectedRoute
                     exact
                     path="/newCourse"
@@ -119,7 +116,6 @@ function App() {
                     path="/newstudent"
                     component={NewStudent}
                   />
-
                   <ProtectedRoute exact path="/" component={Home} />
                   {/* <Route exact path="/" component={TestJson} /> */}
                 </Switch>
