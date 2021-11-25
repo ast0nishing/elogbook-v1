@@ -3,7 +3,7 @@
 export const authReducer = (state, action) => {
   const {
     type,
-    payload: { isAuthenticated, user },
+    payload: { isAuthenticated, user, role },
   } = action;
 
   switch (type) {
@@ -13,6 +13,7 @@ export const authReducer = (state, action) => {
         authLoading: false,
         isAuthenticated,
         user,
+        role,
       };
 
     default:

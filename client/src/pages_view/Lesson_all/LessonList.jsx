@@ -94,7 +94,7 @@ export default function LessonList() {
 				>
        <Link to={"/newlesson"}>
 					<Button 
-						className='btn-floating' style={{"z-index":-1}}
+						className='btn-floating' style={{"zIndex":-1}}
 					>
 						<img src={addIcon} alt='add-post' width='60' height='60' />
 					</Button>

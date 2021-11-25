@@ -15,7 +15,7 @@ const LoginForm = () => {
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
-    role: "",
+    role: "admin",
   });
 
   const [alert, setAlert] = useState(null);

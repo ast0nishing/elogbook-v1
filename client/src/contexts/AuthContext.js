@@ -2,7 +2,11 @@
 
 import { createContext, useReducer, useEffect } from "react";
 import { authReducer } from "../reducers/authReducer";
-import { apiUrl, LOCAL_STORAGE_TOKEN_NAME } from "./constants";
+import {
+  apiUrl,
+  SESSION_STORAGE_ACCESS_TOKEN_NAME,
+  SESSION_STORAGE_REFRESH_TOKEN_NAME,
+} from "./constants";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -10,27 +14,54 @@ export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const [authState, dispatch] = useReducer(authReducer, {
-    authLoading: true,
+    authLoading: false,
     isAuthenticated: false,
     user: null,
-    role: "admin",
+    role: null,
   });
   // Authenticate user
   const loadUser = async () => {
-    if (localStorage[LOCAL_STORAGE_TOKEN_NAME]) {
-      setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
+    if (sessionStorage[SESSION_STORAGE_ACCESS_TOKEN_NAME]) {
+      setAuthToken(sessionStorage[SESSION_STORAGE_ACCESS_TOKEN_NAME]);
     }
-
     try {
-      const response = await axios.get(`${apiUrl}/auth`);
-      if (response.data.success) {
+      const response = await axios.get(`${apiUrl}/auth/getUsername`);
+      if (response.data.status !== 204) {
         dispatch({
           type: "SET_AUTH",
-          payload: { isAuthenticated: true, user: response.data.user },
+          payload: {
+            isAuthenticated: true,
+            user: response.data.username,
+            role: sessionStorage["role"],
+          },
         });
       }
+      // if (response.data.success) {
+      //   try {
+      //     const response = await axios.post(
+      //       `${apiUrl}/auth/refresh-token`,
+      //       sessionStorage[SESSION_STORAGE_REFRESH_TOKEN_NAME]
+      //     );
+      //     if (response.data.accessToken)
+      //       dispatch({
+      //         type: "SET_AUTH",
+      //         payload: {
+      //           isAuthenticated: true,
+      //           user: response.data.user,
+      //           role: sessionStorage["role"],
+      //         },
+      //       });
+      //   } catch (error) {
+      //     sessionStorage.removeItem(SESSION_STORAGE_ACCESS_TOKEN_NAME);
+      //     setAuthToken(null);
+      //     dispatch({
+      //       type: "SET_AUTH",
+      //       payload: { isAuthenticated: false, user: null },
+      //     });
+      // }
+      // }
     } catch (error) {
-      localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
+      sessionStorage.removeItem(SESSION_STORAGE_ACCESS_TOKEN_NAME);
       setAuthToken(null);
       dispatch({
         type: "SET_AUTH",
@@ -45,12 +76,17 @@ const AuthContextProvider = ({ children }) => {
   const loginUser = async (userForm) => {
     try {
       const response = await axios.post(`${apiUrl}/auth/login`, userForm);
-      if (response.data.success)
-        localStorage.setItem(
-          LOCAL_STORAGE_TOKEN_NAME,
+      if (response.data.accessToken)
+        sessionStorage.setItem(
+          SESSION_STORAGE_ACCESS_TOKEN_NAME,
           response.data.accessToken
         );
-
+      sessionStorage.setItem("role", userForm.role);
+      sessionStorage.setItem(
+        SESSION_STORAGE_REFRESH_TOKEN_NAME,
+        response.data.refreshToken
+      );
+      const role = userForm.role;
       await loadUser();
 
       return response.data;
@@ -65,8 +101,8 @@ const AuthContextProvider = ({ children }) => {
     try {
       const response = await axios.post(`${apiUrl}/auth/register`, userForm);
       if (response.data.success)
-        localStorage.setItem(
-          LOCAL_STORAGE_TOKEN_NAME,
+        sessionStorage.setItem(
+          SESSION_STORAGE_ACCESS_TOKEN_NAME,
           response.data.accessToken
         );
 
@@ -81,7 +117,7 @@ const AuthContextProvider = ({ children }) => {
 
   // Logout
   const logoutUser = () => {
-    localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
+    sessionStorage.removeItem(SESSION_STORAGE_ACCESS_TOKEN_NAME);
     dispatch({
       type: "SET_AUTH",
       payload: { isAuthenticated: false, user: null },

@@ -1,10 +1,11 @@
 /** @format */
 export const apiUrl =
   process.env.NODE_ENV !== "production"
-    ? "http://localhost:5000/api"
+    ? "https://api.logtome.net"
     : "https://sleepy-inlet-56101.herokuapp.com/api";
 
-export const LOCAL_STORAGE_TOKEN_NAME = "mern-lernit";
+export const SESSION_STORAGE_ACCESS_TOKEN_NAME = "access-token";
+export const SESSION_STORAGE_REFRESH_TOKEN_NAME = "refresh-token";
 // POST example
 export const POSTS_LOADED_SUCCESS = "POSTS_LOADED_SUCCESS";
 export const POSTS_LOADED_FAIL = "POSTS_LOADED_FAIL";
