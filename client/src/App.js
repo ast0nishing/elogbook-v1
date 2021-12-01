@@ -92,7 +92,7 @@ function App() {
                   />
                   <ProtectedRoute
                     exact
-                    path="/lesson/:lessonID"
+                    path="/lessondetail"
                     component={Lesson}
                   />
                   <ProtectedRoute

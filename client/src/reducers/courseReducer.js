@@ -43,7 +43,7 @@ export const courseReducer = (state, action) => {
 
     case UPDATE_COURSE:
       const newCourses = state.courses.map((course) =>
-        course.code == payload ? payload : course
+        course.code === payload ? payload : course
       );
       return {
         ...state,

@@ -1,5 +1,4 @@
 code,name,lessons_name,lesson_stt
-SE19CS311,Introduction to Database,Introduction to Database 1,1
-SE19CS311,Introduction to Database,Introduction to Database 2,2
-SE19CS312,Introduction to Analysis,Introduction to Analysis 1,1
-SE19CS312,Introduction to Analysis,Introduction to Analysis 2,2
+SE19CS311,Introduction to Database,Introduction to Database,1
+SE19CS311,Introduction to Database,Relational Model,2
+

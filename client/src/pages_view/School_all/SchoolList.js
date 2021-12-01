@@ -4,7 +4,6 @@ import "../Student_all/userList.css";
 import "../Css/elementList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { schools, students } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { SchoolContext } from "../../contexts/SchoolContext";
@@ -20,21 +19,21 @@ import ActionButtons from "./ActionButtons";
 
 export default function SchoolList() {
   // Contexts
-  // const {
-  // 	authState: {
-  // 		user: { username }
-  // 	}
-  // } = useContext(AuthContext)
+  const {
+    authState: {
+      user: { username },
+    },
+  } = useContext(AuthContext);
 
-  // const {
-  // 	studentState: { student, students, studentsLoading },
-  // 	getStudents,
-  // 	setShowAddStudentTable,
-  // 	showToast: { show, message, type },
-  // 	setShowToast
-  // } = useContext(StudentContext)
+  const {
+    schoolState: { school, schools, schoolsLoading },
+    getSchools,
+    setShowAddStudentTable,
+    showToast: { show, message, type },
+    setShowToast,
+  } = useContext(SchoolContext);
 
-  // useEffect(() => getStudents(), [])
+  useEffect(() => getSchools(), []);
 
   const [data, setData] = useState(schools);
 

@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { CourseContext } from "../../contexts/CourseContext";
 import { AuthContext } from "../../contexts/AuthContext";
-import ActionButtons from "./ActionButtons";
+import { ToastContainer, toast } from "react-toastify";
 export default function CourseList() {
   // Contexts
   const {
@@ -25,7 +25,6 @@ export default function CourseList() {
   const {
     courseState: { course, courses, coursesLoading },
     getCourses,
-    setShowAddCourseTable,
     showToast: { show, message, type },
     setShowToast,
     deleteCourse,
@@ -41,10 +40,16 @@ export default function CourseList() {
     findCourse(courseId);
     history.push("/coursedetail");
   };
-
-  const handleDelete = (courseId) => {
-    deleteCourse(courseId);
-    setData(data.filter((item) => item.code !== courseId));
+  const handleDelete = async (courseId) => {
+    try {
+      setData(data.filter((item) => item.code !== courseId));
+      const { message } = await deleteCourse(courseId);
+      if (message) {
+        console.log(message);
+        setShowToast({ show: true, message, type: null });
+        toast(message);
+      }
+    } catch (error) {}
   };
   const columns = [
     { field: "code", headerName: "Course Code", width: 200 },
@@ -75,31 +80,62 @@ export default function CourseList() {
       },
     },
   ];
-
-  return (
-    <>
-      <div className="elementList">
-        <DataGrid
-          rows={data}
-          getRowId={(r) => r.code}
-          disableSelectionOnClick
-          columns={columns}
-          pageSize={8}
-          checkboxSelection
-        />
-      </div>
-      <div>
-        <OverlayTrigger
-          placement="left"
-          overlay={<Tooltip>Add new course</Tooltip>}
-        >
+  let body = null;
+  if (courses.length === 0) {
+    body = (
+      <>
+        <div className="elementList">
+          <h2 className="header">
+            There is no course available, please create it to start your first
+            logbook
+          </h2>
           <Link to={"/newcourse"}>
             <Button className="btn-floating" style={{ "z-index": -1 }}>
               <img src={addIcon} alt="add-post" width="60" height="60" />
             </Button>
           </Link>
-        </OverlayTrigger>
-      </div>
-    </>
-  );
+        </div>
+      </>
+    );
+  } else {
+    body = (
+      <>
+        <div className="elementList">
+          <ToastContainer
+            show={show}
+            style={{ position: "top-left", top: "10%", right: "5%" }}
+            className={`bg-danger text-white`}
+            onClose={setShowToast.bind(this, {
+              show: false,
+              message: "",
+              type: null,
+            })}
+            delay={3000}
+            autohide
+          />
+          <DataGrid
+            rows={data}
+            getRowId={(r) => r.code}
+            disableSelectionOnClick
+            columns={columns}
+            pageSize={8}
+            checkboxSelection
+          />
+        </div>
+        <div>
+          <OverlayTrigger
+            placement="left"
+            overlay={<Tooltip>Add new course</Tooltip>}
+          >
+            <Link to={"/newcourse"}>
+              <Button className="btn-floating" style={{ "z-index": -1 }}>
+                <img src={addIcon} alt="add-post" width="60" height="60" />
+              </Button>
+            </Link>
+          </OverlayTrigger>
+        </div>
+      </>
+    );
+  }
+  return <>{body}</>;
 }

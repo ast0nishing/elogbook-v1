@@ -46,18 +46,23 @@ const LessonContextProvider = ({ children }) => {
     }
   };
 
-  // Add post
+  // Add lessons
   const addLesson = async (newLesson) => {
     try {
-      const response = await axios.post(`${apiUrl}/admin/newLesson`, newLesson);
-      if (response.data.success) {
-        dispatch({ type: ADD_LESSON, payload: response.data.lesson });
-        return response.data;
+      const response = await axios.post(
+        `${apiUrl}/admin/createLesson`,
+        newLesson
+      );
+      if (response.status == 200) {
+        // dispatch({ type: ADD_LESSON, payload: response.data.lesson });
+        // return response.data;
+        return { message: "sucessfull" };
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      return { message: "Data already exist" };
+      // return error.response.data
+      //   ? error.response.data
+      //   : { success: false, message: "Server error" };
     }
   };
 

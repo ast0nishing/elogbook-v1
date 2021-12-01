@@ -44,25 +44,24 @@ const SchoolContextProvider = ({ children }) => {
       dispatch({ type: SCHOOLS_LOADED_FAIL });
     }
   };
-  // Add student
+  // Add school
   const addSchool = async (newSchool) => {
     try {
       const response = await axios.post(
         `${apiUrl}/admin/createSchool`,
         newSchool
       );
-      if (response.data.success) {
+      if (response.status == 200) {
         dispatch({ type: ADD_SCHOOL, payload: response.data.school });
-        return response.data;
+        return { success: true, message: response.msg };
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : // : { success: false, message: "Server error" };
-          { success: false, message: "Error" };
+      return { success: false, message: "Error" };
+      // error.response.data
+      //   ? error.response.data
+      //   : // : { success: false, message: "Server error" };
     }
   };
-
   // Delete post
   const deleteSchool = async (schoolId) => {
     try {

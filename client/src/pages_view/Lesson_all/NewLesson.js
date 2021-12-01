@@ -7,42 +7,44 @@ import "../Css/elementForm.css";
 import { CSVReader } from "react-papaparse";
 // React
 import { useContext, useState } from "react";
-import { CourseContext } from "../../contexts/CourseContext";
+import { LessonContext } from "../../contexts/LessonContext";
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Newcourse() {
+export default function Newlesson() {
   // Contexts
-  const { showAddCourseTable, setShowAddCourseTable, addCourse, setShowToast } =
-    useContext(CourseContext);
+  const { showAddLessonTable, setShowAddLessonTable, addLesson, setShowToast } =
+    useContext(LessonContext);
 
   // State
-  const [newCourse, setNewCourse] = useState({
+  const [newLesson, setNewLesson] = useState({
     code: "",
     name: "",
+    lessons: [],
   });
 
-  const { code, name } = newCourse;
+  const { code, name, lessons } = newLesson;
 
-  const onChangeNewCourseForm = (event) =>
-    setNewCourse({ ...newCourse, [event.target.name]: event.target.value });
+  const onChangeNewLessonForm = (event) =>
+    setNewLesson({ ...newLesson, [event.target.name]: event.target.value });
 
   const closeDialog = () => {
-    resetAddCourseData();
+    resetAddLessonData();
   };
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const { success, message } = await addCourse(newCourse);
-    resetAddCourseData();
+    const { message } = await addLesson(newLesson);
+    resetAddLessonData();
     toast(message);
+    console.log(message);
     setShowToast({ show: true });
   };
 
-  const resetAddCourseData = () => {
-    setNewCourse({ name: "", code: "" });
-    setShowAddCourseTable(false);
+  const resetAddLessonData = () => {
+    setNewLesson({ name: "", code: "" });
+    setShowAddLessonTable(false);
   };
 
   const papaparseOptions = {
@@ -54,8 +56,8 @@ export default function Newcourse() {
   const handleOnDrop = (data) => {
     var final = [];
     var array = data; // input array
-    var codes = []; // unique code for array in course name
-    // Get unique course
+    var codes = []; // unique code for array in Lesson name
+    // Get unique Lesson
     array.forEach(function (el) {
       codes.push({ code: el.data.code, name: el.data.name });
     });
@@ -75,7 +77,7 @@ export default function Newcourse() {
       });
       final.push({ code: uniq.code, name: uniq.name, lessons });
     });
-    console.log(final);
+    setNewLesson(final);
   };
 
   const handleOnError = (err, file, inputElem, reason) => {
@@ -90,7 +92,7 @@ export default function Newcourse() {
   return (
     <>
       <div className="newElement">
-        <h1 className="newElementTitle">New Course</h1>
+        <h1 className="newElementTitle">New Lesson</h1>
         <form onSubmit={onSubmit}>
           <div className="form-row">
             <div className="form-col-25">
@@ -102,8 +104,8 @@ export default function Newcourse() {
                 id="fname"
                 name="code"
                 value={code}
-                onChange={onChangeNewCourseForm}
-                placeholder="Course code .."
+                onChange={onChangeNewLessonForm}
+                placeholder="Lesson code .."
               ></input>
             </div>
           </div>
@@ -117,35 +119,34 @@ export default function Newcourse() {
                 id="lname"
                 name="name"
                 value={name}
-                onChange={onChangeNewCourseForm}
-                placeholder="Course name.."
+                onChange={onChangeNewLessonForm}
+                placeholder="Lesson name.."
               ></input>
             </div>
+          </div>
+          <div>
+            <ToastContainer />
+          </div>
+          <h1 className="newElementTitle">Import File</h1>
+          <div>
+            <CSVReader
+              onDrop={handleOnDrop}
+              onError={handleOnError}
+              addRemoveButton
+              removeButtonColor="#659cef"
+              onRemoveFile={handleOnRemoveFile}
+              config={papaparseOptions}
+            >
+              <span>Drop CSV file here or click to upload</span>
+            </CSVReader>
           </div>
           <br></br>
           <div className="form-row">
             <input type="submit" value="Submit" onClick={onSubmit}></input>
           </div>
-          <div>
-            <ToastContainer />
-          </div>
+
+          <br></br>
         </form>
-        <h1 className="newElementTitle">Import File</h1>
-        <div>
-          <CSVReader
-            onDrop={handleOnDrop}
-            onError={handleOnError}
-            addRemoveButton
-            removeButtonColor="#659cef"
-            onRemoveFile={handleOnRemoveFile}
-            config={papaparseOptions}
-          >
-            <span>Drop CSV file here or click to upload</span>
-          </CSVReader>
-        </div>
-        <div className="form-row">
-          <input type="submit" value="Submit"></input>
-        </div>
       </div>
     </>
   );

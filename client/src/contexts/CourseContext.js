@@ -60,19 +60,18 @@ const CourseContextProvider = ({ children }) => {
         : { success: false, message: "Server error" };
     }
   };
-
   // Delete post
   const deleteCourse = async (courseId) => {
     try {
       const final = courseId.toString().toLowerCase();
       const response = await axios.delete(`${apiUrl}/admin/course/${final}`);
-      if (response.data.success)
+      if (response.status == 200)
         dispatch({ type: DELETE_COURSE, payload: courseId });
+      return { message: "Sucessfull" };
     } catch (error) {
-      console.log(error);
+      return { message: "Fail to delete" };
     }
   };
-
   // Find post when user is updating post
   const findCourse = (courseId) => {
     const course = courseState.courses.find(

@@ -21,7 +21,7 @@ export default function NewSchool() {
     addSchool,
   } = useContext(SchoolContext);
 
-  // State
+  // Add one school
   const [newSchool, setNewSchool] = useState({
     username: "",
     password: "",
@@ -36,40 +36,20 @@ export default function NewSchool() {
     streeNo: "",
   });
 
-  const {
-    username,
-    password,
-    name,
-    province,
-    district,
-    town,
-    street,
-    streetNo,
-  } = newSchool;
+  const createschools = [];
+  // Add schools in array
+  const { idSchool, username, password, name, province, district, town } =
+    newSchool;
 
   const onChangeNewSchoolForm = (event) =>
     setNewSchool({ ...newSchool, [event.target.name]: event.target.value });
-
-  const closeDialog = () => {
-    resetAddSchoolData();
-  };
-
+  // Submit function
   const onSubmit = async (event) => {
     event.preventDefault();
-    const { success, message } = await addSchool(newSchool);
-    resetAddSchoolData();
-    setShowToast({ show: true, message, type: success ? "success" : "danger" });
-  };
-
-  const resetAddSchoolData = () => {
-    setNewSchool({
-      username: "",
-      password: "",
-      district: "",
-      province: "",
-      name: "",
-    });
-    setShowAddSchoolTable(false);
+    const { message } = await addSchool(newSchool);
+    setShowToast({ show: true });
+    toast(message);
+    console.log(message);
   };
 
   const papaparseOptions = {
@@ -79,30 +59,20 @@ export default function NewSchool() {
   };
 
   const handleOnDrop = (data) => {
-    var final = [];
-    var array = data; // input array
-    var codes = []; // unique code for array in course name
-    // Get unique course
-    array.forEach(function (el) {
-      codes.push({ code: el.data.code, name: el.data.name });
-    });
-    // unique funcction
-    const uniqueByKey = (array, key) => {
-      return [...new Map(array.map((x) => [x[key], x])).values()];
-    };
-
-    var unique = uniqueByKey(codes, "code");
-    // Return each lesson respective to each sub json
-    unique.forEach(function (uniq) {
-      var lessons = [];
-      array.forEach(function (el) {
-        if (el.data.name == uniq.name) {
-          lessons.push({ name: el.data.lessons_name, stt: el.data.lesson_stt });
-        }
+    const codes = []; // unique code for array in course name
+    // Get new schools
+    data.forEach(function (el) {
+      codes.push({
+        idSchool: el.data.idschool,
+        name: el.data.name,
+        username: el.data.username,
+        password: el.data.password,
+        province: el.data.province,
+        town: el.data.town,
+        district: el.data.district,
       });
-      final.push({ code: uniq.code, name: uniq.name, lessons });
     });
-    console.log(final);
+    setNewSchool(codes);
   };
 
   const handleOnError = (err, file, inputElem, reason) => {
@@ -114,14 +84,26 @@ export default function NewSchool() {
     console.log(data);
     console.log("---------------------------");
   };
-  const notify = () => {
-    toast(message);
-  };
   return (
     <>
       <div className="newElement">
         <h1 className="newElementTitle">New School</h1>
         <form onSubmit={onSubmit}>
+          <div className="form-row">
+            <div className="form-col-25">
+              <label>idSchool</label>
+            </div>
+            <div className="form-col-75">
+              <input
+                type="text"
+                id="fname"
+                name="idSchool"
+                value={idSchool}
+                onChange={onChangeNewSchoolForm}
+                placeholder="idSchool.."
+              ></input>
+            </div>
+          </div>
           <div className="form-row">
             <div className="form-col-25">
               <label>Username</label>
@@ -199,58 +181,40 @@ export default function NewSchool() {
           </div>
           <div className="form-row">
             <div className="form-col-25">
-              <label>Street</label>
+              <label>Town</label>
             </div>
             <div className="form-col-75">
               <input
                 type="text"
                 id="lname"
-                name="street"
-                value={street}
+                name="town"
+                value={town}
                 onChange={onChangeNewSchoolForm}
-                placeholder="Street.."
+                placeholder="Town .."
               ></input>
             </div>
           </div>
-          <div className="form-row">
-            <div className="form-col-25">
-              <label>Street Number</label>
-            </div>
-            <div className="form-col-75">
-              <input
-                type="text"
-                id="lname"
-                name="streetNo"
-                value={streetNo}
-                onChange={onChangeNewSchoolForm}
-                placeholder="Street Number.."
-              ></input>
-            </div>
+          <h1 className="newElementTitle">Import File</h1>
+          <div>
+            <CSVReader
+              onDrop={handleOnDrop}
+              onError={handleOnError}
+              addRemoveButton
+              removeButtonColor="#659cef"
+              onRemoveFile={handleOnRemoveFile}
+              config={papaparseOptions}
+            >
+              <span>Drop CSV file here or click to upload</span>
+            </CSVReader>
           </div>
           <br></br>
           <div className="form-row">
-            <input type="submit" value="Submit" onClick={notify}></input>
+            <input type="submit" value="Submit" onSubmit={onSubmit}></input>
           </div>
           <div>
             <ToastContainer />
           </div>
         </form>
-        <h1 className="newElementTitle">Import File</h1>
-        <div>
-          <CSVReader
-            onDrop={handleOnDrop}
-            onError={handleOnError}
-            addRemoveButton
-            removeButtonColor="#659cef"
-            onRemoveFile={handleOnRemoveFile}
-            config={papaparseOptions}
-          >
-            <span>Drop CSV file here or click to upload</span>
-          </CSVReader>
-        </div>
-        <div className="form-row">
-          <input type="submit" value="Submit"></input>
-        </div>
       </div>
     </>
   );
