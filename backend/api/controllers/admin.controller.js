@@ -44,6 +44,9 @@ export default {
 
     const alreadyExist = [];
     const missingInfo = [];
+    const invalidUsername = [];
+    const invalidIdSchool = [];
+    const invalidAddressLength = [];
 
     try {
       for (const school of schools) {
@@ -58,6 +61,21 @@ export default {
         ) {
           missingInfo.push(school);
           continue;
+        }
+        if (school.username.length > 10) {
+          invalidUsername.push(school);
+          continue;
+        }
+        if (school.idSchool.length > 7) {
+          invalidIdSchool.push(school);
+          continue;
+        }
+        if (
+          school.province.length > 20 ||
+          school.district.length > 64 ||
+          school.town.length > 64
+        ) {
+          invalidAddressLength.push(school);
         }
 
         const schoolExist = await db.school.findOne({
@@ -78,13 +96,22 @@ export default {
         await db.school.create(school);
       }
 
-      if (alreadyExist.length === 0 && missingInfo.length === 0) {
+      if (
+        alreadyExist.length === 0 &&
+        missingInfo.length === 0 &&
+        invalidIdSchool.length === 0 &&
+        invalidUsername.length === 0 &&
+        invalidAddressLength.length == 0
+      ) {
         return res.status(200).json({ msg: "success adding all schools" });
       }
 
       return res.status(httpStatus.BAD_REQUEST).json({
         "Missing info": missingInfo,
         "IdSchool already exists": alreadyExist,
+        "Invalid ID School length (6 or 7)": invalidIdSchool,
+        "Invalid username length (9 or 10)": invalidUsername,
+        "Invalid Address field length": invalidAddressLength,
       });
     } catch (err) {
       console.log(err);
