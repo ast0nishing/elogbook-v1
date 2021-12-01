@@ -76,7 +76,7 @@ function App() {
                   />
                   <ProtectedRoute
                     exact
-                    path="/course/:courseID"
+                    path="/coursedetail"
                     component={Course}
                   />
                   <ProtectedRoute

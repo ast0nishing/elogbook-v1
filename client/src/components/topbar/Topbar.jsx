@@ -22,7 +22,6 @@ const logout = () => logoutUser();
       <div className="topbarWrapper">
         <div className="topLeft">
           <span className="logo">Online Logbook.v1</span>
-          <h4>Hello {username}</h4>
         </div>
 
         <div className="topRight">

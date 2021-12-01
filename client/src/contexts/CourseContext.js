@@ -34,11 +34,11 @@ const CourseContextProvider = ({ children }) => {
   // Get all courses
   const getCourses = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/admin/course`);
-      if (response.data.success) {
+      const response = await axios.get(`${apiUrl}/admin/courses`);
+      if (response.status == 200) {
         dispatch({
           type: COURSES_LOADED_SUCCESS,
-          payload: response.data.courses,
+          payload: response.data,
         });
       }
     } catch (error) {
@@ -64,7 +64,8 @@ const CourseContextProvider = ({ children }) => {
   // Delete post
   const deleteCourse = async (courseId) => {
     try {
-      const response = await axios.delete(`${apiUrl}/admin/course/${courseId}`);
+      const final = courseId.toString().toLowerCase();
+      const response = await axios.delete(`${apiUrl}/admin/course/${final}`);
       if (response.data.success)
         dispatch({ type: DELETE_COURSE, payload: courseId });
     } catch (error) {
@@ -75,26 +76,29 @@ const CourseContextProvider = ({ children }) => {
   // Find post when user is updating post
   const findCourse = (courseId) => {
     const course = courseState.courses.find(
-      (course) => course._id === courseId
+      (course) => course.code === courseId
     );
+    console.log(course);
     dispatch({ type: FIND_COURSE, payload: course });
   };
 
   // Update post
   const updateCourse = async (updatedCourse) => {
     try {
+      const final = updatedCourse.code.toString().toLowerCase();
       const response = await axios.put(
-        `${apiUrl}/admin/course/${updatedCourse._id}`,
+        `${apiUrl}/admin/course/${final}`,
         updatedCourse
       );
-      if (response.data.success) {
+      if (response.status == 200) {
         dispatch({ type: UPDATE_COURSE, payload: response.data.course });
         return response.data;
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      return { success: false, message: "Can not update" };
+      // return error.response.data
+      //   ? error.response.data
+      //   : { success: false, message: "Server error" };
     }
   };
 

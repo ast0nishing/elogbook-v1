@@ -106,6 +106,29 @@ export default function Sidebar() {
         </Link>
       </>
     );
+  else if (role == "student")
+    body = (
+      <>
+        <Link to="/timetable" className="link">
+          <li className="sidebarListItem">
+            <PermIdentity className="sidebarIcon" />
+            TimeTable
+          </li>
+        </Link>
+        <Link to="/students" className="link">
+          <li className="sidebarListItem">
+            <PermIdentity className="sidebarIcon" />
+            Logbook
+          </li>
+        </Link>
+        <Link to="/students" className="link">
+          <li className="sidebarListItem">
+            <PermIdentity className="sidebarIcon" />
+            Ranking
+          </li>
+        </Link>
+      </>
+    );
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">

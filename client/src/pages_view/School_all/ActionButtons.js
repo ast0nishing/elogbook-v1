@@ -6,7 +6,7 @@ import { useContext } from "react";
 import "../Student_all/userList.css";
 import { DeleteOutline } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
-export default function ActionButtons({ _id }) {
+export default function ActionButtons(_id) {
   const { deleteSchool, findSchool, setShowUpdateSchoolTable } =
     useContext(SchoolContext);
   const history = useHistory();

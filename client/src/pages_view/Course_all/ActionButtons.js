@@ -2,30 +2,40 @@
 // Decoration
 import "../Css/elementList.css";
 import { DeleteOutline } from "@material-ui/icons";
-import Button from "react-bootstrap/Button";
-// React 
+// React
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 // Context
 import { CourseContext } from "../../contexts/CourseContext";
-export default function ActionButtons({ id }) {
-    const { deleteCourse, findCourse, setShowUpdateCourseTable } =
-    useContext(CourseContext);
+export default function ActionButtons(code) {
+  const {
+    courseState: { course, courses, coursesLoading },
+    deleteCourse,
+    findCourse,
+    setShowUpdateCourseTable,
+  } = useContext(CourseContext);
   const history = useHistory();
+  // Select course for editing
   const chooseCourse = (courseId) => {
     findCourse(courseId);
-    // setShowUpdateStudentTable(true);
-    
     history.push("/coursedetail");
+  };
+  // Delete course
+
+  const removeCourse = (courseId) => {
+    deleteCourse(courseId);
   };
   return (
     <>
-      <button className="elementListEdit" onClick={chooseCourse.bind(this, _id)}>
+      <button
+        className="elementListEdit"
+        onClick={chooseCourse.bind(this, code)}
+      >
         Edit
       </button>
       <DeleteOutline
         className="elementListDelete"
-        onClick={deleteCourse.bind(this, _id)}
+        onClick={deleteCourse.bind(this, code)}
       />
     </>
   );

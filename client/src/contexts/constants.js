@@ -1,7 +1,7 @@
 /** @format */
 export const apiUrl =
   process.env.NODE_ENV !== "production"
-    ? "https://api.logtome.net"
+    ? "http://localhost:3000"
     : "https://sleepy-inlet-56101.herokuapp.com/api";
 
 export const SESSION_STORAGE_ACCESS_TOKEN_NAME = "access-token";

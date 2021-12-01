@@ -26,7 +26,7 @@ const AuthContextProvider = ({ children }) => {
     }
     try {
       const response = await axios.get(`${apiUrl}/auth/getUsername`);
-      if (response.data.status !== 204) {
+      if (response.status == 200) {
         dispatch({
           type: "SET_AUTH",
           payload: {
@@ -36,30 +36,30 @@ const AuthContextProvider = ({ children }) => {
           },
         });
       }
-      // if (response.data.success) {
-      //   try {
-      //     const response = await axios.post(
-      //       `${apiUrl}/auth/refresh-token`,
-      //       sessionStorage[SESSION_STORAGE_REFRESH_TOKEN_NAME]
-      //     );
-      //     if (response.data.accessToken)
-      //       dispatch({
-      //         type: "SET_AUTH",
-      //         payload: {
-      //           isAuthenticated: true,
-      //           user: response.data.user,
-      //           role: sessionStorage["role"],
-      //         },
-      //       });
-      //   } catch (error) {
-      //     sessionStorage.removeItem(SESSION_STORAGE_ACCESS_TOKEN_NAME);
-      //     setAuthToken(null);
-      //     dispatch({
-      //       type: "SET_AUTH",
-      //       payload: { isAuthenticated: false, user: null },
-      //     });
-      // }
-      // }
+      if (response.status !== 200) {
+        try {
+          const response = await axios.post(
+            `${apiUrl}/auth/refresh-token`,
+            sessionStorage[SESSION_STORAGE_REFRESH_TOKEN_NAME]
+          );
+          if (response.data.accessToken)
+            dispatch({
+              type: "SET_AUTH",
+              payload: {
+                isAuthenticated: true,
+                user: response.data.user,
+                role: sessionStorage["role"],
+              },
+            });
+        } catch (error) {
+          sessionStorage.removeItem(SESSION_STORAGE_ACCESS_TOKEN_NAME);
+          setAuthToken(null);
+          dispatch({
+            type: "SET_AUTH",
+            payload: { isAuthenticated: false, user: null },
+          });
+        }
+      }
     } catch (error) {
       sessionStorage.removeItem(SESSION_STORAGE_ACCESS_TOKEN_NAME);
       setAuthToken(null);

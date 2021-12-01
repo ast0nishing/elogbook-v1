@@ -1,15 +1,15 @@
 ### Authentication
-POST http://localhost:5000/api/auth/register
+GET http://localhost:3000/auth/login
 Content-Type: application/json
-
 {
-  "username": "admin",
-  "password": "admin",
+  "username": "logbookv1",
+  "password": "logbookv1",
   "role":"admin"}
+  
 ###
-GET http://localhost:5000/api/auth/
+GET http://localhost:3000/admin/courses
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MThhYzYyNmFmZmMxMjg1ODM3ZjgxNDIiLCJpYXQiOjE2MzY0ODc1NDl9.wVBFMhdAc1zsKgusibHFqSpidoab6JuPm2m6oNKzZzY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOTE2ZjhhZC1kMGZiLTRiMjYtYmZiYS03YmZkNTg2NGZlYzciLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MzgyOTM1NDksImV4cCI6MTYzODI5Mzg0OX0.NQAKSHOFG-BwhLUtxRSUkbqKmHf_TRn5-2fXYOPAxzQ
 
 ###
 POST http://localhost:5000/api/auth/login

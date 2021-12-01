@@ -2,14 +2,11 @@
 // Decoration
 import "../Css/newElement.css";
 import "../Css/elementForm.css";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import { CSVReader } from "react-papaparse";
 // React
 import { useContext, useState } from "react";
 import { SchoolContext } from "../../contexts/SchoolContext";
 import React from "react";
-import Toast from "react-bootstrap/Toast";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export default function NewSchool() {
@@ -59,9 +56,7 @@ export default function NewSchool() {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    // const { success, message } = await addSchool(newSchool);
-    const success = "true";
-    const message = "Server error";
+    const { success, message } = await addSchool(newSchool);
     resetAddSchoolData();
     setShowToast({ show: true, message, type: success ? "success" : "danger" });
   };
@@ -237,21 +232,10 @@ export default function NewSchool() {
             <input type="submit" value="Submit" onClick={notify}></input>
           </div>
           <div>
-            <ToastContainer
-              show={show}
-              style={{ position: "top-left", top: "10%", right: "5%" }}
-              className={`bg-danger text-white`}
-              onClose={setShowToast.bind(this, {
-                show: false,
-                message: "",
-                type: null,
-              })}
-              delay={3000}
-              autohide
-            />
+            <ToastContainer />
           </div>
         </form>
-        <h1 className="newElementTitle">New School Using Files</h1>
+        <h1 className="newElementTitle">Import File</h1>
         <div>
           <CSVReader
             onDrop={handleOnDrop}
