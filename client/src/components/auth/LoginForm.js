@@ -30,8 +30,8 @@ const LoginForm = () => {
 
     try {
       const loginData = await loginUser(loginForm);
-      if (!loginData.success) {
-        setAlert({ type: "danger", message: loginData.message });
+      if (loginData.status !== 400) {
+        setAlert({ type: "danger", message: loginData.msg });
         setTimeout(() => setAlert(null), 5000);
       }
     } catch (error) {

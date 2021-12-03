@@ -1,157 +1,77 @@
 /** @format */
 
+import React from "react";
+import "antd/dist/antd.css";
 import "./sidebar.css";
+import { Layout, Menu, Breadcrumb } from "antd";
 import {
-  LineStyle,
-  Timeline,
-  TrendingUp,
-  PermIdentity,
-  Storefront,
-  AttachMoney,
-  BarChart,
-  MailOutline,
-  DynamicFeed,
-  ChatBubbleOutline,
-  WorkOutline,
-  Report,
-} from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import { Route, Redirect } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+  DesktopOutlined,
+  PieChartOutlined,
+  FileOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+
+import { useState } from "react";
 
 export default function Sidebar() {
-  const {
-    authState: { role },
-  } = useContext(AuthContext);
-  let body;
-  if (role === "admin")
-    body = (
-      <>
-        <Link to="/schools" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            School
-          </li>
-        </Link>
-        <Link to="/courses" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Course
-          </li>
-        </Link>
-        <Link to="/lessons" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Lesson
-          </li>
-        </Link>
-      </>
-    );
-  else if (role === "school")
-    body = (
-      <>
-        <Link to="/teacher" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Teacher
-          </li>
-        </Link>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Student
-          </li>
-        </Link>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Class
-          </li>
-        </Link>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            TimeTable
-          </li>
-        </Link>
-      </>
-    );
-  else if (role === "teacher")
-    body = (
-      <>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Student
-          </li>
-        </Link>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            TimeTable
-          </li>
-        </Link>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Logbook
-          </li>
-        </Link>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Ranking
-          </li>
-        </Link>
-      </>
-    );
-  else if (role == "student")
-    body = (
-      <>
-        <Link to="/timetable" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            TimeTable
-          </li>
-        </Link>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Logbook
-          </li>
-        </Link>
-        <Link to="/students" className="link">
-          <li className="sidebarListItem">
-            <PermIdentity className="sidebarIcon" />
-            Ranking
-          </li>
-        </Link>
-      </>
-    );
+  const { SubMenu } = Menu;
+  // Theme State
+  const { Header, Content, Footer, Sider } = Layout;
+
+  const [state, setState] = useState({
+    collapsed: false,
+  });
+  const { collapsed } = state;
+  const onCollapse = () => {
+    console.log(!collapsed);
+    setState({ collapsed: !collapsed });
+  };
   return (
-    <div className="sidebar">
-      <div className="sidebarWrapper">
-        <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Dashboard</h3>
-          <ul className="sidebarList">
-            <Link to="/" className="link">
-              <li className="sidebarListItem active">
-                <LineStyle className="sidebarIcon" />
-                Home
-              </li>
-            </Link>
-            <li className="sidebarListItem">
-              <Timeline className="sidebarIcon" />
-              Report
-            </li>
-          </ul>
-        </div>
-        <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Mangement</h3>
-          <ul className="sidebarList">{body}</ul>
-        </div>
-      </div>
-    </div>
+    <>
+      <Layout style={{ minHeight: "100vh" }}>
+        <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+          <div className="logo" />
+          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+            <Menu.Item key="1" icon={<PieChartOutlined />}>
+              Option 1
+            </Menu.Item>
+            <Menu.Item key="2" icon={<DesktopOutlined />}>
+              Option 2
+            </Menu.Item>
+            <SubMenu key="sub1" icon={<UserOutlined />} title="User">
+              <Menu.Item key="3">Tom</Menu.Item>
+              <Menu.Item key="4">Bill</Menu.Item>
+              <Menu.Item key="5">Alex</Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
+              <Menu.Item key="6">Team 1</Menu.Item>
+              <Menu.Item key="8">Team 2</Menu.Item>
+            </SubMenu>
+            <Menu.Item key="9" icon={<FileOutlined />}>
+              Files
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        {/* <Layout className="site-layout">
+          <Header className="site-layout-background" style={{ padding: 0 }} />
+          <Content style={{ margin: "0 16px" }}>
+            <Breadcrumb style={{ margin: "16px 0" }}>
+              <Breadcrumb.Item>User</Breadcrumb.Item>
+              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            </Breadcrumb>
+            <div
+              className="site-layout-background"
+              style={{ padding: 24, minHeight: 360 }}
+            >
+              Bill is a cat.
+            </div>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            Ant Design ©2018 Created by Ant UED
+          </Footer>
+        </Layout> */}
+      </Layout>
+    </>
   );
 }

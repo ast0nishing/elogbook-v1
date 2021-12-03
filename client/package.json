@@ -13,6 +13,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@trendmicro/react-sidenav": "^0.5.0",
+    "antd": "^4.17.2",
     "axios": "^0.21.4",
     "bootstrap": "^4.6.0",
     "cdbreact": "^1.2.1",

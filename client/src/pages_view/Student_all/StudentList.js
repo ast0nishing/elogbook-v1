@@ -2,19 +2,18 @@
 import "../Css/elementList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
-import { SchoolContext } from "../../contexts/SchoolContext";
+import { StudentContext } from "../../contexts/StudentContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useEffect } from "react";
 // import Spinner from 'react-bootstrap/Spinner'
 import addIcon from "../../assets/plus-circle-fill.svg";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-
-export default function SchoolList() {
+import { ToastContainer, toast } from "react-toastify";
+export default function StudentList() {
   // Contexts
   const {
     authState: {
@@ -23,25 +22,34 @@ export default function SchoolList() {
   } = useContext(AuthContext);
 
   const {
-    schoolState: { school, schools, schoolsLoading },
-    getSchools,
-    setShowAddStudentTable,
+    studentState: { student, students, studentsLoading },
+    getStudents,
     showToast: { show, message, type },
+    findStudent,
+    deleteStudent,
     setShowToast,
-  } = useContext(SchoolContext);
+  } = useContext(StudentContext);
 
-  useEffect(() => getSchools(), []);
+  useEffect(() => getStudents(), []);
 
-  const [data, setData] = useState(schools);
-
-  const [single, setSingle] = useState(schools);
-
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  // Get all course
+  const [data, setData] = useState(students);
+  const history = useHistory();
+  // Select course for editing
+  const handleChoose = (studentId) => {
+    findStudent(studentId);
+    history.push("/studentdetail");
   };
-  const handleChoose = (id) => {
-    console.log("test sucessfull");
-    setSingle(single.filter((item) => item.id === id));
+  const handleDelete = async (username) => {
+    try {
+      setData(data.filter((item) => item.username !== username));
+      const { message } = await deleteStudent(username);
+      if (message) {
+        console.log(message);
+        setShowToast({ show: true, message, type: null });
+        toast(message);
+      }
+    } catch (error) {}
   };
 
   const columns = [
@@ -83,16 +91,15 @@ export default function SchoolList() {
     },
   ];
   let body = null;
-  if (schools.length === 0) {
-    // if (1===1)
+  if (students.length === 0) {
     body = (
       <>
         <div className="elementList">
           <h2 className="header">
-            There is no school available, please create it to start your first
+            There is no student available, please create it to start your first
             logbook
           </h2>
-          <Link to={"/newschool"}>
+          <Link to={"/newstudent"}>
             <Button className="btn-floating" style={{ "z-index": -1 }}>
               <img src={addIcon} alt="add-post" width="60" height="60" />
             </Button>
@@ -116,9 +123,9 @@ export default function SchoolList() {
           <div>
             <OverlayTrigger
               placement="left"
-              overlay={<Tooltip>Add new school</Tooltip>}
+              overlay={<Tooltip>Add new student</Tooltip>}
             >
-              <Link to={"/newschool"}>
+              <Link to={"/newstudent"}>
                 <Button className="btn-floating" style={{ "z-index": -1 }}>
                   <img src={addIcon} alt="add-post" width="60" height="60" />
                 </Button>

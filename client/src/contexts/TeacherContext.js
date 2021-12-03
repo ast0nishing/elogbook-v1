@@ -1,122 +1,159 @@
 /** @format */
 import { createContext, useReducer, useState } from "react";
-import { studentReducer } from "../reducers/studentReducer";
+import { teacherReducer } from "../reducers/teacherReducer";
 import {
   apiUrl,
-  STUDENTS_LOADED_FAIL,
-  STUDENTS_LOADED_SUCCESS,
-  ADD_STUDENT,
-  DELETE_STUDENT,
-  UPDATE_STUDENT,
-  FIND_STUDENT,
+  TEACHERS_LOADED_FAIL,
+  TEACHERS_LOADED_SUCCESS,
+  ADD_TEACHER,
+  DELETE_TEACHER,
+  UPDATE_TEACHER,
+  FIND_TEACHER,
 } from "./constants";
+
 import axios from "axios";
+export const TeacherContext = createContext();
 
-export const StudentContext = createContext();
-
-const StudentContextProvider = ({ children }) => {
+const TeacherContextProvider = ({ children }) => {
   // State
-  const [studentState, dispatch] = useReducer(studentReducer, {
-    student: null,
-    students: [],
-    studentsLoading: true,
+  const [teacherState, dispatch] = useReducer(teacherReducer, {
+    teacher: null,
+    teachers: [],
+    teachersLoading: true,
   });
 
-  const [showAddStudentTable, setShowAddStudentTable] = useState(false);
-  const [showUpdateStudentTable, setShowUpdateStudentTable] = useState(false);
+  const [showAddTeacherTable, setShowAddTeacherTable] = useState(false);
+  const [showUpdateTeacherTable, setShowUpdateTeacherTable] = useState(false);
   const [showToast, setShowToast] = useState({
     show: false,
     message: "",
     type: null,
   });
 
-  // Get all students
-  const getStudents = async () => {
+  // Get all teacher
+  const getTeachers = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/student`);
-      if (response.data.success) {
+      const response = await axios.get(`${apiUrl}/v1/schools/teachers`);
+      if (response.status == 200) {
         dispatch({
-          type: STUDENTS_LOADED_SUCCESS,
-          payload: response.data.students,
+          type: TEACHERS_LOADED_SUCCESS,
+          payload: response.data,
         });
       }
     } catch (error) {
-      dispatch({ type: STUDENTS_LOADED_FAIL });
+      dispatch({ type: TEACHERS_LOADED_FAIL });
     }
   };
-  // Add student
-  const addStudent = async (newStudent) => {
+  // Get teacher in specific year and class
+  const getClassTeachers = async (year, class_name) => {
     try {
-      const response = await axios.post(`${apiUrl}/student`, newStudent);
-      if (response.data.success) {
-        dispatch({ type: ADD_STUDENT, payload: response.data.student });
-        return response.data;
+      const url = `${apiUrl}/${year}/${class_name}/teachers`;
+      const response = await axios.get(url);
+      if (response.status == 200) {
+        dispatch({
+          type: TEACHERS_LOADED_SUCCESS,
+          payload: response.data,
+        });
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      dispatch({ type: TEACHERS_LOADED_FAIL });
     }
   };
-
-  // Delete post
-  const deleteStudent = async (studentId) => {
+  // Add teacher
+  const addTeachers = async (newTeacher) => {
     try {
-      const response = await axios.delete(`${apiUrl}/student/${studentId}`);
-      if (response.data.success)
-        dispatch({ type: DELETE_STUDENT, payload: studentId });
+      const response = await axios.post(
+        `${apiUrl}/v1/schools/createTeacher`,
+        newTeacher
+      );
+      if (response.status == 200) {
+        dispatch({ type: ADD_TEACHER, payload: response.data });
+        return { success: true, message: response.data };
+      }
     } catch (error) {
-      console.log(error);
+      return { success: false, message: "Error" };
+      // error.response.data
+      //   ? error.response.data
+      //   : // : { success: false, message: "Server error" };
+    }
+  };
+  // Add teacher to specific class if they have
+  const addClassTeachers = async (newClassTeacher) => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/v1/schools/addTeacher`,
+        newClassTeacher
+      );
+      if (response.status == 200) {
+        dispatch({ type: ADD_TEACHER, payload: response.data });
+        return { success: true, message: response.data };
+      }
+    } catch (error) {
+      return { success: false, message: "Error" };
+      // error.response.data
+      //   ? error.response.data
+      //   : // : { success: false, message: "Server error" };
+    }
+  };
+  // Delete teachers
+  const deleteTeachers = async (teacherId) => {
+    try {
+      const response = await axios.delete(`${apiUrl}/v1/schools/deleteTeacher`);
+      if (response.status == 200)
+        dispatch({ type: DELETE_TEACHER, payload: teacherId });
+      return { sucess: true, message: "Sucessfull" };
+    } catch (error) {
+      return { sucess: false, message: "Fail" };
     }
   };
 
-  // Find student when user is updating student
-  const findStudent = (studentId) => {
-    const student = studentState.students.find(
-      (student) => student._id === studentId
+  // Find teacher in list
+  const findTeacher = (teacherId) => {
+    const teacher = teacherState.teachers.find(
+      (teacher) => teacher.username === teacherId
     );
-    dispatch({ type: FIND_STUDENT, payload: student });
+    dispatch({ type: FIND_TEACHER, payload: teacher });
   };
 
-  // Update student
-  const updateStudent = async (updatedStudent) => {
+  // Update teacher in list
+  const updateTeacher = async (updatedTeacher) => {
     try {
       const response = await axios.put(
-        `${apiUrl}/student/${updatedStudent._id}`,
-        updatedStudent
+        `${apiUrl}/v1/schools/teacher/${updatedTeacher.username}`,
+        updatedTeacher
       );
-      if (response.data.success) {
-        dispatch({ type: UPDATE_STUDENT, payload: response.data.student });
-        return response.data;
+      if (response.status === 200) {
+        dispatch({ type: UPDATE_TEACHER, payload: response.teacher });
+        return { message: "Sucessfull", teacher: response.teacher };
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      return { message: "Fail" };
     }
   };
 
   // Post context data
-  const studentContextData = {
-    studentState,
-    getStudents,
-    showAddStudentTable,
-    setShowAddStudentTable,
-    showUpdateStudentTable,
-    setShowUpdateStudentTable,
-    addStudent,
+  const teacherContextData = {
+    teacherState,
+    getTeachers,
+    getClassTeachers,
+    showAddTeacherTable,
+    setShowAddTeacherTable,
+    showUpdateTeacherTable,
+    setShowUpdateTeacherTable,
+    addTeachers,
+    addClassTeachers,
     showToast,
     setShowToast,
-    deleteStudent,
-    findStudent,
-    updateStudent,
+    deleteTeachers,
+    findTeacher,
+    updateTeacher,
   };
 
   return (
-    <StudentContext.Provider value={studentContextData}>
+    <TeacherContext.Provider value={teacherContextData}>
       {children}
-    </StudentContext.Provider>
+    </TeacherContext.Provider>
   );
 };
 
-export default StudentContextProvider;
+export default TeacherContextProvider;

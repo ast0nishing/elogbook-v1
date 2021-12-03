@@ -88,7 +88,6 @@ const AuthContextProvider = ({ children }) => {
       );
       const role = userForm.role;
       await loadUser();
-
       return response.data;
     } catch (error) {
       if (error.response.data) return error.response.data;

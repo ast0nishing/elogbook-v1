@@ -33,11 +33,9 @@ const logout = () => logoutUser();
 <h1>  </h1>
                     <Button
                     className="UpdateButton"
-            // variant="secondary"
-            // className="font-weight-bolder text-white"
             onClick={logout}
           >
-            <h4>Logout</h4>  
+            Logout
             
           </Button>
         </div>

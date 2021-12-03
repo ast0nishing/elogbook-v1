@@ -1,3 +1,5 @@
+/** @format */
+
 import {
   CalendarToday,
   LocationSearching,
@@ -7,59 +9,72 @@ import {
   Publish,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import "./user.css";
 import { useState } from "react";
-import { StudentContext } from '../../contexts/StudentContext'
-import { AuthContext } from '../../contexts/AuthContext'
-import { useContext, useEffect } from 'react'
+import { StudentContext } from "../../contexts/StudentContext";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useContext, useEffect } from "react";
 
 export default function Student() {
-  	// // Contexts
-    // const {
-    //   studentState: { student },
-    //   showUpdateStudentTable,
-    //   setShowUpdateStudentTable,
-    //   updateStudent,
-    //   setShowToast
-    // } = useContext(StudentContext)
+  // // Contexts
+  // const {
+  //   studentState: { student },
+  //   showUpdateStudentTable,
+  //   setShowUpdateStudentTable,
+  //   updateStudent,
+  //   setShowToast
+  // } = useContext(StudentContext)
 
-	// State
+  // State
 
-	// const [updatedStudent, setUpdatedStudent] = useState(student)
-  
-	// useEffect(() => setUpdatedStudent(student), [student])
+  // const [updatedStudent, setUpdatedStudent] = useState(student)
+
+  // useEffect(() => setUpdatedStudent(student), [student])
   // const {username,name,phone,email,password,address,phoneNumber} = updatedStudent
-	// const onChangeUpdatedStudentForm = event =>
-	// 	setUpdatedStudent({ ...updatedStudent, [event.target.name]: event.target.value })
-    // Context  
-    // Local state
-    const [updatedStudent, setUpdatedStudent] = useState({    
-      id: "5",
-      username: "Hgnaig",
-      password: "12345",
-      name: "Nguyen Tan Thanh Giang",
-      role: "student",
-      address: "Vinh Long",
-      phoneNumber: "0354002059",
-      email: "nttg8100@gmail.com",
-      school: "TTS",
-    classname:"6"});  
+  // const onChangeUpdatedStudentForm = event =>
+  // 	setUpdatedStudent({ ...updatedStudent, [event.target.name]: event.target.value })
+  // Context
+  // Local state
+  const [updatedStudent, setUpdatedStudent] = useState({
+    id: "5",
+    username: "Hgnaig",
+    password: "12345",
+    name: "Nguyen Tan Thanh Giang",
+    role: "student",
+    address: "Vinh Long",
+    phoneNumber: "0354002059",
+    email: "nttg8100@gmail.com",
+    school: "TTS",
+    classname: "6",
+  });
 
-  const {username,name,phone,email,password,address,classname,phoneNumber,role} = updatedStudent
-	const onChangeUpdatedStudentForm = event =>
-		setUpdatedStudent({ ...updatedStudent, [event.target.name]: event.target.value })
+  const {
+    username,
+    name,
+    phone,
+    email,
+    password,
+    address,
+    classname,
+    phoneNumber,
+    role,
+  } = updatedStudent;
+  const onChangeUpdatedStudentForm = (event) =>
+    setUpdatedStudent({
+      ...updatedStudent,
+      [event.target.name]: event.target.value,
+    });
 
-	// const closeDialog = () => {
-	// 	setUpdatedStudent(student)
-	// 	setShowUpdateStudentTable(false)
-	// }
+  // const closeDialog = () => {
+  // 	setUpdatedStudent(student)
+  // 	setShowUpdateStudentTable(false)
+  // }
 
-	// const onSubmit = async event => {
-	// 	event.preventDefault()
-	// 	const { success, message } = await updateStudent(updatedStudent)
-	// 	setShowUpdateStudentTable(false)
-	// 	setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
-	// }
+  // const onSubmit = async event => {
+  // 	event.preventDefault()
+  // 	const { success, message } = await updateStudent(updatedStudent)
+  // 	setShowUpdateStudentTable(false)
+  // 	setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
+  // }
 
   return (
     <div className="user">
@@ -163,9 +178,12 @@ export default function Student() {
                 </label>
                 <input type="file" id="file" style={{ display: "none" }} />
               </div>
-              <button className="userUpdateButton"
-              // onSubmit={}
-              >Update</button>
+              <button
+                className="userUpdateButton"
+                // onSubmit={}
+              >
+                Update
+              </button>
             </div>
           </form>
         </div>

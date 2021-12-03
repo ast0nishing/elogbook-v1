@@ -11,35 +11,39 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { CourseContext } from "../../contexts/CourseContext";
+import { TeacherContext } from "../../contexts/TeacherContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
-import Spinner from "react-bootstrap/Spinner";
-export default function CourseList() {
+export default function TeacherList() {
   // Contexts
   const {
-    courseState: { course, courses, coursesLoading },
-    getCourses,
+    authState: {
+      user: { username },
+    },
+  } = useContext(AuthContext);
+
+  const {
+    teacherState: { teacher, teachers, teachersLoading },
+    getTeachers,
     showToast: { show, message, type },
     setShowToast,
-    deleteCourse,
-    findCourse,
-  } = useContext(CourseContext);
+    deleteTeacher,
+    findTeacher,
+  } = useContext(TeacherContext);
 
-  useEffect(() => getCourses());
-
+  useEffect(() => getTeachers(), []);
   // Get all course
-  const [data, setData] = useState(courses);
+  const [data, setData] = useState(teachers);
   const history = useHistory();
   // Select course for editing
-  const handleChoose = (courseId) => {
-    findCourse(courseId);
-    history.push("/coursedetail");
+  const handleChoose = (username) => {
+    findTeacher(username);
+    history.push("/teacherdetail");
   };
-  const handleDelete = async (courseId) => {
+  const handleDelete = async (username) => {
     try {
-      setData(data.filter((item) => item.code !== courseId));
-      const { message } = await deleteCourse(courseId);
+      setData(data.filter((item) => item.username !== username));
+      const { message } = await deleteTeacher(username);
       if (message) {
         console.log(message);
         setShowToast({ show: true, message, type: null });
@@ -48,12 +52,13 @@ export default function CourseList() {
     } catch (error) {}
   };
   const columns = [
-    { field: "code", headerName: "Course Code", width: 200 },
-    {
-      field: "name",
-      headerName: "Course name",
-      width: 200,
-    },
+    { field: "idSchool", headerName: "School id", width: 200 },
+    { field: "username", headerName: "User name", width: 200 },
+    { field: "password", headerName: "Password", width: 200 },
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "major", headerName: "Major", width: 200 },
+    { field: "phoneNumber", headerName: "Phone", width: 200 },
+    { field: "email", headerName: "Email", width: 200 },
     {
       field: "action",
       headerName: "Action",
@@ -76,22 +81,16 @@ export default function CourseList() {
       },
     },
   ];
-
   let body = null;
-  if (coursesLoading) {
-    body = (
-      <div className="spinner-container">
-        <Spinner animation="border" variant="info" />
-      </div>
-    );
-  } else if (courses.length === 0) {
+  if (teachers.length === 0) {
     body = (
       <>
         <div className="elementList">
           <h2 className="header">
-            There is no course available, please create your lessons first
+            There is no teacher available in your school, please create it to
+            start your first logbook
           </h2>
-          <Link to={"/newlesson"}>
+          <Link to={"/newteacher"}>
             <Button className="btn-floating" style={{ "z-index": -1 }}>
               <img src={addIcon} alt="add-post" width="60" height="60" />
             </Button>
@@ -102,8 +101,7 @@ export default function CourseList() {
   } else {
     body = (
       <>
-        {/* <div className="elementList"> */}
-        <div>
+        <div className="elementList">
           <ToastContainer
             show={show}
             style={{ position: "top-left", top: "10%", right: "5%" }}
@@ -118,18 +116,17 @@ export default function CourseList() {
           />
           <DataGrid
             rows={data}
-            getRowId={(r) => r.code}
+            getRowId={(r) => r.username}
             disableSelectionOnClick
             columns={columns}
             pageSize={8}
             checkboxSelection
-            style={{ height: 500 }}
           />
         </div>
         <div>
           <OverlayTrigger
             placement="left"
-            overlay={<Tooltip>Add new course</Tooltip>}
+            overlay={<Tooltip>Add new teacher</Tooltip>}
           >
             <Link to={"/newcourse"}>
               <Button className="btn-floating" style={{ "z-index": -1 }}>
