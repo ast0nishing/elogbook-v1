@@ -62,6 +62,11 @@ router.put(
     [auth.verifyToken, auth.isTeacher],
     controller.Teacher.updateLogbook
 );
+router.get(
+    '/mytimetable/:year/:week',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Teacher.getTimetable
+);
 // router.get(
 //     '/:year/:className/',
 //     [authJwt.verifyToken, authJwt.isTeacher],
@@ -69,9 +74,14 @@ router.put(
 // );
 // ranking by year + week
 router.get(
-    '/ranking/:year/byweek/:week',
+    '/ranking/:year/:week',
     [auth.verifyToken, auth.isTeacher],
     controller.Student.rankingByWeek
+);
+router.get(
+    '/ranking/:year/:week/:grade',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Student.rankingByGrade
 );
 
 // ranking by year

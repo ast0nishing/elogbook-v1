@@ -85,7 +85,7 @@ teacherRe(db);
 timetableRe(db);
 
 // After create table, comment out this line
-await db.sequelize.sync({ force: true });
+// await db.sequelize.sync({ force: true });
 
 // // fake data
 // await createData(db);

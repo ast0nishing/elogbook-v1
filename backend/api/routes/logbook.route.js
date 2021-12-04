@@ -6,11 +6,11 @@ export const router = express.Router();
 
 router.post('/', auth.verifyToken, auth.isTeacher, controller.Logbook.create);
 
-// router.get(
-//     '/:year',
-//     [auth.verifyToken, auth.isTeacher],
-//     controller.Logbook.findByYear
-// );
+router.get(
+    '/:year',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Logbook.findByYear
+);
 router.get(
     '/:year/:idSchool/',
     [auth.verifyToken, auth.isTeacher],

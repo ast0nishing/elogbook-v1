@@ -24,9 +24,19 @@ router.put(
 
 // ranking by year + week
 router.get(
-    '/ranking/:year/byweek/:week',
+    '/ranking/:year/:week',
     [auth.verifyToken, auth.isStudent],
     controller.Student.rankingByWeek
+);
+router.get(
+    '/ranking/:year/:week/:grade',
+    [auth.verifyToken, auth.isStudent],
+    controller.Student.rankingByGrade
+);
+router.get(
+    '/teachers',
+    [auth.verifyToken, auth.isStudent],
+    controller.Student.getTeachers
 );
 
 // ranking by year
@@ -36,9 +46,9 @@ router.get(
     controller.Student.rankingByYear
 );
 router.get(
-    '/timetable/:week',
+    '/timetable/:year/:week',
     [auth.verifyToken, auth.isStudent],
-    controller.Student.timetableByWeek
+    controller.Student.timetableByYearAndWeek
 );
 
 // update password
