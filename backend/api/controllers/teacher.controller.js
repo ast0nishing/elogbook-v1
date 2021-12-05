@@ -203,6 +203,10 @@ export default {
                 const classData = await db.class.findOne({
                     where: { id: data.dataValues.classId },
                 });
+                const courseData = await db.course.findOne({
+                    where: { code: data.dataValues.courseCode },
+                });
+                data.dataValues.courseName = courseData.dataValues.name;
                 data.dataValues.teacherName = teacherData.dataValues.name;
                 data.dataValues.teacherId = teacherData.dataValues.idSchool;
                 data.dataValues.className = classData.dataValues.name;
@@ -250,31 +254,35 @@ export default {
         let i = 0;
         for (let data of timetableData) {
             for (let subdata of data) {
-                try {
-                    if (
-                        subdata.dataValues.fromWeek <= req.params.week &&
-                        (subdata.dataValues.toWeek === -1 ||
-                            subdata.dataValues.toWeek >= req.params.week)
-                    ) {
-                        const teacherData = await db.teacher.findOne({
-                            where: { id: subdata.dataValues.teacherId },
-                        });
+                if (
+                    subdata.dataValues.fromWeek <= req.params.week &&
+                    (subdata.dataValues.toWeek === -1 ||
+                        subdata.dataValues.toWeek >= req.params.week)
+                ) {
+                    const teacherData = await db.teacher.findOne({
+                        where: { id: subdata.dataValues.teacherId },
+                    });
+                    if (teacherData) {
                         subdata.dataValues.teacherName =
                             teacherData.dataValues.name;
                         subdata.dataValues.teacherId =
                             teacherData.dataValues.idSchool;
-                        subdata.dataValues.day =
-                            days[subdata.dataValues.weekDay];
-                        // delete subdata.dataValues.id;
-                        delete subdata.dataValues.fromWeek;
-                        delete subdata.dataValues.toWeek;
-                        delete subdata.dataValues.weekDay;
-                        delete subdata.dataValues.id;
-                        delete subdata.dataValues.classId;
-                        weekInRange[i].timetable.push(subdata.dataValues);
+                    } else {
+                        subdata.dataValues.teacherName = null;
+                        subdata.dataValues.teacherId = null;
                     }
-                } catch (err) {
-                    console.log(object);
+                    subdata.dataValues.day = days[subdata.dataValues.weekDay];
+                    const courseData = await db.course.findOne({
+                        where: { code: subdata.dataValues.courseCode },
+                    });
+                    subdata.dataValues.courseName = courseData.dataValues.name;
+                    // delete subdata.dataValues.id;
+                    delete subdata.dataValues.fromWeek;
+                    delete subdata.dataValues.toWeek;
+                    delete subdata.dataValues.weekDay;
+                    delete subdata.dataValues.id;
+                    delete subdata.dataValues.classId;
+                    weekInRange[i].timetable.push(subdata.dataValues);
                 }
             }
             i++;
@@ -357,8 +365,11 @@ export default {
                     temp.dataValues.toWeek == -1 &&
                     classData.dataValues.academicYearId == req.params.year
                 ) {
-                    console.log('123');
                     temp.dataValues.day = days[temp.dataValues.weekDay];
+                    const courseData = await db.course.findOne({
+                        where: { code: temp.dataValues.courseCode },
+                    });
+                    temp.dataValues.courseName = courseData.dataValues.name;
                     // delete temp.dataValues.fromWeek;
                     delete temp.dataValues.weekDay;
                     // delete temp.dataValues.toWeek;
@@ -384,11 +395,12 @@ export default {
                         temp.dataValues.toWeek == -1) &&
                     classData.dataValues.academicYearId == req.params.year
                 ) {
-                    console.log('asd');
                     temp.dataValues.day = days[temp.dataValues.weekDay];
-                    // delete temp.dataValues.fromWeek;
+                    const courseData = await db.course.findOne({
+                        where: { code: temp.dataValues.courseCode },
+                    });
+                    temp.dataValues.courseName = courseData.dataValues.name;
                     delete temp.dataValues.weekDay;
-                    // delete temp.dataValues.toWeek;
                     delete temp.dataValues.classId;
                     delete temp.dataValues.teacherId;
                     delete temp.dataValues.id;
@@ -454,6 +466,60 @@ export default {
             res.status(400).json({ message: 'data not found!' });
         } else {
             res.json(fullData);
+        }
+    },
+    async editStudent(req, res) {
+        const studentData = await db.student.findOne({
+            where: { idSchool: req.params.studentId },
+        });
+        if (!studentData) {
+            return res.status(400).json({
+                message: 'student not found',
+            });
+        }
+
+        if (req.user.schoolId === studentData.dataValues.schoolId) {
+            const studentData2 = await db.student.findAll({
+                include: [{ model: db.class, though: 'class_student' }],
+                where: { id: studentData.dataValues.id },
+            });
+            const classData = await db.class.findAll({
+                where: { teacherId: req.user.id },
+            });
+            const myClasses = [];
+            for (const data of classData) {
+                myClasses.push(data.dataValues.id);
+            }
+            if (studentData2[0]['classes'].length < 1)
+                return res
+                    .status(400)
+                    .json({ message: 'student does not belong to any class' });
+            for (const data of studentData2[0]['classes']) {
+                if (data.dataValues.id == myClasses.pop()) {
+                    const data = await db.student.update(
+                        {
+                            name: req.body.name,
+                            address: req.body.address,
+                            phoneNumber: req.body.phoneNumber,
+                            email: req.body.email,
+                            dob: req.body.dob,
+                        },
+                        { where: { idSchool: req.params.studentId } }
+                    );
+                    if (data[0] === 1)
+                        return res.json({
+                            message: 'update student successfully',
+                        });
+                    else return res.json({ message: 'update failed' });
+                }
+            }
+            return res
+                .status(400)
+                .json({ message: 'student does not belong to your class' });
+        } else {
+            res.status(400).json({
+                message: 'student does not belong to your school',
+            });
         }
     },
 };

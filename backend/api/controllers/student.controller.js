@@ -253,6 +253,37 @@ export default {
             7: 'Sunday',
         };
         const weekInRange = [];
+        if (req.params.week == -1) {
+            for (const temp of timetableData) {
+                const classData = await db.class.findOne({
+                    where: { id: temp.dataValues.classId },
+                });
+                if (!classData) {
+                    return res.status(400).json({ message: 'data not found' });
+                }
+                if (
+                    temp.dataValues.toWeek == -1 &&
+                    classData.dataValues.academicYearId == req.params.year
+                ) {
+                    temp.dataValues.day = days[temp.dataValues.weekDay];
+                    const courseData = await db.course.findOne({
+                        where: { code: temp.dataValues.courseCode },
+                    });
+                    temp.dataValues.courseName = courseData.dataValues.name;
+                    // delete temp.dataValues.fromWeek;
+                    delete temp.dataValues.weekDay;
+                    // delete temp.dataValues.toWeek;
+                    delete temp.dataValues.classId;
+                    delete temp.dataValues.teacherId;
+                    delete temp.dataValues.id;
+                    temp.dataValues.classId = classData.dataValues.idSchool;
+                    temp.dataValues.className = classData.dataValues.name;
+                    weekInRange.push(temp.dataValues);
+                }
+            }
+            return res.send(weekInRange);
+        }
+
         for (let data of timetableData) {
             if (
                 data.dataValues.fromWeek <= req.params.week &&
@@ -274,6 +305,10 @@ export default {
                 data.dataValues.classId = classData.dataValues.idSchool;
                 data.dataValues.className = classData.dataValues.name;
                 data.dataValues.day = days[data.dataValues.weekDay];
+                const courseData = await db.course.findOne({
+                    where: { code: data.dataValues.courseCode },
+                });
+                data.dataValues.courseName = courseData.dataValues.name;
                 delete data.dataValues.id;
                 delete data.dataValues.fromWeek;
                 delete data.dataValues.toWeek;

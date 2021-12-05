@@ -874,4 +874,237 @@ export default {
         }
         res.json(teacherId);
     },
+    async deleteTeacher(req, res) {
+        const teacherData = await db.teacher.findOne({
+            where: { idSchool: req.params.teacherId },
+        });
+        if (!teacherData) {
+            return res.status(400).json({
+                message: 'teacher not found',
+            });
+        }
+        if (req.user.id === teacherData.dataValues.schoolId) {
+            await db.teacher.destroy({
+                where: { idSchool: req.params.teacherId },
+            });
+            res.status(200).json({
+                message: 'delete teacher successfully',
+            });
+        } else {
+            res.status(400).json({
+                message: 'teacher does not belong to your school',
+            });
+        }
+    },
+    async editStudent(req, res) {
+        const studentData = await db.student.findOne({
+            where: { idSchool: req.params.studentId },
+        });
+        if (!studentData) {
+            return res.status(400).json({
+                message: 'student not found',
+            });
+        }
+        if (req.user.id === studentData.dataValues.schoolId) {
+            const data = await db.student.update(
+                {
+                    name: req.body.name,
+                    address: req.body.address,
+                    phoneNumber: req.body.phoneNumber,
+                    email: req.body.email,
+                    dob: req.body.dob,
+                },
+                { where: { idSchool: req.params.studentId } }
+            );
+            if (data[0] === 1)
+                res.json({ message: 'update student successfully' });
+            else res.json({ message: 'update failed' });
+        } else {
+            res.status(400).json({
+                message: 'student does not belong to your school',
+            });
+        }
+    },
+    async editSelf(req, res) {
+        const data = await db.school.update(
+            {
+                name: req.body.name,
+                province: req.body.province,
+                district: req.body.district,
+                town: req.body.town,
+                street: req.body.street,
+                streetNo: req.body.streetNo,
+            },
+            { where: { id: req.user.id } }
+        );
+        if (data[0] === 1) res.json({ message: 'edit self successfully' });
+        else res.json({ message: 'edit self failed' });
+    },
+    async editTimetable(req, res) {
+        const classData = await db.class.findOne({
+            where: { idSchool: req.body.classId },
+        });
+
+        if (!classData) {
+            return res.status(400).json({ message: 'class not found' });
+        }
+        if (classData.dataValues.schoolId != req.user.id) {
+            return res
+                .status(400)
+                .json({ message: 'class does not belong to your school' });
+        }
+        const teacherData = await db.teacher.findOne({
+            where: { idSchool: req.body.teacherId },
+        });
+        if (!teacherData) {
+            return res.status(400).json({ message: 'teacher not found' });
+        }
+        if (teacherData.dataValues.schoolId != req.user.id) {
+            return res
+                .status(400)
+                .json({ message: 'teacher does not belong to your school' });
+        }
+        const courseData = await db.course.findOne({
+            where: { code: req.body.courseCode },
+        });
+        if (!courseData) {
+            return res.status(400).json({ message: 'course not found' });
+        }
+        const days = {
+            monday: 1,
+            tuesday: 2,
+            wednesday: 3,
+            thursday: 4,
+            friday: 5,
+            saturday: 6,
+            sunday: 7,
+        };
+        try {
+            const data = await db.timetable.update(
+                {
+                    fromWeek: req.body.fromWeek,
+                    toWeek: req.body.toWeek,
+                    weekDay: days[req.body.weekDay],
+                    time: req.body.time,
+                    classId: classData.dataValues.id,
+                    courseCode: req.body.courseCode,
+                    teacherId: teacherData.dataValues.id,
+                },
+                { where: { id: req.params.timetableId } }
+            );
+            if (data[0] === 1)
+                res.json({ message: 'edit timetable successfully' });
+            else res.json({ message: 'edit timetable failed' });
+        } catch (err) {
+            return res.status(400).json({ message: 'error occured' });
+        }
+    },
+    async getTimetable(req, res) {
+        const days = {
+            1: 'Monday',
+            2: 'Tuesday',
+            3: 'Wednesday',
+            4: 'Thursday',
+            5: 'Friday',
+            6: 'Saturday',
+            7: 'Sunday',
+        };
+        const fullData = [];
+        const classData = await db.class.findAll({
+            where: { schoolId: req.user.id, academicYearId: req.params.year },
+        });
+        if (!classData) {
+            return res.status(400).json({ message: 'data not found' });
+        }
+        for (const data of classData) {
+            if (req.params.week == -1) {
+                const timetableData = await db.timetable.findAll({
+                    where: { classId: data.dataValues.id, toWeek: -1 },
+                });
+                if (!timetableData) {
+                    return res.status(400).json({ message: 'data not found' });
+                }
+                for (const temp of timetableData) {
+                    temp.dataValues.day = days[temp.dataValues.weekDay];
+                    delete temp.dataValues.weekDay;
+                    delete temp.dataValues.classId;
+                    delete temp.dataValues.teacherId;
+                    delete temp.dataValues.id;
+                    temp.dataValues.classId = data.dataValues.idSchool;
+                    temp.dataValues.className = data.dataValues.name;
+                    fullData.push(temp.dataValues);
+                }
+            } else {
+                const timetableData = await db.timetable.findAll({
+                    where: { classId: data.dataValues.id },
+                });
+                for (const temp of timetableData) {
+                    if (
+                        temp.dataValues.fromWeek <= req.params.week &&
+                        (temp.dataValues.toWeek >= req.params.week ||
+                            temp.dataValues.toWeek == -1) &&
+                        data.dataValues.academicYearId == req.params.year
+                    ) {
+                        temp.dataValues.day = days[temp.dataValues.weekDay];
+                        const courseData = await db.course.findOne({
+                            where: { code: temp.dataValues.courseCode },
+                        });
+                        temp.dataValues.courseName = courseData.dataValues.name;
+                        delete temp.dataValues.weekDay;
+                        delete temp.dataValues.classId;
+                        delete temp.dataValues.teacherId;
+                        temp.dataValues.classId = data.dataValues.idSchool;
+                        temp.dataValues.className = data.dataValues.name;
+                        fullData.push(temp.dataValues);
+                    }
+                }
+            }
+        }
+        res.send(fullData);
+    },
+    async deleteTimetable(req, res) {
+        const timetableData = await db.timetable.findOne({
+            where: { id: req.params.timetableId },
+        });
+        if (!timetableData) {
+            return res.status(400).json({ message: 'data not found' });
+        }
+        const classData = await db.class.findOne({
+            where: { id: timetableData.dataValues.classId },
+        });
+        if (!classData) {
+            return res.status(400).json({ message: 'data not found' });
+        }
+        if (req.user.id === classData.dataValues.schoolId) {
+            await db.timetable.destroy({
+                where: { id: req.params.timetableId },
+            });
+            res.status(200).json({
+                message: 'delete timetable successfully',
+            });
+        } else {
+            res.status(400).json({
+                message: 'timetable does not belong to your school',
+            });
+        }
+    },
+    async deleteStudent(req, res) {
+        const studentData = await db.student.findOne({
+            where: { idSchool: req.params.studentId },
+        });
+        if (!studentData) {
+            return res.status(400).json({ message: 'student not found' });
+        }
+        if (studentData.dataValues.schoolId != req.user.id) {
+            return res
+                .status(400)
+                .json({ message: 'student does not belong to your school' });
+        }
+        await db.student.destroy({
+            where: { idSchool: req.params.studentId },
+        });
+        res.status(200).json({
+            message: 'delete student successfully',
+        });
+    },
 };

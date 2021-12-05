@@ -62,6 +62,11 @@ router.put(
     [auth.verifyToken, auth.isTeacher],
     controller.Teacher.updateLogbook
 );
+router.put(
+    '/student/:studentId',
+    [auth.verifyToken, auth.isTeacher],
+    controller.Teacher.editStudent
+);
 router.get(
     '/mytimetable/:year/:week',
     [auth.verifyToken, auth.isTeacher],
