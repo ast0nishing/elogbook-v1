@@ -36,31 +36,27 @@ const AuthContextProvider = ({ children }) => {
           },
         });
       }
-      if (response.status !== 200) {
-        try {
-          const response = await axios.post(
-            `${apiUrl}/auth/refresh-token`,
-            sessionStorage[SESSION_STORAGE_REFRESH_TOKEN_NAME]
-          );
-          if (response.data.accessToken)
-            dispatch({
-              type: "SET_AUTH",
-              payload: {
-                isAuthenticated: true,
-                user: response.data.user,
-                role: sessionStorage["role"],
-              },
-            });
-        } catch (error) {
-          sessionStorage.removeItem(SESSION_STORAGE_ACCESS_TOKEN_NAME);
-          setAuthToken(null);
-          dispatch({
-            type: "SET_AUTH",
-            payload: { isAuthenticated: false, user: null },
-          });
-        }
-      }
     } catch (error) {
+      // try {
+      //   setAuthToken();
+      //   const input = {
+      //     refreshToken: sessionStorage[SESSION_STORAGE_REFRESH_TOKEN_NAME],
+      //   };
+      //   const response = await axios.post(
+      //     `${apiUrl}/auth/refresh-token`,
+      //     input
+      //   );
+      //   if (response.status == 200) {
+      //     sessionStorage.setItem(
+      //       SESSION_STORAGE_ACCESS_TOKEN_NAME,
+      //       response.data.accessToken
+      //     );
+      //     sessionStorage.setItem(
+      //       SESSION_STORAGE_REFRESH_TOKEN_NAME,
+      //       response.data.refreshToken
+      //     );
+      //   }
+      // } catch (error) {
       sessionStorage.removeItem(SESSION_STORAGE_ACCESS_TOKEN_NAME);
       setAuthToken(null);
       dispatch({
@@ -68,6 +64,7 @@ const AuthContextProvider = ({ children }) => {
         payload: { isAuthenticated: false, user: null },
       });
     }
+    // }
   };
 
   useEffect(() => loadUser(), []);
@@ -124,7 +121,13 @@ const AuthContextProvider = ({ children }) => {
   };
 
   // Context data
-  const authContextData = { loginUser, registerUser, logoutUser, authState };
+  const authContextData = {
+    loginUser,
+    registerUser,
+    logoutUser,
+    authState,
+    loadUser,
+  };
 
   // Return provider
   return (

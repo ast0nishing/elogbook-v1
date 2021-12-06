@@ -1,5 +1,6 @@
 /** @format */
-import { createContext, useReducer, useState } from "react";
+// Refresh-token
+import { createContext, useContext, useReducer, useState } from "react";
 import { schoolReducer } from "../reducers/schoolReducer";
 import {
   apiUrl,
@@ -13,7 +14,6 @@ import {
 
 import axios from "axios";
 export const SchoolContext = createContext();
-
 const SchoolContextProvider = ({ children }) => {
   // State
   const [schoolState, dispatch] = useReducer(schoolReducer, {
@@ -52,14 +52,14 @@ const SchoolContextProvider = ({ children }) => {
         newSchool
       );
       if (response.status == 200) {
+        console.log(response.data);
         dispatch({ type: ADD_SCHOOL, payload: response.data.school });
-        return { success: true, message: response.msg };
+        return { success: true, message: "Work" };
+      } else if (response.status !== 200) {
+        return { message: response.data };
       }
     } catch (error) {
       return { success: false, message: "Error" };
-      // error.response.data
-      //   ? error.response.data
-      //   : // : { success: false, message: "Server error" };
     }
   };
   // Delete post

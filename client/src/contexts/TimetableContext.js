@@ -1,7 +1,7 @@
 /** @format */
 
 import { createContext, useReducer, useState } from "react";
-import { timetablebookReducer } from "../reducers/timetablebookReducer";
+import { timetableReducer } from "../reducers/timetableReducer";
 import {
   apiUrl,
   TIMETABLES_LOADED_FAIL,
@@ -13,9 +13,9 @@ import {
 } from "./constants";
 
 import axios from "axios";
-export const TimeTableContext = createContext();
+export const TimetableContext = createContext();
 
-const TimeTableContextProvider = ({ children }) => {
+const TimetableContextProvider = ({ children }) => {
   // State
   const [timetableState, dispatch] = useReducer(timetableReducer, {
     timetable: null,
@@ -33,7 +33,7 @@ const TimeTableContextProvider = ({ children }) => {
   });
 
   // Get all timetables
-  const getTimeTables = async () => {
+  const getTimetables = async () => {
     try {
       const response = await axios.get(`${apiUrl}/admin/timetable`);
       if (response.data.success) {
@@ -51,22 +51,19 @@ const TimeTableContextProvider = ({ children }) => {
   const addTimeTable = async (newTimeTable) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/admin/newTimeTable`,
+        `${apiUrl}/api/v1/schools/createTimeTable`,
         newTimeTable
       );
-      if (response.data.success) {
-        dispatch({ type: ADD_TIMETABLE, payload: response.data.timetable });
-        return response.data;
+      if (response.status == 200) {
+        return { message: "Successfull" };
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      return { message: "Fail" };
     }
   };
 
   // Delete post
-  const deleteLessson = async (timetableId) => {
+  const deleteTimetable = async (timetableId) => {
     try {
       const response = await axios.delete(
         `${apiUrl}/admin/timetable/${timetableId}`
@@ -107,24 +104,24 @@ const TimeTableContextProvider = ({ children }) => {
   // Post context data
   const timetableContextData = {
     timetableState,
-    getTimeTables,
+    getTimetables,
     showAddTimeTableTable,
     setShowAddTimeTableTable,
     showUpdateTimeTableTable,
     setShowUpdateTimeTableTable,
-    addCTimeTable,
+    addTimeTable,
     showToast,
     setShowToast,
-    deleteTimeTable,
+    deleteTimetable,
     findTimeTable,
     updateTimeTable,
   };
 
   return (
-    <TimeTableContext.Provider value={timetableContextData}>
+    <TimetableContext.Provider value={timetableContextData}>
       {children}
-    </TimeTableContext.Provider>
+    </TimetableContext.Provider>
   );
 };
 
-export default TimeTableContextProvider;
+export default TimetableContextProvider;

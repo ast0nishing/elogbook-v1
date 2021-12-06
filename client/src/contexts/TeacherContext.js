@@ -63,7 +63,7 @@ const TeacherContextProvider = ({ children }) => {
   const addTeachers = async (newTeacher) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/v1/schools/createTeacher`,
+        `${apiUrl}/api/v1/schools/createTeacher`,
         newTeacher
       );
       if (response.status == 200) {
@@ -81,7 +81,7 @@ const TeacherContextProvider = ({ children }) => {
   const addClassTeachers = async (newClassTeacher) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/v1/schools/addTeacher`,
+        `${apiUrl}/api/v1/schools/addTeacher`,
         newClassTeacher
       );
       if (response.status == 200) {

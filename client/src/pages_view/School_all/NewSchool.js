@@ -2,15 +2,20 @@
 // Decoration
 import "../Css/newElement.css";
 import "../Css/elementForm.css";
-import { CSVReader } from "react-papaparse";
 // React
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SchoolContext } from "../../contexts/SchoolContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import React from "react";
+// Element
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CSVReader } from "react-papaparse";
+
 export default function NewSchool() {
-  // Contexts
+  // // Context auth
+  const { loadUser } = useContext(AuthContext);
+  // Context schools
   const {
     schoolState: { school, schools, schoolsLoading },
     getSchools,
@@ -20,6 +25,7 @@ export default function NewSchool() {
     setShowToast,
     addSchool,
   } = useContext(SchoolContext);
+  // Effect refresh token
 
   // Add one school
   const [newSchool, setNewSchool] = useState({
@@ -45,6 +51,7 @@ export default function NewSchool() {
     setNewSchool({ ...newSchool, [event.target.name]: event.target.value });
   // Submit function
   const onSubmit = async (event) => {
+    loadUser();
     event.preventDefault();
     const { message } = await addSchool(newSchool);
     setShowToast({ show: true });

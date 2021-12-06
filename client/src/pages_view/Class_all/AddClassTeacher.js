@@ -12,12 +12,11 @@ import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function NewTeacher() {
+export default function AddClassTeacher() {
   // Contexts
   const {
     showAddTeacherTable,
     setShowTeacherTable,
-    addTeachers,
     addClassTeachers,
     setShowToast,
   } = useContext(TeacherContext);
@@ -26,35 +25,20 @@ export default function NewTeacher() {
   const [newTeacher, setNewTeacher] = useState([
     {
       idSchool: "",
-      username: "",
-      password: "",
       name: "",
-      major: "",
-      phoneNumber: "",
-      email: "",
+      teacherId: "",
+      teacherName: "",
     },
   ]);
 
-  const { idSchool, username, password, name, major, phoneNumber, email } =
-    newTeacher;
+  const { idSchool, name, teacherId, teacherName } = newTeacher;
 
   const onChangeNewTeacherForm = (event) =>
     setNewTeacher({ ...newTeacher, [event.target.name]: event.target.value });
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const data = [
-      {
-        idSchool: "LA0102-T12001",
-        username: "dung.cao.t12001@LA0102",
-        password: "vtn",
-        name: "Cao Tiến Dũng",
-        major: "KHMT",
-        phoneNumber: "987111122",
-        email: "dung.cao@gmail.com",
-      },
-    ];
-    const { success, message } = await addTeachers(data);
+    const { success, message } = await addClassTeachers(newTeacher);
     toast(message);
     setShowToast({ show: true });
   };
@@ -71,7 +55,6 @@ export default function NewTeacher() {
       codes.push(el.data);
     });
     setNewTeacher(codes);
-    console.log(codes);
   };
 
   const handleOnError = (err, file, inputElem, reason) => {
@@ -86,7 +69,7 @@ export default function NewTeacher() {
   return (
     <>
       <div className="newElement">
-        <h1 className="newElementTitle">New Teacher</h1>
+        <h1 className="newElementTitle">Add Teacher to Class</h1>
         <form onSubmit={onSubmit}>
           <div className="form-row">
             <div className="form-col-25">
@@ -107,36 +90,6 @@ export default function NewTeacher() {
           </div>
           <div className="form-row">
             <div className="form-col-25">
-              <label>Username</label>
-            </div>
-            <div className="form-col-75">
-              <input
-                type="text"
-                id="fname"
-                name="username"
-                value={username}
-                onChange={onChangeNewTeacherForm}
-                placeholder="Username .."
-              ></input>
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-col-25">
-              <label>Password</label>
-            </div>
-            <div className="form-col-75">
-              <input
-                type="text"
-                id="fname"
-                name="password"
-                value={password}
-                onChange={onChangeNewTeacherForm}
-                placeholder="Password .."
-              ></input>
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-col-25">
               <label>Name</label>
             </div>
             <div className="form-col-75">
@@ -146,52 +99,22 @@ export default function NewTeacher() {
                 name="name"
                 value={name}
                 onChange={onChangeNewTeacherForm}
-                placeholder="Teacher Name .."
+                placeholder="Username .."
               ></input>
             </div>
           </div>
           <div className="form-row">
             <div className="form-col-25">
-              <label>Phone</label>
+              <label>Teacher ID</label>
             </div>
             <div className="form-col-75">
               <input
                 type="text"
                 id="fname"
-                name="phoneNumber"
-                value={phoneNumber}
+                name="teacherId"
+                value={teacherId}
                 onChange={onChangeNewTeacherForm}
-                placeholder="Phone number .."
-              ></input>
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-col-25">
-              <label>Major</label>
-            </div>
-            <div className="form-col-75">
-              <input
-                type="text"
-                id="fname"
-                name="major"
-                value={major}
-                onChange={onChangeNewTeacherForm}
-                placeholder="Major .."
-              ></input>
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-col-25">
-              <label>Email</label>
-            </div>
-            <div className="form-col-75">
-              <input
-                type="text"
-                id="lname"
-                name="email"
-                value={email}
-                onChange={onChangeNewTeacherForm}
-                placeholder="Email .."
+                placeholder="Teacher ID .."
               ></input>
             </div>
           </div>
@@ -216,6 +139,7 @@ export default function NewTeacher() {
             <span>Drop CSV file here or click to upload</span>
           </CSVReader>
         </div>
+        <br></br>
         <div className="form-row">
           <input type="submit" value="Submit" onClick={onSubmit}></input>
         </div>

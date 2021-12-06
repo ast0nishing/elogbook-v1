@@ -1,53 +1,55 @@
 /** @format */
 import {
-  STUDENTS_LOADED_SUCCESS,
-  STUDENTS_LOADED_FAIL,
-  ADD_STUDENT,
-  DELETE_STUDENT,
-  UPDATE_STUDENT,
-  FIND_STUDENT,
+  TIMETABLES_LOADED_SUCCESS,
+  TIMETABLES_LOADED_FAIL,
+  ADD_TIMETABLE,
+  DELETE_TIMETABLE,
+  UPDATE_TIMETABLE,
+  FIND_TIMETABLE,
 } from "../contexts/constants";
 
-export const studentReducer = (state, action) => {
+export const timetableReducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case STUDENTS_LOADED_SUCCESS:
+    case TIMETABLES_LOADED_SUCCESS:
       return {
         ...state,
-        students: payload,
-        studentsLoading: false,
+        timetables: payload,
+        timetablesLoading: false,
       };
 
-    case STUDENTS_LOADED_FAIL:
+    case TIMETABLES_LOADED_FAIL:
       return {
         ...state,
-        students: [],
-        studentsLoading: false,
+        timetables: [],
+        timetablesLoading: false,
       };
 
-    case ADD_STUDENT:
+    case ADD_TIMETABLE:
       return {
         ...state,
-        students: [...state.students, payload],
+        timetables: [...state.timetables, payload],
       };
 
-    case DELETE_STUDENT:
+    case DELETE_TIMETABLE:
       return {
         ...state,
-        students: state.students.filter((student) => student._id !== payload),
+        timetables: state.timetables.filter(
+          (timetable) => timetable.id !== payload
+        ),
       };
 
-    case FIND_STUDENT:
-      return { ...state, student: payload };
+    case FIND_TIMETABLE:
+      return { ...state, timetable: payload };
 
-    case UPDATE_STUDENT:
-      const newStudents = state.students.map((student) =>
-        student._id === payload._id ? payload : student
+    case UPDATE_TIMETABLE:
+      const newTimetables = state.timetables.map((timetable) =>
+        timetable.id === payload.id ? payload : timetable
       );
 
       return {
         ...state,
-        students: newStudents,
+        timetables: newTimetables,
       };
 
     default:

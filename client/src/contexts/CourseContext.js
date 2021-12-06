@@ -46,21 +46,23 @@ const CourseContextProvider = ({ children }) => {
     }
   };
 
-  // Add post
+  // Add course
   const addCourse = async (newCourse) => {
     try {
       const response = await axios.post(`${apiUrl}/admin/newCourse`, newCourse);
-      if (response.data.success) {
-        dispatch({ type: ADD_COURSE, payload: response.data.course });
-        return response.data;
+      if (response.status == 200) {
+        // dispatch({ type: ADD_COURSE, payload: response.data.course });
+        return { message: "sucessfull" };
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      // return error.response.data
+      //   ? error.response.data
+      //   : { success: false, message: "Server error" };
+      return { message: "Fail" };
     }
   };
-  // Delete post
+
+  // Delete course
   const deleteCourse = async (courseId) => {
     try {
       const final = courseId.toString().toLowerCase();

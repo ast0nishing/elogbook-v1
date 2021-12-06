@@ -3,13 +3,18 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Auth from "./views/Auth";
 import AuthContextProvider from "./contexts/AuthContext";
+import ProtectedRoute from "./components/routing/ProtectedRoute";
+// Admin
 import SchoolContextProvider from "./contexts/SchoolContext";
 import CourseContextProvider from "./contexts/CourseContext";
 import LessonContextProvider from "./contexts/LessonContext";
+
+// School
 import StudentContextProvider from "./contexts/StudentContext";
 import TeacherContextProvider from "./contexts/TeacherContext";
-import ProtectedRoute from "./components/routing/ProtectedRoute";
-
+import ClassContextProvider from "./contexts/ClassContext";
+// Timetable
+import TimeTableContextProvider from "./contexts/TimetableContext";
 // Core components and pages view
 import Home from "./pages_view/Home/Home";
 
@@ -33,108 +38,160 @@ import NewLesson from "./pages_view/Lesson_all/NewLesson";
 // Teacher all
 import TeacherList from "./pages_view/Teacher_all/TeacherList";
 import NewTeacher from "./pages_view/Teacher_all/NewTeacher";
+import Teacher from "./pages_view/Teacher_all/Teacher";
 // Student all
 import StudentList from "./pages_view/Student_all/StudentList";
 import StudentDetail from "./pages_view/Student_all/Student";
 import NewStudent from "./pages_view/Student_all/NewStudent";
-
-// import TestJson from "./pages_view/School_all/TestJson";
-// import PostContextProvider from "./contexts/PostContext";
-
+// Class all
+import NewClass from "./pages_view/Class_all/NewClass";
+import AddClassTeacher from "./pages_view/Class_all/AddClassTeacher";
+import AddClassStudent from "./pages_view/Class_all/AddClassStudent";
+import AddHeadClassTeacher from "./pages_view/Class_all/AddHeadClassTeacher";
+import ClassList from "./pages_view/Class_all/ClassList";
+// Timetable all
+import NewTimetable from "./pages_view/Timetable_all/NewTimetable";
+import TimetableList from "./pages_view/Timetable_all/TimetableList";
+// App
 function App() {
   return (
     <AuthContextProvider>
+      {/* Admin */}
       <SchoolContextProvider>
         <CourseContextProvider>
           <LessonContextProvider>
+            {/* School */}
             <StudentContextProvider>
               <TeacherContextProvider>
-                <Router>
-                  <Switch>
-                    {/* Teacher all */}
-                    <ProtectedRoute
-                      exact
-                      path="/teachers"
-                      component={TeacherList}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/newteacher"
-                      component={NewTeacher}
-                    />
-                    {/* Auth */}
-                    <Route
-                      exact
-                      path="/login"
-                      render={(props) => <Auth {...props} authRoute="login" />}
-                    />
-                    // {/* School all */}
-                    <ProtectedRoute
-                      exact
-                      path="/schools"
-                      component={SchoolList}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/newschool"
-                      component={NewSchool}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/schooldetail"
-                      component={SchoolDetail}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/newCourse"
-                      component={NewCourse}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/coursedetail"
-                      component={Course}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/courses"
-                      component={CourseList}
-                    />
-                    {/* Lesson all */}
-                    <ProtectedRoute
-                      exact
-                      path="/lessons"
-                      component={LessonList}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/lessondetail"
-                      component={Lesson}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/newlesson"
-                      component={NewLesson}
-                    />
-                    {/* Student all */}
-                    <ProtectedRoute
-                      exact
-                      path="/student/:id"
-                      component={StudentDetail}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/students"
-                      component={StudentList}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/newstudent"
-                      component={NewStudent}
-                    />
-                    <ProtectedRoute exact path="/" component={Home} />
-                    {/* <Route exact path="/" component={TestJson} /> */}
-                  </Switch>
-                </Router>
+                <ClassContextProvider>
+                  <TimeTableContextProvider>
+                    <Router>
+                      <Switch>
+                        {/* Teacher all */}
+                        <ProtectedRoute
+                          exact
+                          path="/teachers"
+                          component={TeacherList}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/newteacher"
+                          component={NewTeacher}
+                        />
+                        <ProtectedRoute exact path="/teacherdetail" />
+                        {/* Auth */}
+                        <Route
+                          exact
+                          path="/login"
+                          render={(props) => (
+                            <Auth {...props} authRoute="login" />
+                          )}
+                        />
+                        // {/* School all */}
+                        <ProtectedRoute
+                          exact
+                          path="/schools"
+                          component={SchoolList}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/newschool"
+                          component={NewSchool}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/schooldetail"
+                          component={SchoolDetail}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/newCourse"
+                          component={NewCourse}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/coursedetail"
+                          component={Course}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/courses"
+                          component={CourseList}
+                        />
+                        {/* Lesson all */}
+                        <ProtectedRoute
+                          exact
+                          path="/lessons"
+                          component={LessonList}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/lessondetail"
+                          component={Lesson}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/newlesson"
+                          component={NewLesson}
+                        />
+                        {/* Student all */}
+                        <ProtectedRoute
+                          exact
+                          path="/student/:id"
+                          component={StudentDetail}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/students"
+                          component={StudentList}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/newstudent"
+                          component={NewStudent}
+                        />
+                        {/* Class */}
+                        <ProtectedRoute
+                          exact
+                          path="/newclass"
+                          component={NewClass}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/add-class-teacher"
+                          component={AddClassTeacher}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/add-class-student"
+                          component={AddClassStudent}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/add-head-class-teacher"
+                          component={AddHeadClassTeacher}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/classes"
+                          component={ClassList}
+                        />
+                        {/* Timetable all */}
+                        <ProtectedRoute
+                          exact
+                          path="/new-timetable"
+                          component={NewTimetable}
+                        />
+                        <ProtectedRoute
+                          exact
+                          path="/timetables"
+                          component={TimetableList}
+                        />
+                        <ProtectedRoute exact path="/" component={Home} />
+                      </Switch>
+                    </Router>
+                  </TimeTableContextProvider>
+                </ClassContextProvider>
               </TeacherContextProvider>
             </StudentContextProvider>
           </LessonContextProvider>

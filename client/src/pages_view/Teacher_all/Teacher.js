@@ -1,3 +1,5 @@
+/** @format */
+
 import {
   CalendarToday,
   LocationSearching,
@@ -7,43 +9,45 @@ import {
   Publish,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import "./user.css";
 import { useState } from "react";
-import { StudentContext } from '../../contexts/StudentContext'
-import { AuthContext } from '../../contexts/AuthContext'
-import { useContext, useEffect } from 'react'
+import { StudentContext } from "../../contexts/StudentContext";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useContext, useEffect } from "react";
 
-export default function User() {
-  	// Contexts
-    const {
-      studentState: { student },
-      showUpdateStudentTable,
-      setShowUpdateStudentTable,
-      updateStudent,
-      setShowToast
-    } = useContext(StudentContext)
+export default function Teacher() {
+  // Contexts
+  const {
+    studentState: { student },
+    showUpdateStudentTable,
+    setShowUpdateStudentTable,
+    updateStudent,
+    setShowToast,
+  } = useContext(StudentContext);
 
-	// State
-	const [updatedStudent, setUpdatedStudent] = useState(student)
+  // State
+  const [updatedStudent, setUpdatedStudent] = useState(student);
 
-	useEffect(() => setUpdatedStudent(student), [student])
+  useEffect(() => setUpdatedStudent(student), [student]);
 
-	const {username,fullname,phone} = updatedStudent
+  const { username, fullname, phone } = updatedStudent;
 
-	const onChangeUpdatedStudentForm = event =>
-		setUpdatedStudent({ ...updatedStudent, [event.target.name]: event.target.value })
+  const onChangeUpdatedStudentForm = (event) =>
+    setUpdatedStudent({
+      ...updatedStudent,
+      [event.target.name]: event.target.value,
+    });
 
-	const closeDialog = () => {
-		setUpdatedStudent(student)
-		setShowUpdateStudentTable(false)
-	}
+  const closeDialog = () => {
+    setUpdatedStudent(student);
+    setShowUpdateStudentTable(false);
+  };
 
-	const onSubmit = async event => {
-		event.preventDefault()
-		const { success, message } = await updateStudent(updatedStudent)
-		setShowUpdateStudentTable(false)
-		setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
-	}
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const { success, message } = await updateStudent(updatedStudent);
+    setShowUpdateStudentTable(false);
+    setShowToast({ show: true, message, type: success ? "success" : "danger" });
+  };
   return (
     <div className="user">
       <div className="userTitleContainer">

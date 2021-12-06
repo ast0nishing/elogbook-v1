@@ -56,13 +56,14 @@ const LessonContextProvider = ({ children }) => {
       if (response.status == 200) {
         // dispatch({ type: ADD_LESSON, payload: response.data.lesson });
         // return response.data;
-        return { message: "sucessfull" };
+        if (response.data["Already exist(s) code(s)"].length !== 0) {
+          return { message: "Already exists" };
+        } else {
+          return { message: "Successfull" };
+        }
       }
     } catch (error) {
-      return { message: "Data already exist" };
-      // return error.response.data
-      //   ? error.response.data
-      //   : { success: false, message: "Server error" };
+      return { message: "Internal Server Error" };
     }
   };
 

@@ -47,15 +47,33 @@ const StudentContextProvider = ({ children }) => {
   // Add student
   const addStudent = async (newStudent) => {
     try {
-      const response = await axios.post(`${apiUrl}/student`, newStudent);
-      if (response.data.success) {
+      const response = await axios.post(
+        `${apiUrl}/api/v1/schools/createStudent`,
+        newStudent
+      );
+      if (response.status == 200) {
         dispatch({ type: ADD_STUDENT, payload: response.data.student });
-        return response.data;
+        return { message: "Sucessfull" };
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      return { message: "Fail" };
+      // return error.response.data
+      //   ? error.response.data
+      //   : { success: false, message: "Server error" };
+    }
+  };
+  //  Add student to class
+  const addClassStudent = async (state) => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/api/v1/schools/addStudent`,
+        state
+      );
+      if (response.status == 200) {
+        return { message: "Sucessfull" };
+      }
+    } catch (error) {
+      return { message: "Fail" };
     }
   };
 
@@ -105,6 +123,7 @@ const StudentContextProvider = ({ children }) => {
     showUpdateStudentTable,
     setShowUpdateStudentTable,
     addStudent,
+    addClassStudent,
     showToast,
     setShowToast,
     deleteStudent,

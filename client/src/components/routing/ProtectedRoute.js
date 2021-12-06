@@ -4,7 +4,6 @@ import { Route, Redirect } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import Spinner from "react-bootstrap/Spinner";
-import Sidebar from "../sidebar/Sidebars";
 import Topbar from "../topbar/Topbar";
 import "antd/dist/antd.css";
 import "./sidebar.css";
@@ -45,7 +44,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 
   useEffect(() => {
     setMargin({ margined: 200 });
-  });
+  }, []);
+
   const styles = {
     marginLeft: margined,
   };
@@ -61,8 +61,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     body = (
       <>
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item key="1" icon={<PieChartOutlined />}>
-            Dashboard
+          <Menu.Item key="1">
+            <Link to="/"> Dashboard </Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<DesktopOutlined />}>
             Report
@@ -80,6 +80,65 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             <Menu.Item key="6">
               <Link to="/lessons"> Lesson </Link>
             </Menu.Item>
+          </SubMenu>
+          <Menu.Item key="10" icon={<FileOutlined />}>
+            Tutorial !
+          </Menu.Item>
+        </Menu>
+      </>
+    );
+  else if (role == "school")
+    body = (
+      <>
+        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+          <Menu.Item key="1" icon={<DesktopOutlined />}>
+            <Link to="/"> Dashboard </Link>
+          </Menu.Item>
+          <Menu.Item key="2" icon={<DesktopOutlined />}>
+            Report
+          </Menu.Item>
+          <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
+            <SubMenu key="sub2" title="Student">
+              <Menu.Item key="21">
+                <Link to="/newstudent"> Create Student </Link>
+              </Menu.Item>
+              <Menu.Item key="22">
+                <Link to="/students"> Student List </Link>
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub3" title="Teacher">
+              <Menu.Item key="31">
+                <Link to="/newteacher"> Create Teacher </Link>
+              </Menu.Item>
+              <Menu.Item key="32">
+                <Link to="/teachers"> Teacher List </Link>
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub4" title="Class">
+              <Menu.Item key="41">
+                <Link to="/newclass"> Create Class </Link>
+              </Menu.Item>
+              <Menu.Item key="42">
+                <Link to="/add-class-student"> Add Student </Link>
+              </Menu.Item>
+              <Menu.Item key="43">
+                <Link to="/add-class-teacher"> Add Teacher</Link>
+              </Menu.Item>
+              <Menu.Item key="44">
+                <Link to="/add-head-class-teacher"> Add Head Teacher </Link>
+              </Menu.Item>
+              <Menu.Item key="45">
+                <Link to="/classes"> Class List </Link>
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub5" title="Timetable">
+              <Menu.Item key="51">
+                <Link to="/new-timetable"> Create Timetable </Link>
+              </Menu.Item>
+              <Menu.Item key="52">
+                <Link to="/timetables">Timetable List </Link>
+              </Menu.Item>
+            </SubMenu>
           </SubMenu>
           <Menu.Item key="10" icon={<FileOutlined />}>
             Tutorial !

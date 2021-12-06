@@ -20,6 +20,7 @@ export default function SchoolList() {
     authState: {
       user: { username },
     },
+    loadUser,
   } = useContext(AuthContext);
 
   const {
@@ -29,7 +30,7 @@ export default function SchoolList() {
     showToast: { show, message, type },
     setShowToast,
   } = useContext(SchoolContext);
-
+  useEffect(() => loadUser(), []);
   useEffect(() => getSchools(), []);
 
   const [data, setData] = useState(schools);

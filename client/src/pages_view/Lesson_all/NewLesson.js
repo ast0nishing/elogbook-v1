@@ -38,7 +38,6 @@ export default function Newlesson() {
     const { message } = await addLesson(newLesson);
     resetAddLessonData();
     toast(message);
-    console.log(message);
     setShowToast({ show: true });
   };
 

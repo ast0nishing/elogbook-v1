@@ -7,39 +7,38 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import addIcon from "../../assets/plus-circle-fill.svg";
 import Button from "react-bootstrap/Button";
 import Tooltip from "react-bootstrap/Tooltip";
-// import {courses} from "../../dummyData"
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { CourseContext } from "../../contexts/CourseContext";
+import { ClassContext } from "../../contexts/ClassContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import Spinner from "react-bootstrap/Spinner";
-export default function CourseList() {
+export default function ClassList() {
   // Contexts
   const {
-    courseState: { course, courses, coursesLoading },
-    getCourses,
+    classState: { class_, classes, classesLoading },
+    getClasses,
     showToast: { show, message, type },
     setShowToast,
-    deleteCourse,
-    findCourse,
-  } = useContext(CourseContext);
+    deleteClass,
+    findClass,
+  } = useContext(ClassContext);
 
-  useEffect(() => getCourses(), []);
+  useEffect(() => getClasses(), []);
 
   // Get all course
-  const [data, setData] = useState(courses);
+  const [data, setData] = useState(classes);
   const history = useHistory();
   // Select course for editing
-  const handleChoose = (courseId) => {
-    findCourse(courseId);
-    history.push("/coursedetail");
+  const handleChoose = (classId) => {
+    findClass(classId);
+    history.push("/classdetail");
   };
-  const handleDelete = async (courseId) => {
+  const handleDelete = async (classId) => {
     try {
-      setData(data.filter((item) => item.code !== courseId));
-      const { message } = await deleteCourse(courseId);
+      setData(data.filter((item) => item.idClass !== classId));
+      const { message } = await deleteClass(classId);
       if (message) {
         console.log(message);
         setShowToast({ show: true, message, type: null });
@@ -48,10 +47,15 @@ export default function CourseList() {
     } catch (error) {}
   };
   const columns = [
-    { field: "code", headerName: "Course Code", width: 200 },
+    { field: "idClass", headerName: "Class ID", width: 200 },
     {
       field: "name",
-      headerName: "Course name",
+      headerName: "Class name",
+      width: 200,
+    },
+    {
+      field: "academicYearId",
+      headerName: "Academic Year",
       width: 200,
     },
     {
@@ -63,13 +67,13 @@ export default function CourseList() {
           <>
             <button
               className="elementListEdit"
-              onClick={() => handleChoose(params.row.code)}
+              onClick={() => handleChoose(params.row.idClass)}
             >
               Edit
             </button>
             <DeleteOutline
               className="ListDelete"
-              onClick={() => handleDelete(params.row.code)}
+              onClick={() => handleDelete(params.row.idClass)}
             />
           </>
         );
@@ -78,18 +82,18 @@ export default function CourseList() {
   ];
 
   let body = null;
-  if (coursesLoading) {
+  if (classesLoading) {
     body = (
       <div className="spinner-container">
         <Spinner animation="border" variant="info" />
       </div>
     );
-  } else if (courses.length === 0) {
+  } else if (classes.length === 0) {
     body = (
       <>
         <div className="elementList">
           <h2 className="header">
-            There is no course available, please create your lessons first
+            There is no class available, please create your classes first
           </h2>
           <Link to={"/newlesson"}>
             <Button className="btn-floating" style={{ "z-index": -1 }}>
@@ -118,7 +122,7 @@ export default function CourseList() {
           />
           <DataGrid
             rows={data}
-            getRowId={(r) => r.code}
+            getRowId={(r) => r.classId}
             disableSelectionOnClick
             columns={columns}
             pageSize={8}
@@ -129,9 +133,9 @@ export default function CourseList() {
         <div>
           <OverlayTrigger
             placement="left"
-            overlay={<Tooltip>Add new course</Tooltip>}
+            overlay={<Tooltip>Add new class</Tooltip>}
           >
-            <Link to={"/newlesson"}>
+            <Link to={"/newcourse"}>
               <Button className="btn-floating" style={{ "z-index": -1 }}>
                 <img src={addIcon} alt="add-post" width="60" height="60" />
               </Button>

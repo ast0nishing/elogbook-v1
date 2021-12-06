@@ -35,6 +35,7 @@ export default function Newcourse() {
   const onSubmit = async (event) => {
     event.preventDefault();
     const { success, message } = await addCourse(newCourse);
+    // const { message } = "Fail";
     resetAddCourseData();
     toast(message);
     setShowToast({ show: true });
@@ -75,7 +76,7 @@ export default function Newcourse() {
       });
       final.push({ code: uniq.code, name: uniq.name, lessons });
     });
-    console.log(final);
+    setNewCourse(final);
   };
 
   const handleOnError = (err, file, inputElem, reason) => {
@@ -124,28 +125,30 @@ export default function Newcourse() {
           </div>
           <br></br>
           <div className="form-row">
-            <input type="submit" value="Submit" onClick={onSubmit}></input>
+            <input type="submit" value="Submit"></input>
           </div>
           <div>
             <ToastContainer />
           </div>
         </form>
-        <h1 className="newElementTitle">Import File</h1>
-        <div>
-          <CSVReader
-            onDrop={handleOnDrop}
-            onError={handleOnError}
-            addRemoveButton
-            removeButtonColor="#659cef"
-            onRemoveFile={handleOnRemoveFile}
-            config={papaparseOptions}
-          >
-            <span>Drop CSV file here or click to upload</span>
-          </CSVReader>
-        </div>
-        <div className="form-row">
-          <input type="submit" value="Submit"></input>
-        </div>
+        {/* <form>
+          <h1 className="newElementTitle">Import File</h1>
+          <div>
+            <CSVReader
+              onDrop={handleOnDrop}
+              onError={handleOnError}
+              addRemoveButton
+              removeButtonColor="#659cef"
+              onRemoveFile={handleOnRemoveFile}
+              config={papaparseOptions}
+            >
+              <span>Drop CSV file here or click to upload</span>
+            </CSVReader>
+          </div>
+          <div className="form-row">
+            <input type="submit" value="Submit"></input>
+          </div>
+        </form> */}
       </div>
     </>
   );

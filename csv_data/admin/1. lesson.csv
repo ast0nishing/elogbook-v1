@@ -1,0 +1,61 @@
+code,name,lessons_name,lesson_stt
+SE19CS311,Introduction to Database,Introduction to Database,1
+SE19CS311,Introduction to Database,Relational Model,2
+SE19CS311,Introduction to Database,Design Database,3
+SE19CS311,Introduction to Database,Design Database (cont),4
+SE19CS311,Introduction to Database,Design Theory,5
+SE19CS311,Introduction to Database,Design Theory (cont),6
+SE19CS311,Introduction to Database,Using SQL (1),7
+SE19CS311,Introduction to Database,Using SQL (2),8
+SE19CS311,Introduction to Database,Using SQL (3),9
+SE19CS311,Introduction to Database,Using SQL (4),10
+SHL11HIS101,Human History,Civilizations,1
+SHL11HIS101,Human History,Ancient Egypt,2
+SHL11HIS101,Human History,Ancient Greece,3
+SHL11HIS101,Human History,Mesopotamia,4
+SHL11HIS101,Human History,Babylon,5
+SHL11HIS101,Human History,Ancient Rome,6
+SHL11HIS101,Human History,Ancient China,7
+SHL11HIS101,Human History,Ancient India,8
+SHL11HIS101,Human History,Latin American,9
+SHL11HIS101,Human History,Japanese,10
+SBE14ECON101,Microeconomic,Intro to Microeconomic,1
+SBE14ECON101,Microeconomic,Factors of Production,2
+SBE14ECON101,Microeconomic,Demand and Supply,3
+SBE14ECON101,Microeconomic,Demand and Supply Curve,4
+SBE14ECON101,Microeconomic,Market Economy,5
+SBE14ECON101,Microeconomic,Competitve Market,6
+SBE14ECON101,Microeconomic,Monopoly,7
+SBE14ECON101,Microeconomic,Price Control,8
+SBE14ECON101,Microeconomic,Consumer Behavior,9
+SBE14ECON101,Microeconomic,Cost of Production,10
+NC18NGUVAN10,Ngữ Văn 10 - NC,Giới thiệu về ngữ văn,1
+NC18NGUVAN10,Ngữ Văn 10 - NC,Bài học đầu tiên,2
+NC18NGUVAN10,Ngữ Văn 10 - NC,"Hôm nay, tôi đi học",3
+NC18NGUVAN10,Ngữ Văn 10 - NC,Tắt đèn,4
+NC18NGUVAN10,Ngữ Văn 10 - NC,Hai anh em,5
+NC18NGUVAN10,Ngữ Văn 10 - NC,Tác giả Thạch Lam,6
+NC18NGUVAN10,Ngữ Văn 10 - NC,Nguyễn Du,7
+NC18NGUVAN10,Ngữ Văn 10 - NC,Truyện Kiều (1),8
+NC18NGUVAN10,Ngữ Văn 10 - NC,Truyện Kiều (2),9
+NC18NGUVAN10,Ngữ Văn 10 - NC,Truyện Kiều (3),10
+NC18HINH11,Hình Học 11 - NC,Giới thiệu hình học Euclid,1
+NC18HINH11,Hình Học 11 - NC,Phép biến hình,2
+NC18HINH11,Hình Học 11 - NC,Phép tịnh tiến,3
+NC18HINH11,Hình Học 11 - NC,Phép đối xứng trục,4
+NC18HINH11,Hình Học 11 - NC,Phép đối xứng tâm,5
+NC18HINH11,Hình Học 11 - NC,Phép quay,6
+NC18HINH11,Hình Học 11 - NC,"Khái niệm phép dời hình, hai hình bằng nhau",7
+NC18HINH11,Hình Học 11 - NC,Phép vị tự,8
+NC18HINH11,Hình Học 11 - NC,Phép đồng dạng (1),9
+NC18HINH11,Hình Học 11 - NC,Phép đồng dạng (2),10
+NC10SINHHOC10,Sinh học 10,Khái quát chung,1
+NC10SINHHOC10,Sinh học 10,Động vật có vú,2
+NC10SINHHOC10,Sinh học 10,Động vật thân mềm,3
+NC10SINHHOC10,Sinh học 10,Côn trùng,4
+NC10SINHHOC10,Sinh học 10,Cá,5
+NC10SINHHOC10,Sinh học 10,Dương xỉ,6
+NC10SINHHOC10,Sinh học 10,Tập tính in viết,7
+NC10SINHHOC10,Sinh học 10,Sinh học cơ thể người,8
+NC10SINHHOC10,Sinh học 10,Hệ tiêu hóa,9
+NC10SINHHOC10,Sinh học 10,Hệ bài tiết,10

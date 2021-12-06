@@ -46,18 +46,32 @@ const ClassContextProvider = ({ children }) => {
     }
   };
 
-  // Add post
+  // Add class
   const addClass = async (newClass) => {
     try {
-      const response = await axios.post(`${apiUrl}/admin/newClass`, newClass);
-      if (response.data.success) {
-        dispatch({ type: ADD_CLASS, payload: response.data.cla });
-        return response.data;
+      const url = `${apiUrl}/api/v1/schools/createClass`;
+      const response = await axios.post(url, newClass);
+      if (response.status == 200) {
+        dispatch({ type: ADD_CLASS, payload: response.data.class });
+        return { message: "Sucessfull" };
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      return { message: "Fail" };
+      // return error.response.data
+      //   ? error.response.data
+      //   : { success: false, message: "Server error" };
+    }
+  };
+  // Add Class Teacher
+  const addAll = async (state) => {
+    try {
+      const url = `${apiUrl}/api/v1/schools/createClassAddStudent`;
+      const response = await axios.post(url, state);
+      if (response.status == 200) {
+        return { message: "Sucessfull" };
+      }
+    } catch (error) {
+      return { message: "Fail" };
     }
   };
 
@@ -83,7 +97,7 @@ const ClassContextProvider = ({ children }) => {
     try {
       const response = await axios.put(
         `${apiUrl}/admin/class/${updatedClass._id}`,
-        updatedPost
+        updatedClass
       );
       if (response.data.success) {
         dispatch({ type: UPDATE_CLASS, payload: response.data.class });
@@ -110,6 +124,7 @@ const ClassContextProvider = ({ children }) => {
     deleteClass,
     findClass,
     updateClass,
+    addAll,
   };
 
   return (
