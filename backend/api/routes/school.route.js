@@ -3,9 +3,6 @@ import express from 'express';
 import auth from '../middlewares/auth.js';
 
 export const router = express.Router();
-router.get('/', (req, res) => {
-    return res.status(200).json('Hello');
-});
 router.post(
     '/createClass',
     auth.verifyToken,
@@ -99,4 +96,11 @@ router.get(
     auth.verifyToken,
     auth.isSchool,
     controller.School.getTimetable
+);
+router.get('/', auth.verifyToken, auth.isSchool, controller.School.getSelf);
+router.put(
+    '/password',
+    auth.verifyToken,
+    auth.isSchool,
+    controller.School.changePassword
 );

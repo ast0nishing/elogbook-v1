@@ -323,8 +323,6 @@ export default {
         const studentData = await db.student.findOne({
             where: { id: req.user.id },
         });
-        console.log(studentData.dataValues);
-        // return;
         if (
             await argon2.verify(
                 studentData.dataValues.password,

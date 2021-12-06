@@ -879,8 +879,8 @@ export default {
             where: { idSchool: req.params.teacherId },
         });
         if (!teacherData) {
-            return res.status(400).json({
-                message: 'teacher not found',
+            return res.status(200).json({
+                error: 'teacher not found',
             });
         }
         if (req.user.id === teacherData.dataValues.schoolId) {
@@ -891,8 +891,8 @@ export default {
                 message: 'delete teacher successfully',
             });
         } else {
-            res.status(400).json({
-                message: 'teacher does not belong to your school',
+            res.status(200).json({
+                error: 'teacher does not belong to your school',
             });
         }
     },
@@ -901,8 +901,8 @@ export default {
             where: { idSchool: req.params.studentId },
         });
         if (!studentData) {
-            return res.status(400).json({
-                message: 'student not found',
+            return res.status(200).json({
+                error: 'student not found',
             });
         }
         if (req.user.id === studentData.dataValues.schoolId) {
@@ -920,8 +920,8 @@ export default {
                 res.json({ message: 'update student successfully' });
             else res.json({ message: 'update failed' });
         } else {
-            res.status(400).json({
-                message: 'student does not belong to your school',
+            res.status(200).json({
+                error: 'student does not belong to your school',
             });
         }
     },
@@ -946,29 +946,29 @@ export default {
         });
 
         if (!classData) {
-            return res.status(400).json({ message: 'class not found' });
+            return res.status(200).json({ error: 'class not found' });
         }
         if (classData.dataValues.schoolId != req.user.id) {
             return res
-                .status(400)
-                .json({ message: 'class does not belong to your school' });
+                .status(200)
+                .json({ error: 'class does not belong to your school' });
         }
         const teacherData = await db.teacher.findOne({
             where: { idSchool: req.body.teacherId },
         });
         if (!teacherData) {
-            return res.status(400).json({ message: 'teacher not found' });
+            return res.status(200).json({ error: 'teacher not found' });
         }
         if (teacherData.dataValues.schoolId != req.user.id) {
             return res
-                .status(400)
-                .json({ message: 'teacher does not belong to your school' });
+                .status(200)
+                .json({ error: 'teacher does not belong to your school' });
         }
         const courseData = await db.course.findOne({
             where: { code: req.body.courseCode },
         });
         if (!courseData) {
-            return res.status(400).json({ message: 'course not found' });
+            return res.status(200).json({ error: 'course not found' });
         }
         const days = {
             monday: 1,
@@ -996,7 +996,7 @@ export default {
                 res.json({ message: 'edit timetable successfully' });
             else res.json({ message: 'edit timetable failed' });
         } catch (err) {
-            return res.status(400).json({ message: 'error occured' });
+            return res.status(200).json({ error: 'error occured' });
         }
     },
     async getTimetable(req, res) {
@@ -1014,7 +1014,7 @@ export default {
             where: { schoolId: req.user.id, academicYearId: req.params.year },
         });
         if (!classData) {
-            return res.status(400).json({ message: 'data not found' });
+            return res.status(200).json({ error: 'data not found' });
         }
         for (const data of classData) {
             if (req.params.week == -1) {
@@ -1022,7 +1022,7 @@ export default {
                     where: { classId: data.dataValues.id, toWeek: -1 },
                 });
                 if (!timetableData) {
-                    return res.status(400).json({ message: 'data not found' });
+                    return res.status(200).json({ error: 'data not found' });
                 }
                 for (const temp of timetableData) {
                     temp.dataValues.day = days[temp.dataValues.weekDay];
@@ -1067,13 +1067,13 @@ export default {
             where: { id: req.params.timetableId },
         });
         if (!timetableData) {
-            return res.status(400).json({ message: 'data not found' });
+            return res.status(200).json({ error: 'data not found' });
         }
         const classData = await db.class.findOne({
             where: { id: timetableData.dataValues.classId },
         });
         if (!classData) {
-            return res.status(400).json({ message: 'data not found' });
+            return res.status(200).json({ error: 'data not found' });
         }
         if (req.user.id === classData.dataValues.schoolId) {
             await db.timetable.destroy({
@@ -1083,8 +1083,8 @@ export default {
                 message: 'delete timetable successfully',
             });
         } else {
-            res.status(400).json({
-                message: 'timetable does not belong to your school',
+            res.status(200).json({
+                error: 'timetable does not belong to your school',
             });
         }
     },
@@ -1093,12 +1093,12 @@ export default {
             where: { idSchool: req.params.studentId },
         });
         if (!studentData) {
-            return res.status(400).json({ message: 'student not found' });
+            return res.status(200).json({ error: 'student not found' });
         }
         if (studentData.dataValues.schoolId != req.user.id) {
             return res
-                .status(400)
-                .json({ message: 'student does not belong to your school' });
+                .status(200)
+                .json({ error: 'student does not belong to your school' });
         }
         await db.student.destroy({
             where: { idSchool: req.params.studentId },
@@ -1106,5 +1106,46 @@ export default {
         res.status(200).json({
             message: 'delete student successfully',
         });
+    },
+    async getSelf(req, res) {
+        const schoolData = await db.school.findOne({
+            where: { id: req.user.id },
+        });
+        delete schoolData.dataValues.id;
+        delete schoolData.dataValues.securitySecret;
+        res.send(schoolData.dataValues);
+    },
+    async changePassword(req, res) {
+        const schoolData = await db.school.findOne({
+            where: { id: req.user.id },
+        });
+        if (
+            await argon2.verify(
+                schoolData.dataValues.password,
+                req.body.oldPassword
+            )
+        ) {
+            const salt = randomBytes(32);
+            const hashedPassword = await argon2.hash(req.body.newPassword, {
+                salt,
+            });
+            await db.school
+                .update(
+                    {
+                        password: hashedPassword,
+                    },
+                    {
+                        where: { id: req.user.id },
+                    }
+                )
+                .then((data) => {
+                    res.json({ message: 'updated password' });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            res.status(400).json({ message: 'password does not match' });
+        }
     },
 };
