@@ -1,5 +1,5 @@
 /** @format */
-
+import api from "../utils/api";
 import { createContext, useReducer, useState } from "react";
 import { courseReducer } from "../reducers/courseReducer";
 import {
@@ -34,7 +34,7 @@ const CourseContextProvider = ({ children }) => {
   // Get all courses
   const getCourses = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/admin/courses`);
+      const response = await api.get(`${apiUrl}/admin/courses`);
       if (response.status == 200) {
         dispatch({
           type: COURSES_LOADED_SUCCESS,
@@ -49,7 +49,7 @@ const CourseContextProvider = ({ children }) => {
   // Add course
   const addCourse = async (newCourse) => {
     try {
-      const response = await axios.post(`${apiUrl}/admin/newCourse`, newCourse);
+      const response = await api.post(`${apiUrl}/admin/newCourse`, newCourse);
       if (response.status == 200) {
         // dispatch({ type: ADD_COURSE, payload: response.data.course });
         return { message: "sucessfull" };
@@ -66,7 +66,7 @@ const CourseContextProvider = ({ children }) => {
   const deleteCourse = async (courseId) => {
     try {
       const final = courseId.toString().toLowerCase();
-      const response = await axios.delete(`${apiUrl}/admin/course/${final}`);
+      const response = await api.delete(`${apiUrl}/admin/course/${final}`);
       if (response.status == 200)
         dispatch({ type: DELETE_COURSE, payload: courseId });
       return { message: "Sucessfull" };
@@ -87,7 +87,7 @@ const CourseContextProvider = ({ children }) => {
   const updateCourse = async (updatedCourse) => {
     try {
       const final = updatedCourse.code.toString().toLowerCase();
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/admin/course/${final}`,
         updatedCourse
       );

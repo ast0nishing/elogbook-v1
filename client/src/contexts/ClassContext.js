@@ -1,5 +1,5 @@
 /** @format */
-
+import api from "../utils/api";
 import { createContext, useReducer, useState } from "react";
 import { classReducer } from "../reducers/classReducer";
 import {
@@ -34,7 +34,7 @@ const ClassContextProvider = ({ children }) => {
   // Get all classes
   const getClasses = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/admin/class`);
+      const response = await api.get(`${apiUrl}/admin/class`);
       if (response.data.success) {
         dispatch({
           type: CLASSES_LOADED_SUCCESS,
@@ -50,7 +50,7 @@ const ClassContextProvider = ({ children }) => {
   const addClass = async (newClass) => {
     try {
       const url = `${apiUrl}/api/v1/schools/createClass`;
-      const response = await axios.post(url, newClass);
+      const response = await api.post(url, newClass);
       if (response.status == 200) {
         dispatch({ type: ADD_CLASS, payload: response.data.class });
         return { message: "Sucessfull" };
@@ -66,7 +66,7 @@ const ClassContextProvider = ({ children }) => {
   const addAll = async (state) => {
     try {
       const url = `${apiUrl}/api/v1/schools/createClassAddStudent`;
-      const response = await axios.post(url, state);
+      const response = await api.post(url, state);
       if (response.status == 200) {
         return { message: "Sucessfull" };
       }
@@ -78,7 +78,7 @@ const ClassContextProvider = ({ children }) => {
   // Delete post
   const deleteClass = async (classId) => {
     try {
-      const response = await axios.delete(`${apiUrl}/admin/class/${classId}`);
+      const response = await api.delete(`${apiUrl}/admin/class/${classId}`);
       if (response.data.success)
         dispatch({ type: DELETE_CLASS, payload: classId });
     } catch (error) {
@@ -95,7 +95,7 @@ const ClassContextProvider = ({ children }) => {
   // Update post
   const updateClass = async (updatedClass) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/admin/class/${updatedClass._id}`,
         updatedClass
       );

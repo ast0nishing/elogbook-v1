@@ -1,5 +1,5 @@
 /** @format */
-
+import api from "../utils/api";
 import { createContext, useReducer, useState } from "react";
 import { logbookReducer } from "../reducers/logbookReducer";
 import {
@@ -34,7 +34,7 @@ const LogbookContextProvider = ({ children }) => {
   // Get all logbooks
   const getLogbooks = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/admin/logbook`);
+      const response = await api.get(`${apiUrl}/admin/logbook`);
       if (response.data.success) {
         dispatch({
           type: LOGBOOKS_LOADED_SUCCESS,
@@ -49,10 +49,7 @@ const LogbookContextProvider = ({ children }) => {
   // Add post
   const addLogbook = async (newLogbook) => {
     try {
-      const response = await axios.post(
-        `${apiUrl}/admin/newLogbook`,
-        newLogbook
-      );
+      const response = await api.post(`${apiUrl}/admin/newLogbook`, newLogbook);
       if (response.data.success) {
         dispatch({ type: ADD_LOGBOOK, payload: response.data.logbook });
         return response.data;
@@ -67,9 +64,7 @@ const LogbookContextProvider = ({ children }) => {
   // Delete post
   const deleteLessson = async (logbookId) => {
     try {
-      const response = await axios.delete(
-        `${apiUrl}/admin/logbook/${logbookId}`
-      );
+      const response = await api.delete(`${apiUrl}/admin/logbook/${logbookId}`);
       if (response.data.success)
         dispatch({ type: DELETE_LOGBOOK, payload: logbookId });
     } catch (error) {
@@ -88,7 +83,7 @@ const LogbookContextProvider = ({ children }) => {
   // Update post
   const updateLogbook = async (updatedLogbook) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/admin/logbook/${updatedLogbook._id}`,
         updatedLogbook
       );

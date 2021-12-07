@@ -1,5 +1,5 @@
 /** @format */
-
+import api from "../utils/api";
 import { createContext, useReducer, useState } from "react";
 import { postReducer } from "../reducers/postReducer";
 import {
@@ -34,7 +34,7 @@ const PostContextProvider = ({ children }) => {
   // Get all posts
   const getPosts = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/posts`);
+      const response = await api.get(`${apiUrl}/posts`);
       if (response.data.success) {
         dispatch({ type: POSTS_LOADED_SUCCESS, payload: response.data.posts });
       }
@@ -46,7 +46,7 @@ const PostContextProvider = ({ children }) => {
   // Add post
   const addPost = async (newPost) => {
     try {
-      const response = await axios.post(`${apiUrl}/posts`, newPost);
+      const response = await api.post(`${apiUrl}/posts`, newPost);
       if (response.data.success) {
         dispatch({ type: ADD_POST, payload: response.data.post });
         return response.data;
@@ -61,7 +61,7 @@ const PostContextProvider = ({ children }) => {
   // Delete post
   const deletePost = async (postId) => {
     try {
-      const response = await axios.delete(`${apiUrl}/posts/${postId}`);
+      const response = await api.delete(`${apiUrl}/posts/${postId}`);
       if (response.data.success)
         dispatch({ type: DELETE_POST, payload: postId });
     } catch (error) {
@@ -78,7 +78,7 @@ const PostContextProvider = ({ children }) => {
   // Update post
   const updatePost = async (updatedPost) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/posts/${updatedPost._id}`,
         updatedPost
       );

@@ -1,5 +1,5 @@
 /** @format */
-
+import api from "../utils/api";
 import { createContext, useReducer, useState } from "react";
 import { timetableReducer } from "../reducers/timetableReducer";
 import {
@@ -35,7 +35,7 @@ const TimetableContextProvider = ({ children }) => {
   // Get all timetables
   const getTimetables = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/admin/timetable`);
+      const response = await api.get(`${apiUrl}/admin/timetable`);
       if (response.data.success) {
         dispatch({
           type: TIMETABLES_LOADED_SUCCESS,
@@ -50,7 +50,7 @@ const TimetableContextProvider = ({ children }) => {
   // Add post
   const addTimeTable = async (newTimeTable) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${apiUrl}/api/v1/schools/createTimeTable`,
         newTimeTable
       );
@@ -65,7 +65,7 @@ const TimetableContextProvider = ({ children }) => {
   // Delete post
   const deleteTimetable = async (timetableId) => {
     try {
-      const response = await axios.delete(
+      const response = await api.delete(
         `${apiUrl}/admin/timetable/${timetableId}`
       );
       if (response.data.success)
@@ -86,7 +86,7 @@ const TimetableContextProvider = ({ children }) => {
   // Update post
   const updateTimeTable = async (updatedTimeTable) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/admin/timetable/${updatedTimeTable._id}`,
         updatedTimeTable
       );

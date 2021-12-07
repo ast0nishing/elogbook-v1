@@ -1,4 +1,5 @@
 /** @format */
+import api from "../utils/api";
 import { createContext, useReducer, useState } from "react";
 import { teacherReducer } from "../reducers/teacherReducer";
 import {
@@ -33,7 +34,7 @@ const TeacherContextProvider = ({ children }) => {
   // Get all teacher
   const getTeachers = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/v1/schools/teachers`);
+      const response = await api.get(`${apiUrl}/v1/schools/teachers`);
       if (response.status == 200) {
         dispatch({
           type: TEACHERS_LOADED_SUCCESS,
@@ -48,7 +49,7 @@ const TeacherContextProvider = ({ children }) => {
   const getClassTeachers = async (year, class_name) => {
     try {
       const url = `${apiUrl}/${year}/${class_name}/teachers`;
-      const response = await axios.get(url);
+      const response = await api.get(url);
       if (response.status == 200) {
         dispatch({
           type: TEACHERS_LOADED_SUCCESS,
@@ -62,7 +63,7 @@ const TeacherContextProvider = ({ children }) => {
   // Add teacher
   const addTeachers = async (newTeacher) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${apiUrl}/api/v1/schools/createTeacher`,
         newTeacher
       );
@@ -80,7 +81,7 @@ const TeacherContextProvider = ({ children }) => {
   // Add teacher to specific class if they have
   const addClassTeachers = async (newClassTeacher) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${apiUrl}/api/v1/schools/addTeacher`,
         newClassTeacher
       );
@@ -98,7 +99,7 @@ const TeacherContextProvider = ({ children }) => {
   // Delete teachers
   const deleteTeachers = async (teacherId) => {
     try {
-      const response = await axios.delete(`${apiUrl}/v1/schools/deleteTeacher`);
+      const response = await api.delete(`${apiUrl}/v1/schools/deleteTeacher`);
       if (response.status == 200)
         dispatch({ type: DELETE_TEACHER, payload: teacherId });
       return { sucess: true, message: "Sucessfull" };
@@ -118,7 +119,7 @@ const TeacherContextProvider = ({ children }) => {
   // Update teacher in list
   const updateTeacher = async (updatedTeacher) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/v1/schools/teacher/${updatedTeacher.username}`,
         updatedTeacher
       );

@@ -1,5 +1,5 @@
 /** @format */
-// Refresh-token
+import api from "../utils/api";
 import { createContext, useContext, useReducer, useState } from "react";
 import { schoolReducer } from "../reducers/schoolReducer";
 import {
@@ -33,7 +33,7 @@ const SchoolContextProvider = ({ children }) => {
   // Get all students
   const getSchools = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/admin/schools`);
+      const response = await api.get(`${apiUrl}/admin/schools`);
       if (response.data.success) {
         dispatch({
           type: SCHOOLS_LOADED_SUCCESS,
@@ -47,7 +47,7 @@ const SchoolContextProvider = ({ children }) => {
   // Add school
   const addSchool = async (newSchool) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${apiUrl}/admin/createSchool`,
         newSchool
       );
@@ -65,7 +65,7 @@ const SchoolContextProvider = ({ children }) => {
   // Delete post
   const deleteSchool = async (schoolId) => {
     try {
-      const response = await axios.delete(`${apiUrl}/admin/school/${schoolId}`);
+      const response = await api.delete(`${apiUrl}/admin/school/${schoolId}`);
       if (response.data.success)
         dispatch({ type: DELETE_SCHOOL, payload: schoolId });
     } catch (error) {
@@ -84,7 +84,7 @@ const SchoolContextProvider = ({ children }) => {
   // Update student
   const updateSchool = async (updatedSchool) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/admin/student/${updatedSchool._id}`,
         updatedSchool
       );

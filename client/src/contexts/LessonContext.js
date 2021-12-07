@@ -1,5 +1,5 @@
 /** @format */
-
+import api from "../utils/api";
 import { createContext, useReducer, useState } from "react";
 import { lessonReducer } from "../reducers/lessonReducer";
 import {
@@ -34,7 +34,7 @@ const LessonContextProvider = ({ children }) => {
   // Get all courses
   const getLessons = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/admin/lesson`);
+      const response = await api.get(`${apiUrl}/admin/lesson`);
       if (response.data.success) {
         dispatch({
           type: LESSONS_LOADED_SUCCESS,
@@ -49,28 +49,30 @@ const LessonContextProvider = ({ children }) => {
   // Add lessons
   const addLesson = async (newLesson) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${apiUrl}/admin/createLesson`,
         newLesson
       );
       if (response.status == 200) {
         // dispatch({ type: ADD_LESSON, payload: response.data.lesson });
-        // return response.data;
-        if (response.data["Already exist(s) code(s)"].length !== 0) {
-          return { message: "Already exists" };
-        } else {
-          return { message: "Successfull" };
-        }
+        // // return response.data;
+        return { message: "Sucessfull" };
       }
     } catch (error) {
-      return { message: "Internal Server Error" };
+      try {
+        const len = error.response.data["Already exist(s) code(s)"].length;
+        if (len !== 0) {
+          return { message: "There has " + len + " existed data" };
+        }
+      } catch (error) {}
+      return { message: "fail" };
     }
   };
 
   // Delete post
   const deleteLesson = async (lessonId) => {
     try {
-      const response = await axios.delete(`${apiUrl}/admin/lesson/${lessonId}`);
+      const response = await api.delete(`${apiUrl}/admin/lesson/${lessonId}`);
       if (response.data.success)
         dispatch({ type: DELETE_LESSON, payload: lessonId });
     } catch (error) {
@@ -87,7 +89,7 @@ const LessonContextProvider = ({ children }) => {
   // Update post
   const updateLesson = async (updatedLesson) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/admin/lesson/${updatedLesson.id}`,
         updatedLesson
       );

@@ -1,4 +1,5 @@
 /** @format */
+import api from "../utils/api";
 import { createContext, useReducer, useState } from "react";
 import { studentReducer } from "../reducers/studentReducer";
 import {
@@ -33,7 +34,7 @@ const StudentContextProvider = ({ children }) => {
   // Get all students
   const getStudents = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/student`);
+      const response = await api.get(`${apiUrl}/student`);
       if (response.data.success) {
         dispatch({
           type: STUDENTS_LOADED_SUCCESS,
@@ -47,7 +48,7 @@ const StudentContextProvider = ({ children }) => {
   // Add student
   const addStudent = async (newStudent) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${apiUrl}/api/v1/schools/createStudent`,
         newStudent
       );
@@ -65,7 +66,7 @@ const StudentContextProvider = ({ children }) => {
   //  Add student to class
   const addClassStudent = async (state) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${apiUrl}/api/v1/schools/addStudent`,
         state
       );
@@ -80,7 +81,7 @@ const StudentContextProvider = ({ children }) => {
   // Delete post
   const deleteStudent = async (studentId) => {
     try {
-      const response = await axios.delete(`${apiUrl}/student/${studentId}`);
+      const response = await api.delete(`${apiUrl}/student/${studentId}`);
       if (response.data.success)
         dispatch({ type: DELETE_STUDENT, payload: studentId });
     } catch (error) {
@@ -99,7 +100,7 @@ const StudentContextProvider = ({ children }) => {
   // Update student
   const updateStudent = async (updatedStudent) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${apiUrl}/student/${updatedStudent._id}`,
         updatedStudent
       );

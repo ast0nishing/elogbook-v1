@@ -6,14 +6,19 @@ import "../Css/newElement.css";
 import "../Css/elementForm.css";
 import { CSVReader } from "react-papaparse";
 // React
-import { useContext, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { LessonContext } from "../../contexts/LessonContext";
 import React from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Newlesson() {
   // Contexts
+  const { loginUser } = useContext(AuthContext);
+
+  useEffect(() => loginUser(), []);
+
   const { showAddLessonTable, setShowAddLessonTable, addLesson, setShowToast } =
     useContext(LessonContext);
 
