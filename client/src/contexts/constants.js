@@ -69,3 +69,7 @@ export const ADD_LOGBOOK = "ADD_LOGBOOK";
 export const DELETE_LOGBOOK = "DELETE_LOGBOOK";
 export const UPDATE_LOGBOOK = "UPDATE_LOGBOOK";
 export const FIND_LOGBOOK = "FIND_LOGBOOK";
+// User
+export const USER_LOADED_SUCCESS = "USER_LOADED_SUCCESS";
+export const USER_LOADED_FAIL = "USER_LOADED_FAIL";
+export const UPDATE_USER = "UPDATE_USER";

@@ -34,7 +34,7 @@ const TeacherContextProvider = ({ children }) => {
   // Get all teacher
   const getTeachers = async () => {
     try {
-      const response = await api.get(`${apiUrl}/v1/schools/teachers`);
+      const response = await api.get(`${apiUrl}/api/v1/schools/teachers`);
       if (response.status == 200) {
         dispatch({
           type: TEACHERS_LOADED_SUCCESS,
@@ -46,15 +46,19 @@ const TeacherContextProvider = ({ children }) => {
     }
   };
   // Get teacher in specific year and class
-  const getClassTeachers = async (year, class_name) => {
+  const getClassTeachers = async (classyear) => {
     try {
-      const url = `${apiUrl}/${year}/${class_name}/teachers`;
+      const url = `${apiUrl}/api/v1/schools/${classyear.year}/${classyear.name}/teachers`;
       const response = await api.get(url);
       if (response.status == 200) {
-        dispatch({
-          type: TEACHERS_LOADED_SUCCESS,
-          payload: response.data,
-        });
+        if (response.data.length == 0);
+        {
+          console.log("Hi hi");
+        }
+        // dispatch({
+        //   type: TEACHERS_LOADED_SUCCESS,
+        //   payload: response.data,
+        // });
       }
     } catch (error) {
       dispatch({ type: TEACHERS_LOADED_FAIL });
@@ -68,14 +72,38 @@ const TeacherContextProvider = ({ children }) => {
         newTeacher
       );
       if (response.status == 200) {
-        dispatch({ type: ADD_TEACHER, payload: response.data });
-        return { success: true, message: response.data };
+        // dispatch({ type: ADD_TEACHER, payload: getTeachers() });
+        getTeachers();
+        return { success: true, message: response.data.msg };
       }
     } catch (error) {
-      return { success: false, message: "Error" };
-      // error.response.data
-      //   ? error.response.data
-      //   : // : { success: false, message: "Server error" };
+      try {
+        if (error.response.data) {
+          const len_missing_infor =
+            error.response.data["Missing primary info"].length;
+          const len_invalid_id =
+            error.response.data["Invalid Teacher ID"].length;
+          const len_existed_teacher =
+            error.response.data["Already exists teacher"].length;
+          const len_invalid_suffix =
+            error.response.data["Invalid username suffix"].length;
+          return {
+            message:
+              "Missing infor: " +
+              len_missing_infor +
+              "\n Invalid id: " +
+              len_invalid_id +
+              "\n" +
+              "Invalid suffix: " +
+              len_invalid_suffix +
+              "\n" +
+              "Already exists teacher: " +
+              len_existed_teacher,
+          };
+        }
+      } catch (error) {
+        return { message: "Server error" };
+      }
     }
   };
   // Add teacher to specific class if they have
@@ -87,22 +115,37 @@ const TeacherContextProvider = ({ children }) => {
       );
       if (response.status == 200) {
         dispatch({ type: ADD_TEACHER, payload: response.data });
-        return { success: true, message: response.data };
+        return {
+          success: true,
+          message: response.data.msg ? response.data.msg : "Sucessfull",
+        };
       }
     } catch (error) {
-      return { success: false, message: "Error" };
-      // error.response.data
-      //   ? error.response.data
-      //   : // : { success: false, message: "Server error" };
+      try {
+        if (error.response.data) {
+          const len_missing_infor =
+            error.response.data["Missing primary info"].length;
+          return { message: "Missing infor " + len_missing_infor };
+        }
+      } catch (error) {
+        return { message: "Server error" };
+      }
     }
   };
   // Delete teachers
-  const deleteTeachers = async (teacherId) => {
+  const deleteTeacher = async (teacherId) => {
     try {
-      const response = await api.delete(`${apiUrl}/v1/schools/deleteTeacher`);
+      const response = await api.delete(
+        `${apiUrl}/api/v1/schools/deleteTeacher/${teacherId}`
+      );
       if (response.status == 200)
         dispatch({ type: DELETE_TEACHER, payload: teacherId });
-      return { sucess: true, message: "Sucessfull" };
+      return {
+        success: true,
+        message: response.data.message
+          ? response.data.message
+          : response.data.error,
+      };
     } catch (error) {
       return { sucess: false, message: "Fail" };
     }
@@ -111,7 +154,7 @@ const TeacherContextProvider = ({ children }) => {
   // Find teacher in list
   const findTeacher = (teacherId) => {
     const teacher = teacherState.teachers.find(
-      (teacher) => teacher.username === teacherId
+      (teacher) => teacher.teacherId === teacherId
     );
     dispatch({ type: FIND_TEACHER, payload: teacher });
   };
@@ -120,7 +163,7 @@ const TeacherContextProvider = ({ children }) => {
   const updateTeacher = async (updatedTeacher) => {
     try {
       const response = await api.put(
-        `${apiUrl}/v1/schools/teacher/${updatedTeacher.username}`,
+        `${apiUrl}/api/v1/teachers/}`,
         updatedTeacher
       );
       if (response.status === 200) {
@@ -145,7 +188,7 @@ const TeacherContextProvider = ({ children }) => {
     addClassTeachers,
     showToast,
     setShowToast,
-    deleteTeachers,
+    deleteTeacher,
     findTeacher,
     updateTeacher,
   };

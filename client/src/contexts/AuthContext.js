@@ -23,21 +23,27 @@ const AuthContextProvider = ({ children }) => {
 
   // Login
   const loginUser = async (userForm) => {
-    const response = await axios.post(`${apiUrl}/auth/login`, userForm);
-    if (response.status == 200) {
-      var obj = response.data;
-      obj.role = userForm.role;
-      TokenService.setUser(obj);
-      dispatch({
-        type: "SET_AUTH",
-        payload: {
-          isAuthenticated: true,
-          user: response.data.username,
-          role: JSON.parse(sessionStorage["user"]).role,
-        },
-      });
+    try {
+      const response = await axios.post(`${apiUrl}/auth/login`, userForm);
+      if (response.status == 200) {
+        var obj = response.data;
+        obj.role = userForm.role;
+        TokenService.setUser(obj);
+        dispatch({
+          type: "SET_AUTH",
+          payload: {
+            isAuthenticated: true,
+            user: response.data.username,
+            role: JSON.parse(sessionStorage["user"]).role,
+          },
+        });
+        return response.data;
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
     }
-    return response.data;
   };
 
   // Logout

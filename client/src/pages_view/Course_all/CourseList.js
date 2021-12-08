@@ -10,7 +10,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 // import {courses} from "../../dummyData"
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { CourseContext } from "../../contexts/CourseContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
@@ -25,8 +25,6 @@ export default function CourseList() {
     deleteCourse,
     findCourse,
   } = useContext(CourseContext);
-
-  useEffect(() => getCourses(), []);
 
   // Get all course
   const [data, setData] = useState(courses);

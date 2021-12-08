@@ -5,11 +5,13 @@
 import "../Css/newElement.css";
 import "../Css/elementForm.css";
 import { CSVReader } from "react-papaparse";
+import Spinner from "react-bootstrap/Spinner";
 // React
 import { useContext, useState } from "react";
 import { TeacherContext } from "../../contexts/TeacherContext";
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useHistory } from "react-router";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function NewTeacher() {
@@ -20,6 +22,7 @@ export default function NewTeacher() {
     addTeachers,
     addClassTeachers,
     setShowToast,
+    getTeachers,
   } = useContext(TeacherContext);
 
   // State
@@ -35,6 +38,7 @@ export default function NewTeacher() {
     },
   ]);
 
+  const history = useHistory();
   const { idSchool, username, password, name, major, phoneNumber, email } =
     newTeacher;
 
@@ -43,20 +47,12 @@ export default function NewTeacher() {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const data = [
-      {
-        idSchool: "LA0102-T12001",
-        username: "dung.cao.t12001@LA0102",
-        password: "vtn",
-        name: "Cao Tiến Dũng",
-        major: "KHMT",
-        phoneNumber: "987111122",
-        email: "dung.cao@gmail.com",
-      },
-    ];
-    const { success, message } = await addTeachers(data);
+    const { success, message } = await addTeachers(newTeacher);
     toast(message);
     setShowToast({ show: true });
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    getTeachers();
+    history.push("/teachers");
   };
 
   const papaparseOptions = {
@@ -65,13 +61,12 @@ export default function NewTeacher() {
   };
 
   const handleOnDrop = (data) => {
-    const codes = []; // unique code for array in course name
+    const codes = []; // unique code for array in teachers
     // Get new schools
     data.forEach(function (el) {
       codes.push(el.data);
     });
     setNewTeacher(codes);
-    console.log(codes);
   };
 
   const handleOnError = (err, file, inputElem, reason) => {

@@ -46,6 +46,24 @@ const TimetableContextProvider = ({ children }) => {
       dispatch({ type: TIMETABLES_LOADED_FAIL });
     }
   };
+  // Timetable year week
+  const getTimetablesYearWeek = async (yearweek) => {
+    try {
+      const response = await api.get(
+        `${apiUrl}/api/v1/schools/timetable/${yearweek.year}/${yearweek.week}`
+      );
+      if (response.status == 200) {
+        dispatch({
+          type: TIMETABLES_LOADED_SUCCESS,
+          payload: response.data,
+        });
+        console.log("Sucessfull");
+      }
+    } catch (error) {
+      console.log("Fail");
+      // dispatch({ type: TIMETABLES_LOADED_FAIL });
+    }
+  };
 
   // Add post
   const addTimeTable = async (newTimeTable) => {
@@ -55,7 +73,9 @@ const TimetableContextProvider = ({ children }) => {
         newTimeTable
       );
       if (response.status == 200) {
-        return { message: "Successfull" };
+        return {
+          message: response.data.msg ? response.data.msg : "Successfull",
+        };
       }
     } catch (error) {
       return { message: "Fail" };
@@ -76,23 +96,24 @@ const TimetableContextProvider = ({ children }) => {
   };
 
   // Find post when user is updating post
-  const findTimeTable = (timetableId) => {
-    const timetable = timetableState.timetable.find(
-      (timetable) => timetable._id === timetableId
+  const findTimetable = (timetableId) => {
+    const timetable = timetableState.timetables.find(
+      (timetable) => timetable.id === timetableId
     );
     dispatch({ type: FIND_TIMETABLE, payload: timetable });
   };
 
   // Update post
-  const updateTimeTable = async (updatedTimeTable) => {
+  const updateTimetable = async (updatedTimeTable) => {
     try {
       const response = await api.put(
-        `${apiUrl}/admin/timetable/${updatedTimeTable._id}`,
+        `${apiUrl}/api/v1/schools/editTimetable/${updatedTimeTable.id}`,
         updatedTimeTable
       );
-      if (response.data.success) {
-        dispatch({ type: UPDATE_TIMETABLE, payload: response.data.timetable });
-        return response.data;
+      if (response.status == 200) {
+        // dispatch({ type: UPDATE_TIMETABLE, payload: response.data.timetable });
+        // return response.data;
+        console.log("Successfull");
       }
     } catch (error) {
       return error.response.data
@@ -100,7 +121,6 @@ const TimetableContextProvider = ({ children }) => {
         : { success: false, message: "Server error" };
     }
   };
-
   // Post context data
   const timetableContextData = {
     timetableState,
@@ -113,8 +133,9 @@ const TimetableContextProvider = ({ children }) => {
     showToast,
     setShowToast,
     deleteTimetable,
-    findTimeTable,
-    updateTimeTable,
+    findTimetable,
+    updateTimetable,
+    getTimetablesYearWeek,
   };
 
   return (

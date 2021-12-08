@@ -60,12 +60,12 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   else if (role === "admin")
     body = (
       <>
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item key="1">
-            <Link to="/"> Dashboard </Link>
-          </Menu.Item>
+        <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
           <Menu.Item key="2" icon={<DesktopOutlined />}>
             Report
+          </Menu.Item>
+          <Menu.Item key="1" icon={<PieChartOutlined />}>
+            <Link to="/personal">Account Information</Link>
           </Menu.Item>
           <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
             {/* <Menu.Item key="3">
@@ -90,12 +90,12 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   else if (role == "school")
     body = (
       <>
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item key="1" icon={<DesktopOutlined />}>
-            <Link to="/"> Dashboard </Link>
-          </Menu.Item>
+        <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
           <Menu.Item key="2" icon={<DesktopOutlined />}>
             Report
+          </Menu.Item>
+          <Menu.Item key="1" icon={<PieChartOutlined />}>
+            <Link to="/personal">Account Information</Link>
           </Menu.Item>
           <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
             <SubMenu key="sub2" title="Student">

@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:5.7
+    hostname: mysql
+    container_name: docker-logbook-mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=logbook
+      - MYSQL_PASSWORD=logbook
+      - MYSQL_DATABASE=logbook
+    volumes:
+      - db:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  server:
+    hostname: logbookserver
+    depends_on:
+      - mysql
+    image: vtn13042000/server:3.0.0
+    container_name: docker-logbook-server
+    restart: unless-stopped
+    ports:
+      - 3333:8000
+    environment:
+      - DB_HOST=mysql
+      - DB_NAME=logbook
+      - DB_USERNAME=logbook
+      - DB_PASSWORD=logbook
+      - DB_DIALECT=mysql
+      - DB_PORT=3306
+      - PORT=8000
+
+volumes:
+  db:

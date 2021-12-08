@@ -57,10 +57,32 @@ const StudentContextProvider = ({ children }) => {
         return { message: "Sucessfull" };
       }
     } catch (error) {
-      return { message: "Fail" };
-      // return error.response.data
-      //   ? error.response.data
-      //   : { success: false, message: "Server error" };
+      try {
+        if (error.response.data) {
+          const len_missing_infor = error.response.data["Missing info"].length;
+          const len_invalid_id =
+            error.response.data["Invalid Student ID"].length;
+          const len_existed_teacher =
+            error.response.data["Already Exist Students"].length;
+          const len_invalid_suffix =
+            error.response.data["Invalid Username Suffix"].length;
+          return {
+            message:
+              "Missing infor: " +
+              len_missing_infor +
+              "\n Invalid id: " +
+              len_invalid_id +
+              "\n" +
+              "Invalid suffix: " +
+              len_invalid_suffix +
+              "\n" +
+              "Already existed students: " +
+              len_existed_teacher,
+          };
+        }
+      } catch (error) {
+        return { message: "Server error" };
+      }
     }
   };
   //  Add student to class
@@ -71,7 +93,9 @@ const StudentContextProvider = ({ children }) => {
         state
       );
       if (response.status == 200) {
-        return { message: "Sucessfull" };
+        return {
+          message: response.data.msg ? response.data.msg : "Successfull",
+        };
       }
     } catch (error) {
       return { message: "Fail" };
