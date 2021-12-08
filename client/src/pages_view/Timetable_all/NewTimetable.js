@@ -30,72 +30,29 @@ export default function NewTimetable() {
   };
 
   const handleOnDrop = (data) => {
-    var final = [];
-    var final2 = [];
-    var array = data; // input array
-    var codes = []; // unique code for array in Lesson name
+    var codes = []; // unique code for array in course name
+    var timetables = [];
+    data.forEach(function (el) {
+      codes.push(el.data);
+    });
+    // Get class
+    var week = codes[0]["Week"];
+    var classes = Object.keys(codes[0]).slice(3, Object.keys(codes[0]).length);
+    classes.forEach(function (el) {
+      var timetable = [];
+      codes.forEach(function (ele) {
+        var subjects = {
+          blocks: [{ weekDay: ele.Day, time: ele.Time }],
+          courseCode: ele[el].split(":")[0],
+          teacherId: ele[el].split(":")[1],
+        };
+        timetable.push(subjects);
+      });
 
-    // unique funcction
-    const uniqueByKey = (array, key) => {
-      return [...new Map(array.map((x) => [x[key], x])).values()];
-    };
-    var codes2 = [];
-    array.forEach(function (el) {
-      codes2.push({
-        classId: el.data.classId,
-        fromWeek: el.data.fromWeek,
-        courseCode: el.data.courseCode,
-        teacherId: el.data.teacherId,
-      });
+      timetables.push({ classId: el, fromWeek: week, subjects: timetable });
     });
-    var unique2 = uniqueByKey(codes2, "courseCode");
-
-    // Return each lesson respective to each sub json
-    unique2.forEach(function (uniq) {
-      var datalist = [];
-      array.forEach(function (el) {
-        if (el.data.courseCode == uniq.courseCode) {
-          datalist.push({
-            weekDay: el.data.weekDay,
-            time: el.data.time,
-          });
-        }
-      });
-      final.push({
-        classId: uniq.classId,
-        fromWeek: uniq.fromWeek,
-        courseCode: uniq.courseCode,
-        teacherId: uniq.teacherId,
-        blocks: datalist,
-      });
-    });
-    // Uniq 2 time
-    final.forEach(function (el) {
-      codes.push({
-        classId: el.classId,
-        fromWeek: el.fromWeek,
-      });
-    });
-    var unique = uniqueByKey(codes, "classId");
-    // Return each lesson respective to each sub json
-    unique2.forEach(function (uniq) {
-      var datalist = [];
-      final.forEach(function (el) {
-        if (el.classId == uniq.classId) {
-          datalist.push({
-            courseCode: el.courseCode,
-            teacherId: el.teacherId,
-            blocks: el.blocks,
-          });
-        }
-      });
-      final2.push({
-        classId: uniq.classId,
-        fromWeek: uniq.fromWeek,
-        subjects: datalist,
-      });
-    });
-    console.log(final2);
+    console.log(timetables);
+    setState(timetables);
   };
 
   const handleOnError = (err, file, inputElem, reason) => {

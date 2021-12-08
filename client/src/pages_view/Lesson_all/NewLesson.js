@@ -65,7 +65,7 @@ export default function Newlesson() {
     array.forEach(function (el) {
       codes.push({ code: el.data.code, name: el.data.name });
     });
-    // unique funcction
+    // unique function
     const uniqueByKey = (array, key) => {
       return [...new Map(array.map((x) => [x[key], x])).values()];
     };

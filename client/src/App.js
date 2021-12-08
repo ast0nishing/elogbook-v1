@@ -15,6 +15,7 @@ import StudentContextProvider from "./contexts/StudentContext";
 import TeacherContextProvider from "./contexts/TeacherContext";
 import ClassContextProvider from "./contexts/ClassContext";
 // Timetable
+import TimetableCalandar from "./pages_view/Timetable_all/TimetableCalandar";
 import TimeTableContextProvider from "./contexts/TimetableContext";
 import Timetable from "./pages_view/Timetable_all/Timetable";
 // Core components and pages view
@@ -206,6 +207,11 @@ function App() {
                             exact
                             path="/timetables"
                             component={TimetableList}
+                          />
+                          <ProtectedRoute
+                            exact
+                            path="/timetable-calandar"
+                            component={TimetableCalandar}
                           />
                           <ProtectedRoute exact path="/" component={Home} />
                         </Switch>

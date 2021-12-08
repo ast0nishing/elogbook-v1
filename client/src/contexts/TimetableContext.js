@@ -49,8 +49,77 @@ const TimetableContextProvider = ({ children }) => {
   // Timetable year week
   const getTimetablesYearWeek = async (yearweek) => {
     try {
+      const role = JSON.parse(sessionStorage["user"]).role;
       const response = await api.get(
-        `${apiUrl}/api/v1/schools/timetable/${yearweek.year}/${yearweek.week}`
+        `${apiUrl}/api/v1/${role}s/timetable/${yearweek.year}/${yearweek.week}`
+      );
+      if (response.status == 200) {
+        const classes = []; // unique code for array in course name
+        response.data.forEach(function (el) {
+          classes.push(el.className);
+        });
+        // unique function
+        let uniq_class = [...new Set(classes)];
+        const days = [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thurday",
+          "Friday",
+          "Saturday",
+        ];
+        const times = [
+          "07:30:00",
+          "08:30:00",
+          "09:30:00",
+          "10:30:00",
+          "11:30:00",
+          "13:30:00",
+          "14:30:00",
+        ];
+        var schedules = [];
+        const a = uniq_class[0];
+        days.forEach(function (day) {
+          times.forEach(function (time) {
+            var mini = { Date: day, Time: time };
+            uniq_class.forEach(function (el) {
+              mini[el] = "NA";
+              mini["id"] = "NA";
+              mini["key"] = day + "_" + time;
+            });
+            schedules.push(mini);
+          });
+        });
+
+        schedules.forEach(function (el) {
+          response.data.forEach(function (rs) {
+            uniq_class.forEach(function (key) {
+              if (
+                (rs.time == el.Time) &
+                (rs.day == el.Date) &
+                (rs.className == key)
+              ) {
+                el[key] = rs.courseCode;
+                el["id"] = rs.id;
+              }
+            });
+          });
+        });
+      }
+      dispatch({
+        type: TIMETABLES_LOADED_SUCCESS,
+        payload: schedules,
+      });
+    } catch (error) {
+      // dispatch({ type: TIMETABLES_LOADED_FAIL });
+    }
+  };
+  // Timetable week classID
+  const getTimetablesWeekClass = async (weekclass) => {
+    try {
+      const role = JSON.parse(sessionStorage["user"]).role;
+      const response = await api.get(
+        `${apiUrl}/api/v1/${role}s/timetable/${weekclass.week}/${weekclass.classId}`
       );
       if (response.status == 200) {
         dispatch({
@@ -64,7 +133,25 @@ const TimetableContextProvider = ({ children }) => {
       // dispatch({ type: TIMETABLES_LOADED_FAIL });
     }
   };
-
+  // Timetable year week
+  const getMyTimetablesYearWeek = async (yearweek) => {
+    try {
+      const role = JSON.parse(sessionStorage["user"]).role;
+      const response = await api.get(
+        `${apiUrl}/api/v1/${role}/mytimetable/${yearweek.year}/${yearweek.week}`
+      );
+      if (response.status == 200) {
+        dispatch({
+          type: TIMETABLES_LOADED_SUCCESS,
+          payload: response.data,
+        });
+        console.log("Sucessfull");
+      }
+    } catch (error) {
+      console.log("Fail");
+      // dispatch({ type: TIMETABLES_LOADED_FAIL });
+    }
+  };
   // Add post
   const addTimeTable = async (newTimeTable) => {
     try {

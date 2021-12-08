@@ -3,7 +3,6 @@ import Form from "react-bootstrap/Form";
 import "../Css/elementList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import addIcon from "../../assets/plus-circle-fill.svg";
 import Button from "react-bootstrap/Button";
 import Tooltip from "react-bootstrap/Tooltip";
@@ -58,14 +57,28 @@ export default function TimetableList() {
       }
     } catch (error) {}
   };
-  const columns = [
-    { field: "fromWeek", headerName: "From week", width: 200 },
-    { field: "toWeek", headerName: "To week", width: 200 },
-    { field: "time", headerName: "Time", width: 200 },
-    { field: "courseCode", headerName: "Course Code", width: 200 },
-    { field: "day", headerName: "Day", width: 200 },
-    { field: "className", headerName: "Class", width: 200 },
-    {
+
+  let body = null;
+  if (timetablesLoading) {
+    body = (
+      <div className="spinner-container">
+        <Spinner animation="border" variant="info" />
+      </div>
+    );
+  } else if (timetables.length === 0) {
+    const test = Object.keys(timetables[0]);
+    const non_key = ["id", "Date", "Time", "key"];
+    const final = test.filter((item) => !non_key.includes(item));
+
+    const columns = [
+      { field: "Date", headerName: "Date", width: 200 },
+      { field: "Time", headerName: "Time", width: 200 },
+    ];
+
+    final.forEach(function (el) {
+      columns.push({ field: el, header: el, width: 200 });
+    });
+    columns.push({
       field: "action",
       headerName: "Action",
       width: 150,
@@ -85,17 +98,7 @@ export default function TimetableList() {
           </>
         );
       },
-    },
-  ];
-
-  let body = null;
-  if (timetablesLoading) {
-    body = (
-      <div className="spinner-container">
-        <Spinner animation="border" variant="info" />
-      </div>
-    );
-  } else if (timetables.length === 0) {
+    });
     body = (
       <>
         <div className="elementList">
@@ -111,6 +114,39 @@ export default function TimetableList() {
       </>
     );
   } else {
+    const test = Object.keys(timetables[0]);
+    const non_key = ["id", "Date", "Time", "key"];
+    const final = test.filter((item) => !non_key.includes(item));
+
+    const columns = [
+      { field: "Date", headerName: "Date", width: 200 },
+      { field: "Time", headerName: "Time", width: 200 },
+      {
+        field: "action",
+        headerName: "Action",
+        width: 150,
+        renderCell: (params) => {
+          return (
+            <>
+              <button
+                className="elementListEdit"
+                onClick={() => handleChoose(params.row.id)}
+              >
+                Edit
+              </button>
+              <DeleteOutline
+                className="ListDelete"
+                onClick={() => handleDelete(params.row.id)}
+              />
+            </>
+          );
+        },
+      },
+    ];
+
+    final.forEach(function (el) {
+      columns.push({ field: el, header: el, width: 200 });
+    });
     body = (
       <>
         <div>
@@ -128,25 +164,13 @@ export default function TimetableList() {
           />
           <DataGrid
             rows={timetables}
-            getRowId={(r) => r.id}
+            getRowId={(r) => r.key}
             disableSelectionOnClick
             columns={columns}
             pageSize={8}
             checkboxSelection
             style={{ height: 500 }}
           />
-        </div>
-        <div>
-          <OverlayTrigger
-            placement="left"
-            overlay={<Tooltip>Add new course</Tooltip>}
-          >
-            <Link to={"/new-timetable"}>
-              <Button className="btn-floating" style={{ "z-index": -1 }}>
-                <img src={addIcon} alt="add-post" width="60" height="60" />
-              </Button>
-            </Link>
-          </OverlayTrigger>
         </div>
       </>
     );
@@ -189,11 +213,7 @@ export default function TimetableList() {
             <option value="2021">2021</option>
           </Form.Control>
           <br></br>
-          <input
-            type="submit"
-            value="Submit"
-            onClick={console.log("DMM")}
-          ></input>
+          <input type="submit" value="Submit"></input>
         </Form>
       </div>
       {body}

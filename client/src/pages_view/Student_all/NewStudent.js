@@ -74,7 +74,6 @@ export default function NewStudent() {
 
   const handleOnDrop = (data) => {
     var codes = []; // unique code for array in course name
-    // Get unique course
     data.forEach(function (el) {
       codes.push(el.data);
     });
