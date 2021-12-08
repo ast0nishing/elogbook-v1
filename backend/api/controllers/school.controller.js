@@ -852,10 +852,15 @@ export default {
                 },
             });
             if (timetableData) {
-                console.log(timetableData.dataValues);
                 teacherId.push({
                     teacherId: teacherData.dataValues.idSchool,
+                    username: teacherData.dataValues.username,
+                    password: teacherData.dataValues.password,
                     name: teacherData.dataValues.name,
+                    major: teacherData.dataValues.major,
+                    phoneNumber: teacherData.dataValues.phoneNumber,
+                    email: teacherData.dataValues.email,
+                    dob: teacherData.dataValues.dob,
                 });
             }
         }
@@ -869,7 +874,13 @@ export default {
         for (const teacherData of allTeacherData) {
             teacherId.push({
                 teacherId: teacherData.dataValues.idSchool,
+                username: teacherData.dataValues.username,
+                password: teacherData.dataValues.password,
                 name: teacherData.dataValues.name,
+                major: teacherData.dataValues.major,
+                phoneNumber: teacherData.dataValues.phoneNumber,
+                email: teacherData.dataValues.email,
+                dob: teacherData.dataValues.dob,
             });
         }
         res.json(teacherId);
@@ -901,13 +912,17 @@ export default {
             where: { idSchool: req.params.studentId },
         });
         if (!studentData) {
-            return res.status(200).json({
-                error: 'student not found',
-            });
+            return res.json({ error: 'data not found' });
         }
-        if (req.user.id === studentData.dataValues.schoolId) {
-            const data = await db.student.update(
+        if (
+            studentData.dataValues.schoolId == req.user.id &&
+            studentData.dataValues.password == req.body.password
+        ) {
+            const data = await db.studentData.update(
                 {
+                    idSchool: req.body.studentId,
+                    username: req.body.username,
+                    password: req.body.password,
                     name: req.body.name,
                     address: req.body.address,
                     phoneNumber: req.body.phoneNumber,
@@ -917,13 +932,63 @@ export default {
                 { where: { idSchool: req.params.studentId } }
             );
             if (data[0] === 1)
-                res.json({ message: 'update student successfully' });
-            else res.json({ message: 'update failed' });
-        } else {
-            res.status(200).json({
-                error: 'student does not belong to your school',
+                res.json({ message: 'edit student successfully' });
+            else res.json({ error: 'edit student failed' });
+        } else if (
+            studentData.dataValues.schoolId == req.user.id &&
+            studentData.dataValues.password != req.body.password
+        ) {
+            const salt = randomBytes(32);
+            const hashedPassword = await argon2.hash(req.body.password, {
+                salt,
             });
+            const data = await db.student.update(
+                {
+                    idSchool: req.body.studentId,
+                    username: req.body.username,
+                    password: hashedPassword,
+                    name: req.body.name,
+                    address: req.body.address,
+                    phoneNumber: req.body.phoneNumber,
+                    email: req.body.email,
+                    dob: req.body.dob,
+                },
+                { where: { idSchool: req.params.studentId } }
+            );
+            if (data[0] === 1)
+                res.json({ message: 'edit student successfully' });
+            else res.json({ error: 'edit student failed' });
+        } else {
+            res.json({ error: 'student does not belong to your school' });
         }
+
+        // const studentData = await db.student.findOne({
+        //     where: { idSchool: req.params.studentId },
+        // });
+        // if (!studentData) {
+        //     return res.status(200).json({
+        //         error: 'student not found',
+        //     });
+        // }
+        // if (req.user.id === studentData.dataValues.schoolId) {
+        //     const data = await db.student.update(
+        //         {
+        //             name: req.body.name,
+        //             address: req.body.address,
+        //             phoneNumber: req.body.phoneNumber,
+        //             email: req.body.email,
+        //             dob: req.body.dob,
+        //         },
+        //         { where: { idSchool: req.params.studentId } }
+        //     );
+        //     if (data[0] === 1)
+        //         res.json({ message: 'update student successfully' });
+        //     else res.json({ message: 'update failed' });
+        // } else {
+        //     res.status(200).json({
+        //         error: 'student does not belong to your school',
+        //     });
+        // }
     },
     async editSelf(req, res) {
         const data = await db.school.update(
@@ -1147,5 +1212,108 @@ export default {
         } else {
             res.status(400).json({ message: 'password does not match' });
         }
+    },
+    async editTeacher(req, res) {
+        const teacherData = await db.teacher.findOne({
+            where: { idSchool: req.params.teacherId },
+        });
+        if (!teacherData) {
+            return res.json({ error: 'data not found' });
+        }
+        if (
+            teacherData.dataValues.schoolId == req.user.id &&
+            teacherData.dataValues.password == req.body.password
+        ) {
+            const data = await db.teacher.update(
+                {
+                    idSchool: req.body.teacherId,
+                    username: req.body.username,
+                    password: req.body.password,
+                    name: req.body.name,
+                    major: req.body.major,
+                    phoneNumber: req.body.phoneNumber,
+                    email: req.body.email,
+                    dob: req.body.dob,
+                },
+                { where: { idSchool: req.params.teacherId } }
+            );
+            if (data[0] === 1)
+                res.json({ message: 'edit teacher successfully' });
+            else res.json({ error: 'edit teacher failed' });
+        } else if (
+            teacherData.dataValues.schoolId == req.user.id &&
+            teacherData.dataValues.password != req.body.password
+        ) {
+            const salt = randomBytes(32);
+            const hashedPassword = await argon2.hash(req.body.password, {
+                salt,
+            });
+            const data = await db.teacher.update(
+                {
+                    idSchool: req.body.teacherId,
+                    username: req.body.username,
+                    password: hashedPassword,
+                    name: req.body.name,
+                    major: req.body.major,
+                    phoneNumber: req.body.phoneNumber,
+                    email: req.body.email,
+                    dob: req.body.dob,
+                },
+                { where: { idSchool: req.params.teacherId } }
+            );
+            if (data[0] === 1)
+                res.json({ message: 'edit teacher successfully' });
+            else res.json({ error: 'edit teacher failed' });
+        } else {
+            res.json({ error: 'teacher does not belong to your school' });
+        }
+    },
+    async getClasses(req, res) {
+        const classData = await db.class.findAll({
+            where: { academicYearId: req.params.year },
+        });
+        if (!classData) {
+            return res.json({ error: 'data not found' });
+        }
+        const returnValue = [];
+        for (const data of classData) {
+            returnValue.push([data.dataValues.name, data.dataValues.idSchool]);
+        }
+        res.json(returnValue);
+    },
+    async getStudents(req, res) {
+        const classData = await db.class.findOne({
+            where: {
+                name: req.params.className,
+                academicYearId: req.params.year,
+            },
+        });
+        if (!classData) {
+            return res.json({ erro: 'data not found' });
+        }
+        const classData2 = await db.class.findAll({
+            include: [{ model: db.student, though: 'class_student' }],
+            where: { id: classData.dataValues.id },
+        });
+        if (!classData) {
+            return res.json({ erro: 'data not found' });
+        }
+        const returnValues = [];
+        for (const data of classData2) {
+            if (data.dataValues.schoolId == req.user.id) {
+                for (const studentData of data.dataValues.students) {
+                    delete studentData.dataValues.securitySecret;
+                    delete studentData.dataValues.class_student;
+                    delete studentData.dataValues.schoolId;
+                    delete studentData.dataValues.role;
+                    delete studentData.dataValues.id;
+                    studentData.dataValues.studentId =
+                        studentData.dataValues.idSchool;
+                    delete studentData.dataValues.idSchool;
+                    returnValues.push(studentData);
+                }
+            }
+        }
+        res.send(returnValues);
     },
 };

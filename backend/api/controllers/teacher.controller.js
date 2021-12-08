@@ -307,7 +307,6 @@ export default {
             },
             { where: { id: req.params.logbookId } }
         );
-        console.log(success);
         if (success[0] === 1)
             res.json({ message: 'updates logbook successfully' });
         else res.json({ message: 'edit failed' });
