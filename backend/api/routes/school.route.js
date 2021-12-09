@@ -104,3 +104,21 @@ router.put(
     auth.isSchool,
     controller.School.changePassword
 );
+router.put(
+    '/editTeacher/:teacherId',
+    auth.verifyToken,
+    auth.isSchool,
+    controller.School.editTeacher
+);
+router.get(
+    '/classes/:year',
+    auth.verifyToken,
+    auth.isSchool,
+    controller.School.getClasses
+);
+router.get(
+    '/students/:year/:className',
+    auth.verifyToken,
+    auth.isSchool,
+    controller.School.getStudents
+);

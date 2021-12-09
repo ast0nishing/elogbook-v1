@@ -163,7 +163,7 @@ const TeacherContextProvider = ({ children }) => {
   const updateTeacher = async (updatedTeacher) => {
     try {
       const response = await api.put(
-        `${apiUrl}/api/v1/teachers/}`,
+        `${apiUrl}/api/v1/teachers/`,
         updatedTeacher
       );
       if (response.status === 200) {

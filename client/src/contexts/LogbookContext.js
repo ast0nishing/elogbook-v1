@@ -11,8 +11,6 @@ import {
   UPDATE_LOGBOOK,
   FIND_LOGBOOK,
 } from "./constants";
-
-import axios from "axios";
 export const LogbookContext = createContext();
 
 const LogbookContextProvider = ({ children }) => {
@@ -49,10 +47,10 @@ const LogbookContextProvider = ({ children }) => {
   // Add post
   const addLogbook = async (newLogbook) => {
     try {
-      const response = await api.post(`${apiUrl}/admin/newLogbook`, newLogbook);
-      if (response.data.success) {
-        dispatch({ type: ADD_LOGBOOK, payload: response.data.logbook });
-        return response.data;
+      const response = await api.post(`${apiUrl}/api/v1/logbooks/`, newLogbook);
+      if (response.status == 200) {
+        dispatch({ type: ADD_LOGBOOK, payload: response.data });
+        return { message: "sucessfull" };
       }
     } catch (error) {
       return error.response.data
@@ -62,7 +60,7 @@ const LogbookContextProvider = ({ children }) => {
   };
 
   // Delete post
-  const deleteLessson = async (logbookId) => {
+  const deleteLogbook = async (logbookId) => {
     try {
       const response = await api.delete(`${apiUrl}/admin/logbook/${logbookId}`);
       if (response.data.success)
@@ -106,7 +104,7 @@ const LogbookContextProvider = ({ children }) => {
     setShowAddLogbookTable,
     showUpdateLogbookTable,
     setShowUpdateLogbookTable,
-    addCLogbook,
+    addLogbook,
     showToast,
     setShowToast,
     deleteLogbook,

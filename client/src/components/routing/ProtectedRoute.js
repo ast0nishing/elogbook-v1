@@ -159,11 +159,11 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
           <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
             <SubMenu key="sub3" title="Logbook">
               <Menu.Item key="31">
-                <Link to="/newteacher"> Create Teacher </Link>
+                <Link to="/new-logbook"> Create Logbook </Link>
               </Menu.Item>
-              <Menu.Item key="32">
+              {/* <Menu.Item key="32">
                 <Link to="/teachers"> Teacher List </Link>
-              </Menu.Item>
+              </Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub4" title="Ranking">
               <Menu.Item key="41">
@@ -183,9 +183,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
               </Menu.Item>
             </SubMenu>
             <SubMenu key="sub5" title="Timetable">
-              <Menu.Item key="53">
-                <Link to="/timetable-calandar">Timetable Calandar </Link>
-              </Menu.Item>
               <Menu.Item key="52">
                 <Link to="/timetables">Timetable List </Link>
               </Menu.Item>

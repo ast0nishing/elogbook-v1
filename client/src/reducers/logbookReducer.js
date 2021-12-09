@@ -43,7 +43,7 @@ export const logbookReducer = (state, action) => {
 
     case UPDATE_LOGBOOK:
       const newLogbooks = state.logbooks.map((logbook) =>
-        logbook.code === payload.id ? payload : lobook
+        logbook.code === payload.id ? payload : logbook
       );
 
       return {

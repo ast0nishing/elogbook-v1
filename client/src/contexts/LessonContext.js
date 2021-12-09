@@ -31,14 +31,15 @@ const LessonContextProvider = ({ children }) => {
     type: null,
   });
 
-  // Get all courses
-  const getLessons = async () => {
+  // Get all lessons of specific course
+  const getLessons = async (courseID) => {
     try {
-      const response = await api.get(`${apiUrl}/admin/lesson`);
-      if (response.data.success) {
+      const url = `${apiUrl}/api/v1/teachers/lessons/${courseID}`;
+      const response = await api.get(url);
+      if (response.status == 200) {
         dispatch({
           type: LESSONS_LOADED_SUCCESS,
-          payload: response.data.lessons,
+          payload: response.data,
         });
       }
     } catch (error) {

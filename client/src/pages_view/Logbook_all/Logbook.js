@@ -1,49 +1,48 @@
-import {
-  CalendarToday,
-  LocationSearching,
-  MailOutline,
-  PermIdentity,
-  PhoneAndroid,
-  Publish,
-} from "@material-ui/icons";
+/** @format */
+
+import { PermIdentity, PhoneAndroid, Publish } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import "./user.css";
 import { useState } from "react";
-import { LogbookContext } from '../../contexts/LogbookContext'
-import { AuthContext } from '../../contexts/AuthContext'
-import { useContext, useEffect } from 'react'
+import { LogbookContext } from "../../contexts/LogbookContext";
+import { TimetableContext } from "../../contexts/TimetableContext";
+import { useContext, useEffect } from "react";
 
 export default function User() {
-  	// Contexts
-    const {
-      logbookState: { logbook: Logbook },
-      showUpdateLogbookTable,
-      setShowUpdateLogbookTable,
-      updateLogbook,
-      setShowToast
-    } = useContext(LogbookContext)
+  // Timetable
+  const {
+    timetableState: { timetables },
+  } = useContext(TimetableContext);
+  const {
+    logbookState: { logbook: Logbook },
+    updateLogbook,
+    setShowToast,
+  } = useContext(LogbookContext);
 
-	// State
-	const [updatedLogbook, setUpdatedLogbook] = useState(Logbook)
+  // State
+  const [updatedLogbook, setUpdatedLogbook] = useState(Logbook);
 
-	useEffect(() => setUpdatedLogbook(Logbook), [Logbook])
+  useEffect(() => setUpdatedLogbook(Logbook), [Logbook]);
 
-	const {username,fullname,phone} = updatedLogbook
+  const { username, fullname, phone } = updatedLogbook;
 
-	const onChangeUpdatedLogbookForm = event =>
-		setUpdatedLogbook({ ...updatedLogbook, [event.target.name]: event.target.value })
+  const onChangeUpdatedLogbookForm = (event) =>
+    setUpdatedLogbook({
+      ...updatedLogbook,
+      [event.target.name]: event.target.value,
+    });
 
-	const closeDialog = () => {
-		setUpdateLogbook(Logbook)
-		setShowUpdateLogbookTable(false)
-	}
+  const closeDialog = () => {
+    setUpdateLogbook(Logbook);
+    setShowUpdateLogbookTable(false);
+  };
 
-	const onSubmit = async event => {
-		event.preventDefault()
-		const { success, message } = await updateLogbook(updatedLogbook)
-		setShowUpdateLogbookTable(false)
-		setShowToast({ show: true, message, type: success ? 'success' : 'danger' })
-	}
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const { success, message } = await updateLogbook(updatedLogbook);
+    setShowUpdateLogbookTable(false);
+    setShowToast({ show: true, message, type: success ? "success" : "danger" });
+  };
   return (
     <div className="user">
       <div className="userTitleContainer">

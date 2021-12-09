@@ -10,6 +10,7 @@ import {
   DELETE_TIMETABLE,
   UPDATE_TIMETABLE,
   FIND_TIMETABLE,
+  MATRIX_TIMETABLES_LOADED_SUCCESS,
 } from "./constants";
 
 import axios from "axios";
@@ -20,7 +21,11 @@ const TimetableContextProvider = ({ children }) => {
   const [timetableState, dispatch] = useReducer(timetableReducer, {
     timetable: null,
     timetables: [],
+    mytimetables: [],
+    matrix: [],
     timetablesLoading: true,
+    week: null,
+    year: null,
   });
 
   const [showAddTimeTableTable, setShowAddTimeTableTable] = useState(false);
@@ -50,9 +55,12 @@ const TimetableContextProvider = ({ children }) => {
   const getTimetablesYearWeek = async (yearweek) => {
     try {
       const role = JSON.parse(sessionStorage["user"]).role;
-      const response = await api.get(
-        `${apiUrl}/api/v1/${role}s/timetable/${yearweek.year}/${yearweek.week}`
-      );
+      if (role == "school") {
+        var url = `${apiUrl}/api/v1/${role}s/timetable/${yearweek.year}/${yearweek.week}`;
+      } else {
+        var url = `${apiUrl}/api/v1/${role}s/timetables/${yearweek.year}/${yearweek.week}`;
+      }
+      const response = await api.get(url);
       if (response.status == 200) {
         const classes = []; // unique code for array in course name
         response.data.forEach(function (el) {
@@ -100,27 +108,36 @@ const TimetableContextProvider = ({ children }) => {
                 (rs.className == key)
               ) {
                 el[key] = rs.courseCode;
-                el["id"] = rs.id;
+                el[key + "_id"] = rs.id;
               }
             });
           });
         });
       }
+      console.log(response.data);
+      dispatch({
+        type: MATRIX_TIMETABLES_LOADED_SUCCESS,
+        payload: schedules,
+      });
       dispatch({
         type: TIMETABLES_LOADED_SUCCESS,
-        payload: schedules,
+        payload: response.data,
       });
     } catch (error) {
       // dispatch({ type: TIMETABLES_LOADED_FAIL });
     }
   };
+
   // Timetable week classID
   const getTimetablesWeekClass = async (weekclass) => {
     try {
       const role = JSON.parse(sessionStorage["user"]).role;
-      const response = await api.get(
-        `${apiUrl}/api/v1/${role}s/timetable/${weekclass.week}/${weekclass.classId}`
-      );
+      if (role == "school") {
+        var url = `${apiUrl}/api/v1/${role}s/timetable/${weekclass.week}/${weekclass.classId}`;
+      } else {
+        var url = `${apiUrl}/api/v1/${role}s/timetables/${weekclass.week}/${weekclass.classId}`;
+      }
+      const response = await api.get(url);
       if (response.status == 200) {
         dispatch({
           type: TIMETABLES_LOADED_SUCCESS,
@@ -138,18 +155,16 @@ const TimetableContextProvider = ({ children }) => {
     try {
       const role = JSON.parse(sessionStorage["user"]).role;
       const response = await api.get(
-        `${apiUrl}/api/v1/${role}/mytimetable/${yearweek.year}/${yearweek.week}`
+        `${apiUrl}/api/v1/${role}s/mytimetable/${yearweek.year}/${yearweek.week}`
       );
       if (response.status == 200) {
         dispatch({
           type: TIMETABLES_LOADED_SUCCESS,
           payload: response.data,
         });
-        console.log("Sucessfull");
       }
     } catch (error) {
-      console.log("Fail");
-      // dispatch({ type: TIMETABLES_LOADED_FAIL });
+      dispatch({ type: TIMETABLES_LOADED_FAIL });
     }
   };
   // Add post
@@ -183,29 +198,49 @@ const TimetableContextProvider = ({ children }) => {
   };
 
   // Find post when user is updating post
-  const findTimetable = (timetableId) => {
+  const findTimetable = (input) => {
     const timetable = timetableState.timetables.find(
-      (timetable) => timetable.id === timetableId
+      (timetable) => timetable.id === input.id
     );
-    dispatch({ type: FIND_TIMETABLE, payload: timetable });
+    timetable["year"] = input.year;
+    timetable["week"] = input.week;
+    dispatch({
+      type: FIND_TIMETABLE,
+      payload: timetable,
+    });
   };
-
+  //  Find my timetable
+  const findMyTimetable = (input) => {
+    const timetable = timetableState.mytimetables.find(
+      (timetable) => timetable.id === input.id
+    );
+    timetable["year"] = input.year;
+    timetable["week"] = input.week;
+    dispatch({
+      type: FIND_TIMETABLE,
+      payload: timetable,
+    });
+    return timetable.courseCode;
+  };
   // Update post
   const updateTimetable = async (updatedTimeTable) => {
     try {
-      const response = await api.put(
-        `${apiUrl}/api/v1/schools/editTimetable/${updatedTimeTable.id}`,
-        updatedTimeTable
-      );
+      const final = updatedTimeTable.id.toString().toLowerCase();
+      const url = `${apiUrl}/api/v1/schools/editTimetable/${final}`;
+      updatedTimeTable["classId"] = updatedTimeTable.id;
+      delete updatedTimeTable.id;
+      delete updatedTimeTable.day;
+      const response = await api.put(url, updatedTimeTable);
       if (response.status == 200) {
-        // dispatch({ type: UPDATE_TIMETABLE, payload: response.data.timetable });
-        // return response.data;
-        console.log("Successfull");
+        getTimetablesYearWeek({ year: 2019, week: 2 });
+        return response.data.message
+          ? { message: response.data.message }
+          : { message: "No message" };
       }
     } catch (error) {
-      return error.response.data
-        ? error.response.data
-        : { success: false, message: "Server error" };
+      return {
+        message: "Sever error",
+      };
     }
   };
   // Post context data
@@ -223,6 +258,8 @@ const TimetableContextProvider = ({ children }) => {
     findTimetable,
     updateTimetable,
     getTimetablesYearWeek,
+    getMyTimetablesYearWeek,
+    findMyTimetable,
   };
 
   return (

@@ -6,6 +6,7 @@ import {
   DELETE_TIMETABLE,
   UPDATE_TIMETABLE,
   FIND_TIMETABLE,
+  MATRIX_TIMETABLES_LOADED_SUCCESS,
 } from "../contexts/constants";
 
 export const timetableReducer = (state, action) => {
@@ -14,10 +15,15 @@ export const timetableReducer = (state, action) => {
     case TIMETABLES_LOADED_SUCCESS:
       return {
         ...state,
-        timetables: payload,
+        mytimetables: payload,
         timetablesLoading: false,
       };
-
+    case MATRIX_TIMETABLES_LOADED_SUCCESS:
+      return {
+        ...state,
+        matrix: payload,
+        timetablesLoading: false,
+      };
     case TIMETABLES_LOADED_FAIL:
       return {
         ...state,
@@ -43,7 +49,7 @@ export const timetableReducer = (state, action) => {
       return { ...state, timetable: payload };
 
     case UPDATE_TIMETABLE:
-      const newTimetables = state.timetables.map((timetable) =>
+      const newTimetables = state.timetables.timetables.map((timetable) =>
         timetable.id === payload.id ? payload : timetable
       );
 

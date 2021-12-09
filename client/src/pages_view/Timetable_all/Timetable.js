@@ -24,8 +24,16 @@ export default function Timetable() {
 
   useEffect(() => setUpdatedState(timetable), [timetables]);
 
-  const { fromWeek, toWeek, time, course, courseCode, classId, className } =
-    updatedState;
+  const {
+    fromWeek,
+    toWeek,
+    time,
+    weekDay,
+    course,
+    courseCode,
+    classId,
+    className,
+  } = updatedState;
 
   const onChangeUpdatedForm = (event) =>
     setUpdatedState({
@@ -62,21 +70,81 @@ export default function Timetable() {
             ></input>
           </div>
         </div>
-        {/* <div className="form-row">
+        <div className="form-row">
           <div className="form-col-25">
-            <label> Phone Number</label>
+            <label> To Week</label>
           </div>
           <div className="form-col-75">
             <input
               type="text"
               id="lname"
-              name="phoneNumber"
-              value={phoneNumber}
+              name="toWeek"
+              value={toWeek}
               onChange={onChangeUpdatedForm}
-              placeholder={timetable.phoneNumber}
+              placeholder={timetable.toWeek}
             ></input>
-          </div> */}
-        {/* </div> */}
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label> Week day</label>
+          </div>
+          <div className="form-col-75">
+            <input
+              type="text"
+              id="lname"
+              name="weekDay"
+              value={weekDay}
+              onChange={onChangeUpdatedForm}
+              placeholder={timetable.day}
+            ></input>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label> Time</label>
+          </div>
+          <div className="form-col-75">
+            <input
+              type="text"
+              id="lname"
+              name="time"
+              value={time}
+              onChange={onChangeUpdatedForm}
+              placeholder={timetable.time}
+            ></input>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label> Class ID</label>
+          </div>
+          <div className="form-col-75">
+            <input
+              type="text"
+              id="lname"
+              name="classId"
+              value={classId}
+              onChange={onChangeUpdatedForm}
+              placeholder={timetable.classId}
+            ></input>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label> ClassName</label>
+          </div>
+          <div className="form-col-75">
+            <input
+              type="text"
+              id="lname"
+              name="teacherId"
+              value={className}
+              onChange={onChangeUpdatedForm}
+              placeholder={timetable.className}
+            ></input>
+          </div>
+        </div>
         <br></br>
         <div className="form-row">
           <input type="submit" value="Submit"></input>

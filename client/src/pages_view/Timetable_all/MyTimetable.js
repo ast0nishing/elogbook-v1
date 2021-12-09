@@ -6,30 +6,30 @@ import { DeleteOutline } from "@material-ui/icons";
 import addIcon from "../../assets/plus-circle-fill.svg";
 import Button from "react-bootstrap/Button";
 import Tooltip from "react-bootstrap/Tooltip";
-
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { TimetableContext } from "../../contexts/TimetableContext";
-import { AuthContext } from "../../contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import Spinner from "react-bootstrap/Spinner";
+import { LessonContext } from "../../contexts/LessonContext";
 export default function TimetableList() {
-  // Contexts
+  // Timetable
   const {
-    timetableState: { matrix, timetables, timetablesLoading },
-    getTimetables,
+    timetableState: { timetable, mytimetables, timetablesLoading },
     showToast: { show, message, type },
     setShowToast,
     deleteTimetable,
     findTimetable,
-    getTimetablesYearWeek,
+    getMyTimetablesYearWeek,
+    findMyTimetable,
   } = useContext(TimetableContext);
+  const {
+    lessonState: { lesson, lessons, lessonLoading },
+    getLessons,
+  } = useContext(LessonContext);
 
-  useEffect(() => getTimetables(), []);
-
-  // Get all course
-  // const [data, setData] = useState(timetables);
+  //Logbook
   const [data1, setData1] = useState({ year: "2019", week: "2" });
   const { week, year } = data1;
   const onChangeSelectForm = (event) =>
@@ -37,7 +37,7 @@ export default function TimetableList() {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    getTimetablesYearWeek(data1);
+    getMyTimetablesYearWeek(data1);
   };
 
   const history = useHistory();
@@ -46,9 +46,11 @@ export default function TimetableList() {
     if (typeof courseId === "undefined") {
       toast("Invalid Course For This Class");
     } else {
+      // getLessons(courseId);
       const input = { week: data1.week, year: data1, year, id: courseId };
-      findTimetable(input);
-      history.push("/timetable-detail");
+      const courseCode = findMyTimetable(input);
+      getLessons(courseCode);
+      history.push("/new-logbook");
     }
   };
   const handleDelete = async (timetableId) => {
@@ -69,7 +71,7 @@ export default function TimetableList() {
         <Spinner animation="border" variant="info" />
       </div>
     );
-  } else if (matrix.length == 0) {
+  } else if (mytimetables.length == 0) {
     body = (
       <>
         <div className="elementList">
@@ -85,42 +87,33 @@ export default function TimetableList() {
       </>
     );
   } else {
-    const test = Object.keys(matrix[0]);
-    const non_key = ["id", "Date", "Time", "key"];
-    const final = test.filter((item) => !non_key.includes(item));
-
-    const columns = [
-      { field: "Date", headerName: "Date", width: 200 },
-      { field: "Time", headerName: "Time", width: 200 },
-    ];
-
-    final.forEach(function (el) {
+    const final = Object.keys(mytimetables[0]);
+    const outlier = ["id", "week", "year", "fromWeek", "toWeek"];
+    const labels = final.filter((item) => !outlier.includes(item));
+    const columns = [];
+    labels.forEach(function (el) {
       columns.push({
         field: el,
         headerName: el,
         width: 250,
-        renderCell: (params) => {
-          return (
-            <>
-              <div style={{ width: "75%" }}>
-                <p>{params.row[el]}</p>
-              </div>
-
-              <button
-                className="elementListEdit"
-                onClick={() => handleChoose(params.row[el + "_id"])}
-                // onClick={() => console.log(params.row[el + "_id"])}
-              >
-                Edit
-              </button>
-              <DeleteOutline
-                className="ListDelete"
-                onClick={() => handleDelete(params.row.id)}
-              />
-            </>
-          );
-        },
       });
+    });
+    columns.push({
+      field: "Logbook",
+      headerName: "Logbook Action",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <>
+            <button
+              className="elementListEdit"
+              onClick={() => handleChoose(params.row.id)}
+            >
+              Edit
+            </button>
+          </>
+        );
+      },
     });
     body = (
       <>
@@ -138,8 +131,8 @@ export default function TimetableList() {
             autohide
           />
           <DataGrid
-            rows={matrix}
-            getRowId={(r) => r.key}
+            rows={mytimetables}
+            // getRowId={(r) => r.key}
             disableSelectionOnClick
             columns={columns}
             pageSize={8}
