@@ -67,6 +67,9 @@ export default {
         const studentData = await db.student.findOne({
             where: { idSchool: req.params.studentId },
         });
+        if (!studentData) {
+            return res.status(400).json({ message: 'data not found!' });
+        }
         const studentData2 = await db.student.findAll({
             include: [{ model: db.class, though: 'class_student' }],
             where: { id: studentData.dataValues.id },
@@ -77,32 +80,37 @@ export default {
             return res.status(400).json({ message: 'data not found!' });
         }
         const fullData = [];
-        for (const data of studentData2) {
-            const studentClassId = data.dataValues.classes.pop().dataValues.id;
-            const classData = await db.class.findOne({
-                include: [{ model: db.student, though: 'class_student' }],
-                where: { id: studentClassId },
-            });
-            const teacherData = await db.teacher.findOne({
-                where: { id: classData.dataValues.teacherId },
-            });
-            const schoolData = await db.school.findOne({
-                where: { id: classData.dataValues.schoolId },
-            });
-            studentData.dataValues.schoolName = schoolData.dataValues.name;
-            delete studentData.dataValues.password;
-            delete studentData.dataValues.id;
-            delete studentData.dataValues.schoolId;
-            delete studentData.dataValues.securitySecret;
-            studentData.dataValues.className = classData.dataValues.name;
-            studentData.dataValues.academicYear = `${
-                classData.dataValues.academicYearId
-            }-${parseInt(classData.dataValues.academicYearId) + 1}`;
-            studentData.dataValues.headTeacherName =
-                teacherData.dataValues.name;
-            fullData.push(studentData);
+        try {
+            for (const data of studentData2) {
+                const studentClassId =
+                    data.dataValues.classes.pop().dataValues.id;
+                const classData = await db.class.findOne({
+                    include: [{ model: db.student, though: 'class_student' }],
+                    where: { id: studentClassId },
+                });
+                const teacherData = await db.teacher.findOne({
+                    where: { id: classData.dataValues.teacherId },
+                });
+                const schoolData = await db.school.findOne({
+                    where: { id: classData.dataValues.schoolId },
+                });
+                studentData.dataValues.schoolName = schoolData.dataValues.name;
+                delete studentData.dataValues.password;
+                delete studentData.dataValues.id;
+                delete studentData.dataValues.schoolId;
+                delete studentData.dataValues.securitySecret;
+                studentData.dataValues.className = classData.dataValues.name;
+                studentData.dataValues.academicYear = `${
+                    classData.dataValues.academicYearId
+                }-${parseInt(classData.dataValues.academicYearId) + 1}`;
+                studentData.dataValues.headTeacherName =
+                    teacherData.dataValues.name;
+                fullData.push(studentData);
+            }
+            res.send(fullData);
+        } catch (err) {
+            res.json({ error: 'error occured' });
         }
-        res.send(fullData);
     },
     async findClass(req, res) {
         const classData2 = await db.class.findOne({

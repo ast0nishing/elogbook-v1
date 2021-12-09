@@ -120,6 +120,7 @@ export default {
                     where: { id: data.dataValues.teacherId },
                 });
                 fullData.push({
+                    id: data.dataValues.id,
                     className: classData.dataValues.name,
                     week: logbookData.dataValues.week,
                     day: req.params.day,
@@ -148,8 +149,6 @@ export default {
             6: 'Saturday',
             7: 'Sunday',
         };
-        // console.log('asdasda');
-        // return;
         const classData = await db.class.findOne({
             where: {
                 academicYearId: req.params.year,
@@ -187,6 +186,7 @@ export default {
                 where: { id: data.dataValues.teacherId },
             });
             fullData.logbooks.push({
+                id: data.dataValues.id,
                 week: logbookData.dataValues.week,
                 day: days[data.dataValues.weekDay],
                 time: data.dataValues.time,
@@ -211,8 +211,6 @@ export default {
             6: 'Saturday',
             7: 'Sunday',
         };
-        // console.log('asdasda');
-        // return;
         const allClassData = await db.class.findAll({
             where: {
                 academicYearId: req.params.year,
@@ -226,7 +224,6 @@ export default {
         for (const classData of allClassData) {
             const timetableData = await db.timetable.findAll();
             for (const data of timetableData) {
-                console.log(data.dataValues.id);
                 const logbookData = await db.logbook.findOne({
                     where: { timetableId: data.dataValues.id },
                 });
@@ -241,6 +238,7 @@ export default {
                     where: { id: data.dataValues.teacherId },
                 });
                 fullData.push({
+                    id: data.dataValues.id,
                     className: classData.dataValues.name,
                     classId: classData.dataValues.idSchool,
                     week: logbookData.dataValues.week,
@@ -306,6 +304,7 @@ export default {
                     where: { id: data.dataValues.teacherId },
                 });
                 fullData.push({
+                    id: data.dataValues.id,
                     className: classData.dataValues.name,
                     week: logbookData.dataValues.week,
                     day: req.params.day,
@@ -385,6 +384,7 @@ export default {
                     where: { id: data.dataValues.teacherId },
                 });
                 fullData.logbooks.push({
+                    id: data.dataValues.id,
                     time: data.dataValues.time,
                     grade: logbookData.dataValues.grade,
                     comment: logbookData.dataValues.comment,
