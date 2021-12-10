@@ -92,7 +92,7 @@ router.put(
     controller.School.editTimetable
 );
 router.get(
-    '/timetable/:year/:week',
+    '/timetables/:year/:week',
     auth.verifyToken,
     auth.isSchool,
     controller.School.getTimetable
