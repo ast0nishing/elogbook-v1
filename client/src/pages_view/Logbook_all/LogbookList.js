@@ -3,11 +3,9 @@
 import "./userList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { userRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { LogbookContext } from "../../contexts/LogbookContext";
-import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useEffect } from "react";
 // import Spinner from 'react-bootstrap/Spinner'
 import addIcon from "../../assets/plus-circle-fill.svg";
@@ -20,15 +18,16 @@ import ActionButtons from "./ActionButtons";
 
 export default function Logbook() {
   // Contexts
-  const {
-    authState: {
-      user: { username },
-    },
-  } = useContext(AuthContext);
+  // const {
+  //   authState: {
+  //     user: { username },
+  //   },
+  // } = useContext(AuthContext);
 
   const {
     logbookState: { logbook, logbooks, logbooksLoading },
     getLogbooks,
+
     setShowAddLogbookTable,
     showToast: { show, message, type },
     setShowToast,

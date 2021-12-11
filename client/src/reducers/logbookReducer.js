@@ -7,6 +7,7 @@ import {
   DELETE_LOGBOOK,
   UPDATE_LOGBOOK,
   FIND_LOGBOOK,
+  MATRIX_LOGBOOKS_LOADED_SUCCESS,
 } from "../contexts/constants";
 
 export const logbookReducer = (state, action) => {
@@ -18,7 +19,12 @@ export const logbookReducer = (state, action) => {
         logbooks: payload,
         logbooksLoading: false,
       };
-
+    case MATRIX_LOGBOOKS_LOADED_SUCCESS:
+      return {
+        ...state,
+        matrix: payload,
+        logbooksLoading: false,
+      };
     case LOGBOOKS_LOADED_FAIL:
       return {
         ...state,

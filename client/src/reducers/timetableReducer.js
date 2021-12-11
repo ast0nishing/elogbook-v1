@@ -7,15 +7,22 @@ import {
   UPDATE_TIMETABLE,
   FIND_TIMETABLE,
   MATRIX_TIMETABLES_LOADED_SUCCESS,
+  MY_TIMETABLES_LOADED_SUCCESS,
 } from "../contexts/constants";
 
 export const timetableReducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case TIMETABLES_LOADED_SUCCESS:
+    case MY_TIMETABLES_LOADED_SUCCESS:
       return {
         ...state,
         mytimetables: payload,
+        timetablesLoading: false,
+      };
+    case TIMETABLES_LOADED_SUCCESS:
+      return {
+        ...state,
+        timetables: payload,
         timetablesLoading: false,
       };
     case MATRIX_TIMETABLES_LOADED_SUCCESS:

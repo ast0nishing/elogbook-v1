@@ -8,7 +8,7 @@ import { PermIdentity, Publish } from "@material-ui/icons";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 
-export default function School() {
+export default function Teacher_infor() {
   // // Contexts
   const {
     userState: { user },
@@ -18,7 +18,7 @@ export default function School() {
   } = useContext(UserContext);
   // State
   const [updatedUser, setUpdatedUser] = useState(user);
-  const { name, province, district, town, street, streetNo } = updatedUser;
+  const { name, role, major, address, phoneNumber, email } = updatedUser;
   useEffect(() => setUpdatedUser(user), []);
   const onChangeUpdatedUserForm = (event) =>
     setUpdatedUser({
@@ -42,7 +42,7 @@ export default function School() {
       <form onSubmit={onSubmit}>
         <div className="form-row">
           <div className="form-col-25">
-            <label>School Name</label>
+            <label>Teacher Name</label>
           </div>
           <div className="form-col-75">
             <input
@@ -62,71 +62,70 @@ export default function School() {
           <div className="form-col-75">
             <input
               type="text"
-              id="lname"
-              name="province"
-              value={province}
-              onChange={onChangeUpdatedUserForm}
+              id="role"
+              name="role"
+              value={role}
               placeholder={user.province}
             ></input>
           </div>
         </div>
         <div className="form-row">
           <div className="form-col-25">
-            <label>District</label>
+            <label>Major</label>
           </div>
           <div className="form-col-75">
             <input
               type="text"
               id="lname"
-              name="district"
-              value={district}
+              name="major"
+              value={major}
               onChange={onChangeUpdatedUserForm}
-              placeholder={user.district}
+              placeholder={user.major}
             ></input>
           </div>
         </div>
         <div className="form-row">
           <div className="form-col-25">
-            <label>Town</label>
+            <label>Address</label>
           </div>
           <div className="form-col-75">
             <input
               type="text"
               id="lname"
-              name="town"
-              value={town}
+              name="address"
+              value={address}
               onChange={onChangeUpdatedUserForm}
-              placeholder={user.town}
+              placeholder={user.address}
             ></input>
           </div>
         </div>
         <div className="form-row">
           <div className="form-col-25">
-            <label>Street</label>
+            <label>Phone</label>
           </div>
           <div className="form-col-75">
             <input
               type="text"
               id="lname"
-              name="street"
-              value={street}
+              name="phoneNumber"
+              value={phoneNumber}
               onChange={onChangeUpdatedUserForm}
-              placeholder={user.street}
+              placeholder={user.phoneNumber}
             ></input>
           </div>
         </div>
         <div className="form-row">
           <div className="form-col-25">
-            <label>Street Number</label>
+            <label>Email</label>
           </div>
           <div className="form-col-75">
             <input
               type="text"
               id="lname"
-              name="streetNo"
-              value={streetNo}
+              name="email"
+              value={email}
               onChange={onChangeUpdatedUserForm}
-              placeholder={user.streetNo}
+              placeholder={user.phoneNumber}
             ></input>
           </div>
         </div>

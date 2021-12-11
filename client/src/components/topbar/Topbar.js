@@ -15,8 +15,9 @@ export default function Topbar() {
     },
     logoutUser,
   } = useContext(AuthContext);
-
+  const role = JSON.parse(sessionStorage["user"]).role;
   const logout = () => logoutUser();
+  const path = "personal/" + role;
   return (
     <div className="topbar">
       <div className="topbarWrapper">
@@ -25,7 +26,7 @@ export default function Topbar() {
         </div>
 
         <div className="topRight">
-          <Link to="/personal">
+          <Link to={path}>
             <img
               src="https://images.pexels.com/photos/1526814/pexels-photo-1526814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
               alt=""

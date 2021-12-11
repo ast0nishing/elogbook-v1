@@ -26,12 +26,11 @@ export default function TimetableList() {
     getTimetablesYearWeek,
   } = useContext(TimetableContext);
 
-  useEffect(() => getTimetables(), []);
-
   // Get all course
   // const [data, setData] = useState(timetables);
   const [data1, setData1] = useState({ year: "2019", week: "2" });
   const { week, year } = data1;
+  useEffect(() => setData1({ year: "2019", week: "2" }), []);
   const onChangeSelectForm = (event) =>
     setData1({ ...data1, [event.target.name]: event.target.value });
 

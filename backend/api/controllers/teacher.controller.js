@@ -12,7 +12,6 @@ import { timeStamp } from "console";
 
 export default {
   async findAllTeachersByClassAndYear(req, res) {
-    console.log("asd");
     const classData = await db.class.findOne({
       where: {
         name: req.params.className,
@@ -363,6 +362,7 @@ export default {
         const classData = await db.class.findOne({
           where: { id: temp.dataValues.classId },
         });
+
         if (!classData) {
           return res.status(400).json({ message: "data not found" });
         }
@@ -382,13 +382,17 @@ export default {
           delete temp.dataValues.teacherId;
           temp.dataValues.classId = classData.dataValues.idSchool;
           temp.dataValues.className = classData.dataValues.name;
-          fullData.push(temp.dataValues);
         }
+        // console.log(timetableData);
+        fullData.push(temp.dataValues);
       }
     } else {
       for (const temp of data) {
         const classData = await db.class.findOne({
           where: { id: temp.dataValues.classId },
+        });
+        const timetableData = await db.logbook.findOne({
+          where: { timetableId: temp.dataValues.id },
         });
         if (!data) {
           return res.status(400).json({ message: "data not found" });
@@ -403,6 +407,7 @@ export default {
           const courseData = await db.course.findOne({
             where: { code: temp.dataValues.courseCode },
           });
+          temp.dataValues.week = req.params.week;
           temp.dataValues.courseName = courseData.dataValues.name;
           delete temp.dataValues.weekDay;
           delete temp.dataValues.classId;
@@ -410,6 +415,12 @@ export default {
           // delete temp.dataValues.id;
           temp.dataValues.classId = classData.dataValues.idSchool;
           temp.dataValues.className = classData.dataValues.name;
+          if (timetableData) {
+            temp.dataValues.status = "Active";
+          } else {
+            temp.dataValues.status = "Non active";
+          }
+          // console.log(timetableData.dataValues);
           fullData.push(temp.dataValues);
         }
       }
@@ -420,7 +431,6 @@ export default {
     const lessons = await db.lesson.findAll({
       where: { courseCode: req.params.course },
     });
-    console.log(lessons);
     if (lessons === null) return res.json({ error: "Lessons do not exist" });
     const final_lessons = [];
     lessons.forEach(function (el) {

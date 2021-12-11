@@ -4,7 +4,7 @@ import "../Css/newElement.css";
 import "../Css/elementForm.css";
 import { CSVReader } from "react-papaparse";
 // React
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { TimetableContext } from "../../contexts/TimetableContext";
 import { LogbookContext } from "../../contexts/LogbookContext";
 import { LessonContext } from "../../contexts/LessonContext";
@@ -37,9 +37,8 @@ export default function NewLogbook() {
     lessonId: lessons[0].id,
     timetableId: timetable.id,
   });
-
+  // useEffect(() => setNewState(), []);
   const history = useHistory();
-
   const { grade, week, comment, note, lessonId } = newState;
 
   const onChangeForm = (event) =>

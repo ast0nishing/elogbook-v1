@@ -147,7 +147,7 @@ const TeacherContextProvider = ({ children }) => {
           : response.data.error,
       };
     } catch (error) {
-      return { sucess: false, message: "Fail" };
+      return { success: false, message: "Fail" };
     }
   };
 

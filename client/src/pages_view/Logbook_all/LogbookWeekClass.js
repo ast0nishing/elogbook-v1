@@ -10,70 +10,56 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { TimetableContext } from "../../contexts/TimetableContext";
+import { LogbookContext } from "../../contexts/LogbookContext";
 import { ToastContainer, toast } from "react-toastify";
 import Spinner from "react-bootstrap/Spinner";
 import { LessonContext } from "../../contexts/LessonContext";
-export default function TimetableList() {
-  // Timetable
+export default function LogbookWeekClass() {
+  // Logbook
   const {
-    timetableState: { timetable, mytimetables, timetablesLoading },
+    logbookState: { matrix, logbook, logbooks, logbooksLoading },
+    getLogbookYearWeekClass,
+    findLogbook,
     showToast: { show, message, type },
     setShowToast,
-    deleteTimetable,
-    findTimetable,
-    getMyTimetablesYearWeek,
-    findMyTimetable,
-  } = useContext(TimetableContext);
-  const {
-    lessonState: { lesson, lessons, lessonLoading },
-    getLessons,
-  } = useContext(LessonContext);
+  } = useContext(LogbookContext);
 
   //Logbook
-  const [data1, setData1] = useState({ year: "2019", week: "2" });
-  const { week, year } = data1;
+  const [data1, setData1] = useState({
+    year: "2019",
+    week: "2",
+    className: "LA0102-C19005",
+  });
+  const { week, year, className } = data1;
   const onChangeSelectForm = (event) =>
     setData1({ ...data1, [event.target.name]: event.target.value });
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    getMyTimetablesYearWeek(data1);
+    getLogbookYearWeekClass(data1);
   };
 
   const history = useHistory();
-  // Select course for editing
   const handleChoose = (courseId) => {
     if (typeof courseId === "undefined") {
       toast("Invalid Course For This Class");
     } else {
       const input = { week: data1.week, year: data1, year, id: courseId };
-      const courseCode = findMyTimetable(input);
-      getLessons(courseCode);
-      setTimeout(function () {
-        history.push("/new-logbook");
-        console.log("Ready");
-      }, 1000);
+      const courseCode = findLogbook(input);
+      //   setTimeout(function () {
+      //     history.push("/new-logbook");
+      //     console.log("Ready");
+      //   }, 1000);
     }
   };
-  const handleDelete = async (timetableId) => {
-    try {
-      setData1(data1.filter((item) => item.timetableId !== timetableId));
-      const { message } = await deleteTimetable(timetableId);
-      if (message) {
-        setShowToast({ show: true, message, type: null });
-        toast(message);
-      }
-    } catch (error) {}
-  };
-
   let body = null;
-  if (timetablesLoading) {
+  if (logbooksLoading) {
     body = (
       <div className="spinner-container">
         <Spinner animation="border" variant="info" />
       </div>
     );
-  } else if (mytimetables.length == 0) {
+  } else if (matrix.length == 0) {
     body = (
       <>
         <div className="elementList">
@@ -89,8 +75,8 @@ export default function TimetableList() {
       </>
     );
   } else {
-    const final = Object.keys(mytimetables[0]);
-    const outlier = ["id", "week", "year", "fromWeek", "toWeek"];
+    const final = Object.keys(matrix[0]);
+    const outlier = ["id", "week", "year", "fromWeek", "toWeek", "key"];
     const labels = final.filter((item) => !outlier.includes(item));
     const columns = [];
     labels.forEach(function (el) {
@@ -133,8 +119,8 @@ export default function TimetableList() {
             autohide
           />
           <DataGrid
-            rows={mytimetables}
-            // getRowId={(r) => r.key}
+            rows={matrix}
+            getRowId={(r) => r.key}
             disableSelectionOnClick
             columns={columns}
             pageSize={8}
@@ -181,6 +167,17 @@ export default function TimetableList() {
             <option value="2019">2019</option>
             <option value="2020">2020</option>
             <option value="2021">2021</option>
+          </Form.Control>
+          <Form.Control
+            as="select"
+            defaultValue="2019"
+            name="className"
+            value={className}
+            onChange={onChangeSelectForm}
+            style={{ width: 200 }}
+          >
+            <option value="LA0102-C19005">9A2</option>
+            <option value="LA0102-C19001">9A9</option>
           </Form.Control>
           <br></br>
           <input type="submit" value="Submit"></input>

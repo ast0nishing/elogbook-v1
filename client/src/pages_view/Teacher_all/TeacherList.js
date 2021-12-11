@@ -49,22 +49,22 @@ export default function TeacherList() {
   };
   // Deleting teacher
   const handleDelete = async (teacherId) => {
-    setData(data.filter((item) => item.teacherId !== teacherId));
-    const { message } = await deleteTeacher(teacherId);
-    if (message) {
-      setShowToast({ show: true, message, type: null });
-      toast(message);
+    const { success, message } = await deleteTeacher(teacherId);
+    setShowToast({ show: true, message, type: null });
+    toast(message);
+    if (message == "delete teacher successfully") {
+      setData(data.filter((item) => item.teacherId !== teacherId));
     }
   };
 
   const columns = [
-    // { field: "idSchool", headerName: "School id", width: 200 },
-    // { field: "username", headerName: "User name", width: 200 },
-    // { field: "password", headerName: "Password", width: 200 },
+    { field: "idSchool", headerName: "School id", width: 200 },
+    { field: "username", headerName: "User name", width: 200 },
+    { field: "password", headerName: "Password", width: 200 },
     { field: "name", headerName: "Name", width: 200 },
-    // { field: "major", headerName: "Major", width: 200 },
-    // { field: "phoneNumber", headerName: "Phone", width: 200 },
-    // { field: "email", headerName: "Email", width: 200 },
+    { field: "major", headerName: "Major", width: 200 },
+    { field: "phoneNumber", headerName: "Phone", width: 200 },
+    { field: "email", headerName: "Email", width: 200 },
     {
       field: "action",
       headerName: "Action",
@@ -143,11 +143,7 @@ export default function TeacherList() {
               <option value="2021">2021</option>
             </Form.Control>
             <br></br>
-            <input
-              type="submit"
-              value="Submit"
-              onClick={console.log("DMM")}
-            ></input>
+            <input type="submit" value="Submit"></input>
           </Form>
         </div>
         <div>

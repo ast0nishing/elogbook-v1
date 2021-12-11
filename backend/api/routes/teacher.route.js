@@ -80,10 +80,15 @@ router.get(
 //     controller.Logbook.findByClass
 // );
 // ranking by year + week
+// router.get(
+//   "/ranking/:year/:week",
+//   [auth.verifyToken, auth.isTeacher],
+//   controller.Student.rankingByWeek
+// );
 router.get(
-  "/ranking/:year/:week",
+  "/year-grade-ranking/:year/:grade",
   [auth.verifyToken, auth.isTeacher],
-  controller.Student.rankingByWeek
+  controller.Student.rankingByYearGrade
 );
 router.get(
   "/ranking/:year/:week/:grade",

@@ -11,6 +11,7 @@ import {
   UPDATE_TIMETABLE,
   FIND_TIMETABLE,
   MATRIX_TIMETABLES_LOADED_SUCCESS,
+  MY_TIMETABLES_LOADED_SUCCESS,
 } from "./constants";
 
 import axios from "axios";
@@ -124,7 +125,7 @@ const TimetableContextProvider = ({ children }) => {
         payload: response.data,
       });
     } catch (error) {
-      // dispatch({ type: TIMETABLES_LOADED_FAIL });
+      dispatch({ type: TIMETABLES_LOADED_FAIL });
     }
   };
 
@@ -159,7 +160,7 @@ const TimetableContextProvider = ({ children }) => {
       );
       if (response.status == 200) {
         dispatch({
-          type: TIMETABLES_LOADED_SUCCESS,
+          type: MY_TIMETABLES_LOADED_SUCCESS,
           payload: response.data,
         });
       }

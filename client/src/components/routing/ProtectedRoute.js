@@ -159,27 +159,18 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
           <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
             <SubMenu key="sub3" title="Logbook">
               <Menu.Item key="31">
-                <Link to="/new-logbook"> Create Logbook </Link>
+                <Link to="/logbooks"> Week Class Logbook </Link>
               </Menu.Item>
-              {/* <Menu.Item key="32">
-                <Link to="/teachers"> Teacher List </Link>
-              </Menu.Item> */}
+              <Menu.Item key="32">
+                <Link to="/teachers"> Month Class Logbook </Link>
+              </Menu.Item>
             </SubMenu>
             <SubMenu key="sub4" title="Ranking">
               <Menu.Item key="41">
-                <Link to="/newclass"> Create Class </Link>
-              </Menu.Item>
-              <Menu.Item key="42">
-                <Link to="/add-class-student"> Add Student </Link>
+                <Link to="/year-ranking">Year Ranking </Link>
               </Menu.Item>
               <Menu.Item key="43">
-                <Link to="/add-class-teacher"> Add Teacher</Link>
-              </Menu.Item>
-              <Menu.Item key="44">
-                <Link to="/add-head-class-teacher"> Add Head Teacher </Link>
-              </Menu.Item>
-              <Menu.Item key="45">
-                <Link to="/classes"> Class List </Link>
+                <Link to="/week-ranking">Week Ranking </Link>
               </Menu.Item>
             </SubMenu>
             <SubMenu key="sub5" title="Timetable">
@@ -197,6 +188,49 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         </Menu>
       </>
     );
+  else {
+    body = (
+      <>
+        <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
+          <Menu.Item key="2" icon={<DesktopOutlined />}>
+            Report
+          </Menu.Item>
+          <Menu.Item key="1" icon={<PieChartOutlined />}>
+            <Link to="/personal">Account Information</Link>
+          </Menu.Item>
+          <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
+            {/* <SubMenu key="sub3" title="Logbook">
+              <Menu.Item key="31">
+                <Link to="/logbooks"> Week Class Logbook </Link>
+              </Menu.Item>
+              <Menu.Item key="32">
+                <Link to="/teachers"> Month Class Logbook </Link>
+              </Menu.Item>
+            </SubMenu> */}
+            <SubMenu key="sub4" title="Ranking">
+              <Menu.Item key="41">
+                <Link to="/year-ranking">Year Ranking </Link>
+              </Menu.Item>
+              <Menu.Item key="43">
+                <Link to="/week-ranking">Week Ranking </Link>
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub5" title="Timetable">
+              <Menu.Item key="52">
+                <Link to="/timetables">Timetable List </Link>
+              </Menu.Item>
+              <Menu.Item key="51">
+                <Link to="/mytimetables">My Timetable </Link>
+              </Menu.Item>
+            </SubMenu>
+          </SubMenu>
+          <Menu.Item key="10" icon={<FileOutlined />}>
+            Tutorial !
+          </Menu.Item>
+        </Menu>
+      </>
+    );
+  }
 
   return (
     <Route

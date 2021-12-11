@@ -10,6 +10,7 @@ import {
   DELETE_LOGBOOK,
   UPDATE_LOGBOOK,
   FIND_LOGBOOK,
+  MATRIX_LOGBOOKS_LOADED_SUCCESS,
 } from "./constants";
 export const LogbookContext = createContext();
 
@@ -43,8 +44,78 @@ const LogbookContextProvider = ({ children }) => {
       dispatch({ type: LOGBOOKS_LOADED_FAIL });
     }
   };
+  // Get logbook
+  const getLogbookYearWeekClass = async (input) => {
+    try {
+      const response = await api.get(
+        `${apiUrl}/api/v1/logbooks/${input.year}/${input.className}/${input.week}`
+      );
 
-  // Add post
+      if (response.status == 200) {
+        // unique function
+        const days = [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thurday",
+          "Friday",
+          "Saturday",
+        ];
+        const times = [
+          "07:30:00",
+          "08:30:00",
+          "09:30:00",
+          "10:30:00",
+          "11:30:00",
+          "13:30:00",
+          "14:30:00",
+        ];
+        var schedules = [];
+
+        days.forEach(function (day) {
+          times.forEach(function (time) {
+            var mini = {
+              Date: day,
+              Time: time,
+              Course: "NA",
+              Lesson: "NA",
+              Teacher: "NA",
+              Grade: "NA",
+              Comment: "NA",
+              Note: "NA",
+              key: time + day,
+            };
+            mini["id"] = "NA";
+            schedules.push(mini);
+          });
+        });
+        schedules.forEach(function (el) {
+          response.data.forEach(function (rs) {
+            if ((rs.time == el.Time) & (rs.day == el.Date)) {
+              el["Course"] = rs.courseName;
+              el["Lesson"] = rs.lessonName;
+              el["Teacher"] = rs.teacherName;
+              el["Grade"] = rs.grade;
+              el["Comment"] = rs.comment;
+              el["Note"] = rs.note;
+            }
+          });
+        });
+      }
+      dispatch({
+        type: MATRIX_LOGBOOKS_LOADED_SUCCESS,
+        payload: schedules,
+      });
+      dispatch({
+        type: LOGBOOKS_LOADED_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({ type: LOGBOOKS_LOADED_FAIL });
+    }
+  };
+
+  // Add logbook
   const addLogbook = async (newLogbook) => {
     try {
       const response = await api.post(`${apiUrl}/api/v1/logbooks/`, newLogbook);
@@ -110,6 +181,7 @@ const LogbookContextProvider = ({ children }) => {
     deleteLogbook,
     findLogbook,
     updateLogbook,
+    getLogbookYearWeekClass,
   };
 
   return (
