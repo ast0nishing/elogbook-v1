@@ -32,13 +32,15 @@ const StudentContextProvider = ({ children }) => {
   });
 
   // Get all students
-  const getStudents = async () => {
+  const getStudents = async (input) => {
     try {
-      const response = await api.get(`${apiUrl}/student`);
-      if (response.data.success) {
+      const response = await api.get(
+        `${apiUrl}/api/v1/schools/students/${input.year}/${input.name}`
+      );
+      if (response.status == 200) {
         dispatch({
           type: STUDENTS_LOADED_SUCCESS,
-          payload: response.data.students,
+          payload: response.data,
         });
       }
     } catch (error) {
@@ -105,18 +107,20 @@ const StudentContextProvider = ({ children }) => {
   // Delete post
   const deleteStudent = async (studentId) => {
     try {
-      const response = await api.delete(`${apiUrl}/student/${studentId}`);
-      if (response.data.success)
+      const url = `${apiUrl}/api/v1/schools/deleteStudent/${studentId}`;
+      const response = await api.delete(url);
+      if (response.status == 200)
         dispatch({ type: DELETE_STUDENT, payload: studentId });
+      return { message: "Delete successfull" };
     } catch (error) {
-      console.log(error);
+      return { message: "Fail" };
     }
   };
 
   // Find student when user is updating student
   const findStudent = (studentId) => {
     const student = studentState.students.find(
-      (student) => student._id === studentId
+      (student) => student.studentId === studentId
     );
     dispatch({ type: FIND_STUDENT, payload: student });
   };

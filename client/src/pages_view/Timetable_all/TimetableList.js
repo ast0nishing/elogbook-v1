@@ -85,7 +85,12 @@ export default function TimetableList() {
     );
   } else {
     const test = Object.keys(matrix[0]);
+    const rm = (test.length - 4) / 2;
+    const rm_id = test.splice(8, test.length - rm - 1);
     const non_key = ["id", "Date", "Time", "key"];
+    rm_id.forEach(function (el) {
+      non_key.push(el);
+    });
     const final = test.filter((item) => !non_key.includes(item));
 
     const columns = [
@@ -173,6 +178,9 @@ export default function TimetableList() {
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
           </Form.Control>
           <Form.Control
             as="select"

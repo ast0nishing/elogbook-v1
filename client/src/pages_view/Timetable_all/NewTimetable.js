@@ -46,12 +46,13 @@ export default function NewTimetable() {
           courseCode: ele[el].split(":")[0],
           teacherId: ele[el].split(":")[1],
         };
-        timetable.push(subjects);
+        if (subjects.courseCode !== "NA") {
+          timetable.push(subjects);
+        }
       });
 
       timetables.push({ classId: el, fromWeek: week, subjects: timetable });
     });
-    console.log(timetables);
     setState(timetables);
   };
 

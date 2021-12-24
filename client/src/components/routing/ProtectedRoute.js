@@ -10,6 +10,7 @@ import "./sidebar.css";
 import { useState } from "react";
 import { Layout, Menu, Breadcrumb } from "antd";
 import { Link } from "react-router-dom";
+
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -49,7 +50,21 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   const styles = {
     marginLeft: margined,
   };
-
+  const header = (
+    <>
+      <Menu.Item key="2" icon={<DesktopOutlined />}>
+        <Link to="/">Notifications</Link>
+      </Menu.Item>
+      <SubMenu key="sub10" icon={<UserOutlined />} title="Your Information">
+        <Menu.Item key="01">
+          <Link to={"personal/" + role}> Account Infor </Link>
+        </Menu.Item>
+        <Menu.Item key="02">
+          <Link to="/change-password"> Change Password </Link>
+        </Menu.Item>
+      </SubMenu>
+    </>
+  );
   let body = null;
   if (authLoading)
     body = (
@@ -61,12 +76,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     body = (
       <>
         <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
-          <Menu.Item key="2" icon={<DesktopOutlined />}>
-            Report
-          </Menu.Item>
-          <Menu.Item key="1" icon={<PieChartOutlined />}>
-            <Link to="/personal">Account Information</Link>
-          </Menu.Item>
+          {header}
           <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
             {/* <Menu.Item key="3">
               <Link to="/admin"> Admin </Link>
@@ -91,12 +101,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     body = (
       <>
         <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
-          <Menu.Item key="2" icon={<DesktopOutlined />}>
-            Report
-          </Menu.Item>
-          <Menu.Item key="1" icon={<PieChartOutlined />}>
-            <Link to="/personal">Account Information</Link>
-          </Menu.Item>
+          {header}
           <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
             <SubMenu key="sub2" title="Student">
               <Menu.Item key="21">
@@ -127,9 +132,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
               <Menu.Item key="44">
                 <Link to="/add-head-class-teacher"> Add Head Teacher </Link>
               </Menu.Item>
-              <Menu.Item key="45">
+              {/* <Menu.Item key="45">
                 <Link to="/classes"> Class List </Link>
-              </Menu.Item>
+              </Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub5" title="Timetable">
               <Menu.Item key="51">
@@ -150,20 +155,15 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     body = (
       <>
         <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
-          <Menu.Item key="2" icon={<DesktopOutlined />}>
-            Report
-          </Menu.Item>
-          <Menu.Item key="1" icon={<PieChartOutlined />}>
-            <Link to="/personal">Account Information</Link>
-          </Menu.Item>
+          {header}
           <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
             <SubMenu key="sub3" title="Logbook">
               <Menu.Item key="31">
                 <Link to="/logbooks"> Week Class Logbook </Link>
               </Menu.Item>
-              <Menu.Item key="32">
+              {/* <Menu.Item key="32">
                 <Link to="/teachers"> Month Class Logbook </Link>
-              </Menu.Item>
+              </Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub4" title="Ranking">
               <Menu.Item key="41">
@@ -192,12 +192,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     body = (
       <>
         <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
-          <Menu.Item key="2" icon={<DesktopOutlined />}>
-            Report
-          </Menu.Item>
-          <Menu.Item key="1" icon={<PieChartOutlined />}>
-            <Link to="/personal">Account Information</Link>
-          </Menu.Item>
+          {header}
           <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
             {/* <SubMenu key="sub3" title="Logbook">
               <Menu.Item key="31">

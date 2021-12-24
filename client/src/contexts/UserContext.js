@@ -57,6 +57,20 @@ const UserContextProvider = ({ children }) => {
         : { success: false, message: "Server error" };
     }
   };
+  const changePassword = async (old_new_pw) => {
+    try {
+      const role = JSON.parse(sessionStorage["user"]).role;
+      const url = `${apiUrl}/api/v1/${role}s/password`;
+      const response = await api.put(url, old_new_pw);
+      if (response.status == 200) {
+        return { message: response.data.message };
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
+    }
+  };
 
   // Post context data
   const userContextData = {
@@ -65,6 +79,7 @@ const UserContextProvider = ({ children }) => {
     userState,
     showToast,
     setShowToast,
+    changePassword,
   };
 
   return (

@@ -379,7 +379,7 @@ export default {
           note: logbookData.dataValues.note,
           courseName: courseData.dataValues.name,
           lessonName: lessonData.dataValues.name,
-          teacherName: teacherData.dataValues.name,
+          // teacherName: teacherData.dataValues.name,
           day: days[data.dataValues.weekDay],
         });
 

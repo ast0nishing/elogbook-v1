@@ -18,8 +18,8 @@ export default function Student_Infor() {
   } = useContext(UserContext);
   // State
   const [updatedUser, setUpdatedUser] = useState(user);
-  const { name, province, district, town, street, streetNo } = updatedUser;
-  useEffect(() => setUpdatedUser(user), []);
+  const { address, phoneNumber } = updatedUser;
+
   const onChangeUpdatedUserForm = (event) =>
     setUpdatedUser({
       ...updatedUser,
@@ -42,91 +42,67 @@ export default function Student_Infor() {
       <form onSubmit={onSubmit}>
         <div className="form-row">
           <div className="form-col-25">
-            <label>School Name</label>
+            <label>User Name</label>
+          </div>
+          <div className="form-col-75">{user.username}</div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label>Name</label>
+          </div>
+          <div className="form-col-75">{user.studentName}</div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label>Email</label>
+          </div>
+          <div className="form-col-75">{user.email}</div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label>Student ID</label>
+          </div>
+          <div className="form-col-75">{user.studentId}</div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label>Head Teacher</label>
+          </div>
+          <div className="form-col-75">{user.teacherName}</div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label>Class</label>
+          </div>
+          <div className="form-col-75">{user.className}</div>
+        </div>
+        <div className="form-row">
+          <div className="form-col-25">
+            <label>Address</label>
           </div>
           <div className="form-col-75">
             <input
               type="text"
               id="lname"
-              name="name"
-              value={name}
+              name="address"
+              value={address}
               onChange={onChangeUpdatedUserForm}
-              placeholder={user.name}
+              placeholder={user.address}
             ></input>
           </div>
         </div>
         <div className="form-row">
           <div className="form-col-25">
-            <label>Province</label>
+            <label>Phone Number</label>
           </div>
           <div className="form-col-75">
             <input
               type="text"
               id="lname"
-              name="province"
-              value={province}
+              name="phoneNumber"
+              value={phoneNumber}
               onChange={onChangeUpdatedUserForm}
-              placeholder={user.province}
-            ></input>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-col-25">
-            <label>District</label>
-          </div>
-          <div className="form-col-75">
-            <input
-              type="text"
-              id="lname"
-              name="district"
-              value={district}
-              onChange={onChangeUpdatedUserForm}
-              placeholder={user.district}
-            ></input>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-col-25">
-            <label>Town</label>
-          </div>
-          <div className="form-col-75">
-            <input
-              type="text"
-              id="lname"
-              name="town"
-              value={town}
-              onChange={onChangeUpdatedUserForm}
-              placeholder={user.town}
-            ></input>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-col-25">
-            <label>Street</label>
-          </div>
-          <div className="form-col-75">
-            <input
-              type="text"
-              id="lname"
-              name="street"
-              value={street}
-              onChange={onChangeUpdatedUserForm}
-              placeholder={user.street}
-            ></input>
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-col-25">
-            <label>Street Number</label>
-          </div>
-          <div className="form-col-75">
-            <input
-              type="text"
-              id="lname"
-              name="streetNo"
-              value={streetNo}
-              onChange={onChangeUpdatedUserForm}
-              placeholder={user.streetNo}
+              placeholder={user.phoneNumber}
             ></input>
           </div>
         </div>

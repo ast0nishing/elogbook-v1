@@ -12,7 +12,6 @@ import {
   FIND_SCHOOL,
 } from "./constants";
 
-import axios from "axios";
 export const SchoolContext = createContext();
 const SchoolContextProvider = ({ children }) => {
   // State
@@ -99,9 +98,40 @@ const SchoolContextProvider = ({ children }) => {
     }
   };
 
+  const updateTeacher = async (updatedTeacher) => {
+    try {
+      const url = `${apiUrl}/api/v1/schools/editTeacher/${updatedTeacher.teacherId}`;
+      const response = await api.put(url, updatedTeacher);
+      if (response.status == 200) {
+        // getTeachers();
+        return response.data;
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
+    }
+  };
+
+  const updateStudent = async (updatedStudent) => {
+    try {
+      const url = `${apiUrl}/api/v1/schools/editStudent/${updatedStudent.studentId}`;
+      const response = await api.put(url, updatedStudent);
+      if (response.status == 200) {
+        return response.data;
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
+    }
+  };
+
   // Post context data
   const schoolContextData = {
     schoolState,
+    updateStudent,
+    updateTeacher,
     getSchools,
     showAddSchoolTable,
     setShowAddSchoolTable,

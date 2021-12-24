@@ -41,7 +41,6 @@ export default function TeacherList() {
     event.preventDefault();
     getClassTeachers(data1);
   };
-
   // Editing teacher
   const handleChoose = (teacherId) => {
     findTeacher(teacherId);
@@ -58,9 +57,9 @@ export default function TeacherList() {
   };
 
   const columns = [
-    { field: "idSchool", headerName: "School id", width: 200 },
+    // { field: "idSchool", headerName: "School id", width: 200 },
     { field: "username", headerName: "User name", width: 200 },
-    { field: "password", headerName: "Password", width: 200 },
+    // { field: "password", headerName: "Password", width: 200 },
     { field: "name", headerName: "Name", width: 200 },
     { field: "major", headerName: "Major", width: 200 },
     { field: "phoneNumber", headerName: "Phone", width: 200 },

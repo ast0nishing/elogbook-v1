@@ -21,6 +21,7 @@ import RankingContextProvider from "./contexts/RankingContext";
 import School_infor from "./pages_view/User_all/School_infor";
 import Student_infor from "./pages_view/User_all/Student_infor";
 import Teacher_infor from "./pages_view/User_all/Teacher_infor";
+import ChangePassword from "./pages_view/User_all/Password";
 // Timetable
 import MyTimetable from "./pages_view/Timetable_all/MyTimetable";
 import Timetable from "./pages_view/Timetable_all/Timetable";
@@ -125,6 +126,11 @@ function App() {
                                 path="/personal/student"
                                 component={Student_infor}
                               />
+                              <ProtectedRoute
+                                exact
+                                path="/change-password"
+                                component={ChangePassword}
+                              />
                               {/* Teacher all */}
                               <ProtectedRoute
                                 exact
@@ -199,7 +205,7 @@ function App() {
                               {/* Student all */}
                               <ProtectedRoute
                                 exact
-                                path="/student/:id"
+                                path="/student-detail"
                                 component={StudentDetail}
                               />
                               <ProtectedRoute

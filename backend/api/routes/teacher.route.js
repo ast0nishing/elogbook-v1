@@ -87,24 +87,24 @@ router.get(
 // );
 router.get(
   "/year-grade-ranking/:year/:grade",
-  [auth.verifyToken, auth.isTeacher],
+  [auth.verifyToken],
   controller.Student.rankingByYearGrade
 );
 router.get(
   "/ranking/:year/:week/:grade",
-  [auth.verifyToken, auth.isTeacher],
+  [auth.verifyToken],
   controller.Student.rankingByGrade
 );
 
 // ranking by year
 router.get(
   "/ranking/:year",
-  [auth.verifyToken, auth.isTeacher],
+  [auth.verifyToken],
   controller.Student.rankingByYear
 );
 // get lesson
 router.get(
   "/lessons/:course",
-  [auth.verifyToken, auth.isTeacher],
+  [auth.verifyToken],
   controller.Teacher.getLessons
 );

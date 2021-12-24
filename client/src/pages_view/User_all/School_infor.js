@@ -38,7 +38,7 @@ export default function School_infor() {
   };
   return (
     <div className="newElement">
-      <h1 className="newElementTitle">Edit Account Information</h1>
+      <h1 className="newElementTitle">Account Information</h1>
       <form onSubmit={onSubmit}>
         <div className="form-row">
           <div className="form-col-25">
