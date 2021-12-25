@@ -62,6 +62,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         <Menu.Item key="02">
           <Link to="/change-password"> Change Password </Link>
         </Menu.Item>
+        <Menu.Item key="03">
+          <Link to="/logout-all"> Logout All </Link>
+        </Menu.Item>
       </SubMenu>
     </>
   );

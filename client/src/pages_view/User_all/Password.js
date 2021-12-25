@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { PermIdentity, Publish } from "@material-ui/icons";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
-
+import { useHistory } from "react-router";
 export default function ChangePassword() {
   // // Contexts
   const {
@@ -15,6 +15,7 @@ export default function ChangePassword() {
     updateUser,
     setShowToast,
     changePassword,
+    logoutAll,
     showToast: { show, message, type },
   } = useContext(UserContext);
   // State
@@ -29,17 +30,25 @@ export default function ChangePassword() {
       [event.target.name]: event.target.value,
     });
   // Context
+  const history = useHistory();
   const onSubmit = async (event) => {
     try {
       event.preventDefault();
       const { message, success } = await changePassword(updatedState);
-      if (message) {
+      if (message == "success") {
+        setUpdatedState({ oldPassword: null, newPassword: null });
+        setShowToast({ show: true, message, type: null });
+        toast(message);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        history.push("/login");
+      } else {
         setUpdatedState({ oldPassword: null, newPassword: null });
         setShowToast({ show: true, message, type: null });
         toast(message);
       }
     } catch (error) {}
   };
+
   return (
     <div className="newElement">
       <h1 className="newElementTitle">Update password</h1>

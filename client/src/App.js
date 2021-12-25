@@ -70,6 +70,7 @@ import LogbookWeekClass from "./pages_view/Logbook_all/LogbookWeekClass";
 import WeekRanking from "./pages_view/Ranking_all/WeekRanking";
 import YearRanking from "./pages_view/Ranking_all/YearRanking";
 
+import LogoutAll from "./pages_view/User_all/LogoutAll";
 //App
 function App() {
   return (
@@ -265,6 +266,11 @@ function App() {
                                 exact
                                 path="/new-logbook"
                                 component={NewLogbook}
+                              />
+                              <ProtectedRoute
+                                exact
+                                path="/logout-all"
+                                component={LogoutAll}
                               />
                               <ProtectedRoute exact path="/" component={Home} />
                             </Switch>
