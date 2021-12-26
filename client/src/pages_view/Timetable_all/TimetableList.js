@@ -68,7 +68,7 @@ export default function TimetableList() {
         <Spinner animation="border" variant="info" />
       </div>
     );
-  } else if (matrix.length == 0) {
+  } else if (timetables.length == 0) {
     body = (
       <>
         <div className="elementList">

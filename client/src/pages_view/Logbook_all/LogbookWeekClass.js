@@ -38,7 +38,7 @@ export default function LogbookWeekClass() {
     event.preventDefault();
     getLogbookYearWeekClass(data1);
   };
-
+  const weektime = Array.from({ length: 35 }, (_, i) => i + 1);
   const history = useHistory();
   const handleChoose = (courseId) => {
     if (typeof courseId === "undefined") {
@@ -52,6 +52,7 @@ export default function LogbookWeekClass() {
       //   }, 1000);
     }
   };
+
   let body = null;
   if (logbooksLoading) {
     body = (
@@ -64,7 +65,7 @@ export default function LogbookWeekClass() {
       <>
         <div className="elementList">
           <h2 className="header">
-            There is no timetable available, please create your timetable first
+            There is no logbook available, please create your logbook first
           </h2>
           <Link to={"/new-timetable"}>
             <Button className="btn-floating" style={{ "z-index": -1 }}>
@@ -86,23 +87,23 @@ export default function LogbookWeekClass() {
         width: 250,
       });
     });
-    columns.push({
-      field: "Logbook",
-      headerName: "Logbook Action",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <>
-            <button
-              className="elementListEdit"
-              onClick={() => handleChoose(params.row.id)}
-            >
-              Edit
-            </button>
-          </>
-        );
-      },
-    });
+    // columns.push({
+    //   field: "Logbook",
+    //   headerName: "Logbook Action",
+    //   width: 200,
+    //   renderCell: (params) => {
+    //     return (
+    //       <>
+    //         <button
+    //           className="elementListEdit"
+    //           onClick={() => handleChoose(params.row.id)}
+    //         >
+    //           Edit
+    //         </button>
+    //       </>
+    //     );
+    //   },
+    // });
     body = (
       <>
         <div>
@@ -155,6 +156,9 @@ export default function LogbookWeekClass() {
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
           </Form.Control>
           <Form.Control
             as="select"

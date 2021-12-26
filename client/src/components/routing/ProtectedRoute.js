@@ -95,7 +95,14 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             </Menu.Item>
           </SubMenu>
           <Menu.Item key="10" icon={<FileOutlined />}>
-            Tutorial !
+            <Link
+              to={{
+                pathname: "https://www.youtube.com/watch?v=clXhqMS5VBo",
+              }}
+              target="_blank"
+            >
+              Tutorial!
+            </Link>
           </Menu.Item>
         </Menu>
       </>
@@ -149,7 +156,14 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             </SubMenu>
           </SubMenu>
           <Menu.Item key="10" icon={<FileOutlined />}>
-            Tutorial !
+            <Link
+              to={{
+                pathname: "https://www.youtube.com/watch?v=clXhqMS5VBo",
+              }}
+              target="_blank"
+            >
+              Tutorial!
+            </Link>
           </Menu.Item>
         </Menu>
       </>
@@ -186,7 +200,14 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             </SubMenu>
           </SubMenu>
           <Menu.Item key="10" icon={<FileOutlined />}>
-            Tutorial !
+            <Link
+              to={{
+                pathname: "https://www.youtube.com/watch?v=clXhqMS5VBo",
+              }}
+              target="_blank"
+            >
+              Tutorial!
+            </Link>
           </Menu.Item>
         </Menu>
       </>
@@ -223,7 +244,14 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             </SubMenu>
           </SubMenu>
           <Menu.Item key="10" icon={<FileOutlined />}>
-            Tutorial !
+            <Link
+              to={{
+                pathname: "https://www.youtube.com/watch?v=clXhqMS5VBo",
+              }}
+              target="_blank"
+            >
+              Tutorial!
+            </Link>
           </Menu.Item>
         </Menu>
       </>

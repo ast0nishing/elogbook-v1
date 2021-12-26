@@ -52,12 +52,12 @@ export default function Home() {
         <Spinner animation="border" variant="info" />
       </div>
     );
-  } else if (matrix.length == 0) {
+  } else if (timetables.length == 0) {
     body = (
       <>
         <div className="elementList">
           <h2 className="header">
-            There is no timetable available, please contact your admin
+            There is no timetable available, please add by yourself
           </h2>
         </div>
       </>

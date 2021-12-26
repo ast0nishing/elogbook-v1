@@ -25,6 +25,7 @@ export default function StudentList() {
     setShowToast,
   } = useContext(StudentContext);
   // Get all course
+  useEffect(() => getStudents({ year: 2019, name: "9A2" }), []);
   const [data, setData] = useState(students);
   const history = useHistory();
 

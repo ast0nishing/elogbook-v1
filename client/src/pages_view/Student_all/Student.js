@@ -25,7 +25,7 @@ export default function Student() {
   // State
   const [updatedState, setUpdatedState] = useState(student);
 
-  useEffect(() => setUpdatedState(student), [students]);
+  // useEffect(() => setUpdatedState(student), [students]);
 
   const { name, address, phoneNumber, email } = updatedState;
 

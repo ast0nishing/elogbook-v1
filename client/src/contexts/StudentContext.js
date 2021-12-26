@@ -55,7 +55,7 @@ const StudentContextProvider = ({ children }) => {
         newStudent
       );
       if (response.status == 200) {
-        dispatch({ type: ADD_STUDENT, payload: response.data.student });
+        // dispatch({ type: ADD_STUDENT, payload: response.data.student });
         return { message: "Sucessfull" };
       }
     } catch (error) {

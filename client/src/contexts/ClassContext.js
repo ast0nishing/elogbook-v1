@@ -65,7 +65,7 @@ const ClassContextProvider = ({ children }) => {
             error.response.data["Already exist class ID"].length;
           const len_invalid_suffix =
             error.response.data["Invalid teacher ID"].length;
-          const len_non_teacher = error.response.data["Nonexist teacher"];
+          // const len_non_teacher = error.response.data["Nonexist teacher"];
           return {
             message:
               "Missing infor: " +
@@ -76,10 +76,8 @@ const ClassContextProvider = ({ children }) => {
               "Invalid suffix: " +
               len_invalid_suffix +
               "\n" +
-              "Already exists teacher: " +
-              len_existed_teacher +
-              "\n Non existed teacher: " +
-              len_non_teacher,
+              "Already exists class: " +
+              len_existed_teacher,
           };
         }
       } catch (error) {
